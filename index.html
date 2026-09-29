@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VUTUNAN HUB 24H - Cập nhật tin tức nhanh & chính xác nhất</title>
-    <!-- Tailwind CSS CDN -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -30,14 +30,14 @@
             }
         }
     </script>
-    <!-- Google Fonts & Font Awesome Icons -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* Custom scrollbar and animations */
+        
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -83,16 +83,16 @@
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 font-sans transition-colors duration-200 min-h-screen flex flex-col">
 
-    <!-- TOP BAR -->
+    
     <header class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-xs text-gray-600 dark:text-gray-400">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
-            <!-- Date & Location -->
+            
             <div class="flex items-center space-x-4">
                 <span class="flex items-center gap-1.5"><i class="far fa-calendar-alt text-brand"></i> <span id="current-date">Thứ Tư, 25/03/2009</span></span>
                 <span class="hidden md:flex items-center gap-1.5"><i class="fas fa-map-marker-alt text-brand"></i> Điện Biên 99°C <i class="fas fa-sun text-amber-500 ml-1"></i></span>
             </div>
 
-            <!-- Financial Ticker Widget -->
+            
             <div class="hidden lg:flex items-center space-x-6">
                 <div class="flex items-center gap-1">
                     <span class="font-semibold text-gray-800 dark:text-gray-200">Truongmylan-coin:</span>
@@ -108,16 +108,16 @@
                 </div>
             </div>
 
-            <!-- Top Utility Buttons -->
+            
             <div class="flex items-center space-x-3 ml-auto sm:ml-0">
-                <!-- Saved articles button -->
+                
                 <button onclick="openSavedModal()" class="hover:text-brand transition flex items-center gap-1 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-full relative">
                     <i class="far fa-bookmark text-brand"></i>
                     <span class="hidden sm:inline">Đã lưu</span>
                     <span id="saved-count" class="bg-brand text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full hidden">0</span>
                 </button>
 
-                <!-- Theme Toggle -->
+                
                 <button id="theme-toggle" onclick="toggleTheme()" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition" title="Chuyển chế độ Sáng/Tối">
                     <i class="fas fa-moon dark:hidden text-gray-700"></i>
                     <i class="fas fa-sun hidden dark:block text-amber-400"></i>
@@ -125,7 +125,7 @@
 
                 <div class="h-3 w-[1px] bg-gray-300 dark:bg-gray-700"></div>
 
-                <!-- Auth Buttons -->
+                
                 <button onclick="openAuthModal()" class="font-medium text-gray-700 dark:text-gray-300 hover:text-brand flex items-center gap-1">
                     <i class="far fa-user-circle text-base"></i> Đăng nhập
                 </button>
@@ -133,15 +133,15 @@
         </div>
     </header>
 
-    <!-- MAIN HEADER -->
+    
     <div class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-4 sm:py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-            <!-- Mobile Menu Toggle Button -->
+            
             <button onclick="toggleMobileNav()" class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
                 <i class="fas fa-bars text-xl"></i>
             </button>
 
-            <!-- Brand Logo -->
+            
             <a href="#" onclick="filterByCategory('All'); return false;" class="flex items-center gap-2 group">
                 <div class="bg-brand text-white font-extrabold text-2xl sm:text-3xl px-3 py-1 rounded-lg tracking-wider shadow-md transform group-hover:scale-105 transition">
                     VUTUNAN
@@ -152,7 +152,7 @@
                 </div>
             </a>
 
-            <!-- Search Bar in Header -->
+            
             <div class="hidden sm:flex flex-1 max-w-md mx-4 relative">
                 <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Tìm kiếm tin tức, sự kiện, từ khóa..." 
                        class="w-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 text-sm rounded-full pl-10 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-brand border border-transparent dark:border-gray-700 transition">
@@ -162,7 +162,7 @@
                 </button>
             </div>
 
-            <!-- Hot Hotline or App Download Banner Badge -->
+            
             <div class="hidden md:flex items-center gap-3 border-l border-gray-200 dark:border-gray-800 pl-4">
                 <div class="text-right">
                     <div class="text-[10px] uppercase font-bold text-gray-400">Hotline Đường Dây Nóng</div>
@@ -172,16 +172,16 @@
         </div>
     </div>
 
-    <!-- STICKY NAVBAR -->
+    
     <nav class="sticky top-0 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between overflow-x-auto no-scrollbar scroll-smooth py-1" id="nav-categories">
-                <!-- Generated dynamically JS -->
+                
             </div>
         </div>
     </nav>
 
-    <!-- MOBILE NAVIGATION MENU OVERLAY -->
+    
     <div id="mobile-menu" class="fixed inset-0 bg-black/60 z-50 hidden lg:hidden backdrop-blur-sm transition-opacity">
         <div class="bg-white dark:bg-gray-900 w-4/5 max-w-xs h-full p-6 flex flex-col justify-between overflow-y-auto">
             <div>
@@ -196,7 +196,7 @@
                            class="w-full bg-gray-100 dark:bg-gray-800 text-sm rounded-lg px-4 py-2 border border-gray-200 dark:border-gray-700">
                 </div>
                 <div class="space-y-1" id="mobile-nav-categories">
-                    <!-- Dynamic categories -->
+                    
                 </div>
             </div>
             <div class="pt-6 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-500">
@@ -205,7 +205,7 @@
         </div>
     </div>
 
-    <!-- BREAKING NEWS TICKER -->
+    
     <div class="bg-rose-50 dark:bg-gray-900 border-b border-rose-100 dark:border-gray-800 py-2 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
             <div class="flex items-center gap-2 bg-brand text-white px-2.5 py-1 rounded text-xs font-bold shrink-0 uppercase tracking-wider mr-3">
@@ -213,16 +213,16 @@
             </div>
             <div class="overflow-hidden relative w-full flex items-center">
                 <div class="animate-marquee text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-200 space-x-8" id="ticker-content">
-                    <!-- Ticker content injected by JS -->
+                    
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MAIN CONTAINER -->
+    
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
 
-        <!-- Active Filter Indicator (Shown when filtered by category or search) -->
+        
         <div id="filter-status" class="hidden mb-6 flex items-center justify-between bg-blue-50 dark:bg-gray-800 p-3 rounded-lg border border-blue-100 dark:border-gray-700">
             <div class="flex items-center gap-2">
                 <span class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400">Đang xem:</span>
@@ -234,20 +234,20 @@
             </button>
         </div>
 
-        <!-- HERO SECTION (Featured Main Grid) -->
+        
         <section id="hero-section" class="mb-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6" id="hero-grid">
-                <!-- Injected via JS -->
+                
             </div>
         </section>
 
-        <!-- MAIN CONTENT AREA (2 Columns) -->
+        
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- LEFT MAIN COLUMN (8 cols) -->
+            
             <div class="lg:col-span-8 space-y-10">
 
-                <!-- Filter Tabs for Main News List -->
+                
                 <div class="flex items-center justify-between border-b-2 border-brand pb-2">
                     <h2 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white uppercase flex items-center gap-2">
                         <span class="w-2.5 h-6 bg-brand rounded-sm inline-block"></span>
@@ -260,12 +260,12 @@
                     </div>
                 </div>
 
-                <!-- Main News List Cards -->
+                
                 <div id="articles-container" class="space-y-6">
-                    <!-- Dynamic Articles List -->
+                    
                 </div>
 
-                <!-- Category Spotlight: Technology & Business -->
+                
                 <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-lg font-bold uppercase tracking-tight flex items-center gap-2">
@@ -274,26 +274,26 @@
                         <a href="#" onclick="filterByCategory('Công nghệ'); return false;" class="text-xs font-semibold text-brand hover:underline">Xem tất cả <i class="fas fa-chevron-right text-[10px]"></i></a>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="tech-spotlight-grid">
-                        <!-- Dynamic Tech Spotlight -->
+                        
                     </div>
                 </div>
 
             </div>
 
-            <!-- RIGHT SIDEBAR (4 cols) -->
+            
             <aside class="lg:col-span-4 space-y-8">
 
-                <!-- Trending / Top Read Widget -->
+                
                 <div class="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
                     <h3 class="text-base font-bold text-gray-900 dark:text-white uppercase tracking-tight mb-4 flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-3">
                         <i class="fas fa-fire text-rose-500"></i> Đọc Nhiều Nhất 24h
                     </h3>
                     <div class="space-y-4" id="trending-widget">
-                        <!-- Injected JS -->
+                        
                     </div>
                 </div>
 
-                <!-- Newsletter Subscription Box -->
+                
                 <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6 rounded-2xl shadow-md relative overflow-hidden">
                     <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
                     <i class="far fa-paper-plane text-3xl mb-3 text-blue-200"></i>
@@ -310,7 +310,7 @@
                     </p>
                 </div>
 
-                <!-- Multimedia / Podcast Spotlight -->
+                
                 <div class="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
                     <h3 class="text-base font-bold text-gray-900 dark:text-white uppercase tracking-tight mb-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
                         <span><i class="fas fa-podcast text-brand mr-2"></i> Multimedia & Podcast</span>
@@ -328,20 +328,20 @@
                     </div>
                 </div>
 
-                <!-- Ad Banner Widget -->
+                
                 <div id="banner-container" class="space-y-4">
-                    <!-- Banner được tạo tự động từ BANNERS_DATA -->
+                    
                 </div>
 
             </aside>
         </div>
     </main>
 
-    <!-- ARTICLE DETAIL MODAL (FULL VIEW) -->
+    
     <div id="article-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/75 backdrop-blur-sm flex justify-center items-start p-2 sm:p-4 md:p-6">
         <div class="bg-white dark:bg-gray-900 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col border border-gray-200 dark:border-gray-800">
             
-            <!-- Modal Header Toolbar -->
+            
             <div class="sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 px-6 py-3.5 flex items-center justify-between z-10">
                 <div class="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
                     <span id="modal-category" class="bg-brand/10 text-brand px-2.5 py-1 rounded font-bold uppercase">Công nghệ</span>
@@ -349,30 +349,30 @@
                     <span id="modal-read-time"><i class="far fa-clock"></i> 5 phút đọc</span>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <!-- Text Size Adjusters -->
+                    
                     <div class="hidden sm:flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1 text-xs">
                         <button onclick="changeFontSize(-1)" class="px-2 py-0.5 rounded hover:bg-white dark:hover:bg-gray-700 font-bold" title="Giảm cỡ chữ">A-</button>
                         <button onclick="changeFontSize(1)" class="px-2 py-0.5 rounded hover:bg-white dark:hover:bg-gray-700 font-bold" title="Tăng cỡ chữ">A+</button>
                     </div>
-                    <!-- Bookmark button -->
+                    
                     <button id="modal-bookmark-btn" onclick="toggleBookmarkCurrentModal()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
                         <i class="far fa-bookmark text-lg"></i>
                     </button>
-                    <!-- Close button -->
+                    
                     <button onclick="closeArticleModal()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
                         <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Modal Content Body -->
+            
             <div class="p-6 sm:p-10 overflow-y-auto space-y-6 flex-grow" id="modal-scroll-body">
-                <!-- Title & Meta -->
+                
                 <h1 id="modal-title" class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight font-serif">
                     Loading article...
                 </h1>
 
-                <!-- Author & Time Bar -->
+                
                 <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-gray-100 dark:border-gray-800 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     <div class="flex items-center space-x-3">
                         <img id="modal-author-avatar" src="https://i.pravatar.cc/100?img=33" alt="Author" class="w-10 h-10 rounded-full border border-gray-200">
@@ -388,29 +388,29 @@
                     </div>
                 </div>
 
-                <!-- Featured Image -->
+                
                 <div class="rounded-xl overflow-hidden shadow-sm">
                     <img id="modal-image" src="" alt="Article image" class="w-full h-auto max-h-[480px] object-cover">
                     <p id="modal-image-caption" class="text-xs text-center text-gray-500 italic py-2 bg-gray-50 dark:bg-gray-800">Hình ảnh minh họa</p>
                 </div>
 
-                <!-- Sapo Text -->
+                
                 <div id="modal-sapo" class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 leading-relaxed font-serif pl-4 border-l-4 border-brand italic bg-gray-50 dark:bg-gray-800/50 py-3 rounded-r-lg">
                     Sapo content...
                 </div>
 
-                <!-- Article Rich Text Body -->
+                
                 <div id="modal-body-text" class="prose dark:prose-invert max-w-none text-base sm:text-lg leading-relaxed text-gray-800 dark:text-gray-200 font-serif space-y-4">
-                    <!-- Dynamic Body paragraphs -->
+                    
                 </div>
 
-                <!-- Interactive Comment Section -->
+                
                 <div class="pt-8 border-t border-gray-200 dark:border-gray-800">
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
                         <i class="far fa-comments text-brand"></i> Bình luận & Tranh luận (<span id="comments-count">0</span>)
                     </h3>
 
-                    <!-- Comment Input Box -->
+                    
                     <form onsubmit="handleAddComment(event)" class="bg-gray-50 dark:bg-gray-800/60 p-4 rounded-xl border border-gray-200 dark:border-gray-700 mb-8 space-y-3">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <input type="text" id="comment-author" required placeholder="Họ và tên của bạn *" class="bg-white dark:bg-gray-900 text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand">
@@ -425,9 +425,9 @@
                         </div>
                     </form>
 
-                    <!-- Comments List -->
+                    
                     <div id="comments-list" class="space-y-4">
-                        <!-- Dynamic comments -->
+                        
                     </div>
                 </div>
 
@@ -435,7 +435,7 @@
         </div>
     </div>
 
-    <!-- SAVED ARTICLES MODAL -->
+    
     <div id="saved-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/70 backdrop-blur-sm flex justify-center items-center p-4">
         <div class="bg-white dark:bg-gray-900 w-full max-w-2xl rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-gray-800">
             <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-800 mb-4">
@@ -447,16 +447,16 @@
                 </button>
             </div>
             <div id="saved-articles-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
-                <!-- Dynamically populated -->
+                
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
+    
     <footer class="bg-gray-900 text-gray-300 pt-12 pb-8 border-t border-gray-800 mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
             
-            <!-- Brand Info (2 cols) -->
+            
             <div class="lg:col-span-2 space-y-4">
                 <a href="#" class="flex items-center gap-2">
                     <div class="bg-brand text-white font-extrabold text-xl px-2.5 py-0.5 rounded">VUTUNAN</div>
@@ -472,7 +472,7 @@
                 </div>
             </div>
 
-            <!-- Categories Column 1 -->
+            
             <div>
                 <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 border-l-2 border-brand pl-2">Chuyên Mục</h4>
                 <ul class="space-y-2 text-xs text-gray-400">
@@ -484,7 +484,7 @@
                 </ul>
             </div>
 
-            <!-- Categories Column 2 -->
+            
             <div>
                 <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 border-l-2 border-brand pl-2">Dịch Vụ & Tiện Ích</h4>
                 <ul class="space-y-2 text-xs text-gray-400">
@@ -496,7 +496,7 @@
                 </ul>
             </div>
 
-            <!-- Social Links -->
+            
             <div>
                 <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 border-l-2 border-brand pl-2">Kết Nối</h4>
                 <p class="text-xs text-gray-400 mb-3">Theo dõi chúng tôi trên các nền tảng truyền thông:</p>
@@ -516,18 +516,15 @@
         </div>
     </footer>
 
-    <!-- Back To Top Button -->
+    
     <button id="back-to-top" onclick="scrollToTop()" class="fixed bottom-6 right-6 z-40 w-10 h-10 bg-brand text-white rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- JAVASCRIPT LOGIC -->
+    
     <script>
 
-        /* =========================================================
-           NHÓM 1: BANNER / QUẢNG CÁO
-           -> Sau này muốn thêm banner, chỉ cần thêm 1 object vào đây.
-           ========================================================= */
+        
         const BANNERS_DATA = [
             {
                 id: 1,
@@ -539,17 +536,8 @@
             }
         ];
 
-        /* =========================================================
-           NHÓM 2: BÀI BÁO
-           -> Sau này muốn thêm báo, chỉ cần thêm 1 object vào đây.
-           Không cần sửa phần giao diện bên dưới.
-           ========================================================= */
+        
         const ARTICLES_DATA = [
-            // MỖI BÀI BÁO LÀ MỘT KHỐI RIÊNG.
-            // Muốn thêm bài mới: copy toàn bộ khối của một bài, đổi thông tin rồi đặt ở cuối.
-            // =========================================================
-            // BÀI BÁO 1
-            // =========================================================
             {
                 id: 1,
                 title: "Thế giới bước vào kỷ nguyên trí tuệ nhân tạo thế hệ mới: Đột phá vượt mong đợi",
@@ -570,9 +558,6 @@
                 isHero: true,
                 trendingRank: 1
             },
-            // =========================================================
-            // BÀI BÁO 2
-            // =========================================================
             {
                 id: 2,
                 title: "Thị trường tài chính toàn cầu khởi sắc, sắc xanh lan tỏa trên các sàn giao dịch",
@@ -592,9 +577,6 @@
                 heroSecondary: true,
                 trendingRank: 2
             },
-            // =========================================================
-            // BÀI BÁO 3
-            // =========================================================
             {
                 id: 3,
                 title: "Chủ tịch Quốc hội chủ trì phiên họp bàn về chiến lược chuyển đổi xanh quốc gia",
@@ -614,9 +596,6 @@
                 heroSecondary: true,
                 trendingRank: 3
             },
-            // =========================================================
-            // BÀI BÁO 4
-            // =========================================================
             {
                 id: 4,
                 title: "Tuyển Việt Nam sẵn sàng cho vòng loại World Cup với đội hình tối ưu nhất",
@@ -635,9 +614,6 @@
                 heroSecondary: true,
                 trendingRank: 4
             },
-            // =========================================================
-            // BÀI BÁO 5
-            // =========================================================
             {
                 id: 5,
                 title: "Thành phố Hồ Chí Minh mở rộng tuyến phố đi bộ kết hợp không gian văn hóa nghệ thuật",
@@ -655,9 +631,6 @@
                 isHero: false,
                 trendingRank: 5
             },
-            // =========================================================
-            // BÀI BÁO 6
-            // =========================================================
             {
                 id: 6,
                 title: "Xe điện tự hành thế hệ mới thử nghiệm thành công trên đường cao tốc",
@@ -673,9 +646,6 @@
                 views: "12,100",
                 readTime: "3 phút"
             },
-            // =========================================================
-            // BÀI BÁO 7
-            // =========================================================
             {
                 id: 7,
                 title: "Điện ảnh Việt Nam gặt hái giải thưởng quốc tế lớn tại Liên hoan phim Châu Á",
@@ -693,11 +663,11 @@
             }
         ];
 
-        /* KẾT THÚC NHÓM BÀI BÁO */
+        
 
         const CATEGORIES = ["Tất cả", "Thời sự", "Thế giới", "Kinh doanh", "Công nghệ", "Thể thao", "Giải trí", "Đời sống"];
 
-        /* STATE MANAGEMENT */
+        
         let currentCategory = "Tất cả";
         let searchQuery = "";
         let savedArticleIds = JSON.parse(localStorage.getItem('news_saved_ids') || '[]');
@@ -705,10 +675,8 @@
         let currentModalArticleId = null;
         let currentFontSize = 18; // base px
 
-        // Comments Store in LocalStorage
         let commentsStore = JSON.parse(localStorage.getItem('news_comments') || '{}');
 
-        // INITIALIZATION
         window.addEventListener('DOMContentLoaded', () => {
             renderCategoryNav();
             renderBanners();
@@ -721,7 +689,6 @@
             setupScrollListener();
         });
 
-        // CATEGORY NAV RENDER
         function renderCategoryNav() {
             const navContainer = document.getElementById('nav-categories');
             const mobileNavContainer = document.getElementById('mobile-nav-categories');
@@ -746,7 +713,6 @@
         }
 
 
-        // BANNER RENDER
         function renderBanners() {
             const container = document.getElementById('banner-container');
             if (!container) return;
@@ -765,14 +731,12 @@
             `).join('');
         }
 
-        // BREAKING NEWS TICKER
         function renderTicker() {
             const tickerContainer = document.getElementById('ticker-content');
             const items = ARTICLES_DATA.map(a => `<span><i class="fas fa-newspaper text-brand mr-1"></i> [${a.category}] ${a.title}</span>`).join('<span class="mx-4 text-gray-400">•</span>');
             tickerContainer.innerHTML = items + '<span class="mx-4 text-gray-400">•</span>' + items; // duplicate for infinite loop
         }
 
-        // HERO RENDER
         function renderHero() {
             const heroGrid = document.getElementById('hero-grid');
             const heroMain = ARTICLES_DATA.find(a => a.isHero) || ARTICLES_DATA[0];
@@ -781,7 +745,7 @@
             const isSaved = savedArticleIds.includes(heroMain.id);
 
             let html = `
-                <!-- Main Big Hero Card (8 cols) -->
+                
                 <div class="lg:col-span-7 group cursor-pointer" onclick="openArticleModal(${heroMain.id})">
                     <div class="relative rounded-2xl overflow-hidden bg-gray-900 shadow-md">
                         <img src="${heroMain.image}" alt="${heroMain.title}" class="w-full h-[340px] sm:h-[420px] object-cover group-hover:scale-105 transition duration-500 opacity-90">
@@ -800,7 +764,7 @@
                     </div>
                 </div>
 
-                <!-- Secondary Hero Stack (5 cols) -->
+                
                 <div class="lg:col-span-5 flex flex-col justify-between gap-4">
             `;
 
@@ -828,17 +792,14 @@
             heroGrid.innerHTML = html;
         }
 
-        // RENDER MAIN ARTICLES LIST
         function renderArticles() {
             const container = document.getElementById('articles-container');
             let filtered = ARTICLES_DATA;
 
-            // Apply category filter
             if (currentCategory !== "All" && currentCategory !== "Tất cả") {
                 filtered = filtered.filter(a => a.category === currentCategory);
             }
 
-            // Apply search filter
             if (searchQuery.trim() !== "") {
                 const query = searchQuery.toLowerCase();
                 filtered = filtered.filter(a => 
@@ -848,12 +809,10 @@
                 );
             }
 
-            // Apply active tab sorting
             if (activeTab === 'popular') {
                 filtered = [...filtered].sort((a, b) => parseInt(b.views.replace(',', '')) - parseInt(a.views.replace(',', '')));
             }
 
-            // Update filter status display
             const filterStatus = document.getElementById('filter-status');
             if (currentCategory !== "All" || searchQuery !== "") {
                 filterStatus.classList.remove('hidden');
@@ -913,7 +872,6 @@
             }).join('');
         }
 
-        // RENDER TRENDING SIDEBAR
         function renderTrendingWidget() {
             const container = document.getElementById('trending-widget');
             const sorted = [...ARTICLES_DATA].sort((a,b) => (a.trendingRank || 99) - (b.trendingRank || 99)).slice(0, 5);
@@ -933,7 +891,6 @@
             `).join('');
         }
 
-        // RENDER TECH SPOTLIGHT
         function renderTechSpotlight() {
             const container = document.getElementById('tech-spotlight-grid');
             const techArticles = ARTICLES_DATA.filter(a => a.category === "Công nghệ").slice(0, 2);
@@ -952,7 +909,6 @@
             `).join('');
         }
 
-        // OPEN ARTICLE DETAIL MODAL
         function openArticleModal(id) {
             const article = ARTICLES_DATA.find(a => a.id === id);
             if (!article) return;
@@ -983,13 +939,11 @@
             currentModalArticleId = null;
         }
 
-        // FONT SIZE ADJUSTER
         function changeFontSize(delta) {
             currentFontSize = Math.min(Math.max(currentFontSize + delta, 14), 26);
             document.getElementById('modal-body-text').style.fontSize = `${currentFontSize}px`;
         }
 
-        // BOOKMARKING SYSTEM
         function toggleBookmark(id, event) {
             if (event) event.stopPropagation();
             if (savedArticleIds.includes(id)) {
@@ -1061,7 +1015,6 @@
             document.getElementById('saved-modal').classList.add('hidden');
         }
 
-        // INTERACTIVE COMMENTS SYSTEM
         function renderComments(articleId) {
             const commentsList = document.getElementById('comments-list');
             const commentsCount = document.getElementById('comments-count');
@@ -1105,7 +1058,6 @@
             textInput.value = '';
         }
 
-        // SEARCH & CATEGORY FILTERING
         function filterByCategory(category) {
             currentCategory = category;
             searchQuery = "";
@@ -1149,7 +1101,6 @@
             renderArticles();
         }
 
-        // DARK MODE TOGGLE
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
@@ -1161,20 +1112,17 @@
             }
         }
 
-        // Apply theme saved in localStorage
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
 
-        // MOBILE NAV OVERLAY TOGGLE
         function toggleMobileNav() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         }
 
-        // SCROLL TO TOP LISTENER
         function setupScrollListener() {
             const btn = document.getElementById('back-to-top');
             window.addEventListener('scroll', () => {
@@ -1190,14 +1138,12 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // NEWSLETTER SUBMIT
         function handleNewsletterSubmit(e) {
             e.preventDefault();
             document.getElementById('newsletter-msg').classList.remove('hidden');
             document.getElementById('newsletter-email').value = '';
         }
 
-        // DUMMY AUTH MODAL
         function openAuthModal() {
             alert('Tính năng Đăng nhập / Đăng ký tài khoản dành cho độc giả đang mở rộng!');
         }
