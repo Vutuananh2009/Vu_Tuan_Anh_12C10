@@ -1,1167 +1,821 @@
 <!DOCTYPE html>
 <html lang="vi" class="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VUTUNAN HUB 24H - Cập nhật tin tức nhanh & chính xác nhất</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
-                        },
-                        brand: '#e11d48' // Crimson red for breaking news/accent
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'Georgia', 'serif']
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.2);
-            border-radius: 4px;
-        }
-        .dark ::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.05);
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-            display: inline-flex;
-            white-space: nowrap;
-            animation: marquee 35s linear infinite;
-        }
-        .animate-marquee:hover {
-            animation-play-state: paused;
-        }
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .line-clamp-3 {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VUTUNAN HUB 24H - Cập nhật tin tức nhanh & chính xác nhất</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFamily:{sans:['Inter','sans-serif'],serif:['Merriweather','Georgia','serif']}}}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.no-scrollbar::-webkit-scrollbar{display:none}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.animate-marquee{display:inline-flex;white-space:nowrap;animation:marquee 35s linear infinite}
+.animate-marquee:hover{animation-play-state:paused}
+.line-clamp-1,.line-clamp-2{display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+.line-clamp-1{-webkit-line-clamp:1}.line-clamp-2{-webkit-line-clamp:2}
+#toast{transition:all .3s}
+</style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 font-sans transition-colors duration-200 min-h-screen flex flex-col">
 
-    
-    <header class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-xs text-gray-600 dark:text-gray-400">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
-            
-            <div class="flex items-center space-x-4">
-                <span class="flex items-center gap-1.5"><i class="far fa-calendar-alt text-brand"></i> <span id="current-date">Thứ Tư, 25/03/2009</span></span>
-                <span class="hidden md:flex items-center gap-1.5"><i class="fas fa-map-marker-alt text-brand"></i> Điện Biên 99°C <i class="fas fa-sun text-amber-500 ml-1"></i></span>
-            </div>
+<!-- Top bar -->
+<header class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-xs text-gray-600 dark:text-gray-400">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
+  <div class="flex items-center space-x-4">
+   <span class="flex items-center gap-1.5"><i class="far fa-calendar-alt text-brand"></i> <span id="current-date"></span></span>
+   <span class="hidden md:flex items-center gap-1.5"><i class="fas fa-map-marker-alt text-brand"></i> Điện Biên 99°C <i class="fas fa-sun text-amber-500 ml-1"></i></span>
+  </div>
+  <div class="hidden lg:flex items-center space-x-6">
+   <div class="flex items-center gap-1"><span class="font-semibold text-gray-800 dark:text-gray-200">Truongmylan-coin:</span><span class="text-emerald-600 font-medium">673,000B (+0.01) <i class="fas fa-arrow-up text-[10px]"></i></span></div>
+   <div class="flex items-center gap-1"><span class="font-semibold text-gray-800 dark:text-gray-200">Datvilla-coin:</span><span class="text-emerald-600 font-medium">400M (+0.02%)</span></div>
+   <div class="flex items-center gap-1"><span class="font-semibold text-gray-800 dark:text-gray-200">Jack97-coin:</span><span class="text-rose-500 font-medium">4,4M (-12%)</span></div>
+  </div>
+  <div class="flex items-center space-x-3 ml-auto sm:ml-0">
+   <button onclick="openSavedModal()" class="hover:text-brand transition flex items-center gap-1 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-full">
+    <i class="far fa-bookmark text-brand"></i><span class="hidden sm:inline">Đã lưu</span>
+    <span id="saved-count" class="bg-brand text-white text-[10px] font-bold px-1.5 rounded-full hidden">0</span>
+   </button>
+   <button onclick="toggleTheme()" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition" title="Chuyển chế độ Sáng/Tối">
+    <i class="fas fa-moon dark:hidden text-gray-700"></i><i class="fas fa-sun hidden dark:block text-amber-400"></i>
+   </button>
+   <div class="h-3 w-[1px] bg-gray-300 dark:bg-gray-700"></div>
+   <div id="auth-area"></div>
+  </div>
+ </div>
+</header>
 
-            
-            <div class="hidden lg:flex items-center space-x-6">
-                <div class="flex items-center gap-1">
-                    <span class="font-semibold text-gray-800 dark:text-gray-200">Truongmylan-coin:</span>
-                    <span class="text-emerald-600 font-medium">673,000B (+0.01) <i class="fas fa-arrow-up text-[10px]"></i></span>
-                </div>
-                <div class="flex items-center gap-1">
-                    <span class="font-semibold text-gray-800 dark:text-gray-200">Datvilla-coin:</span>
-                    <span class="text-emerald-600 font-medium">400M (+0.02%)</span>
-                </div>
-                <div class="flex items-center gap-1">
-                    <span class="font-semibold text-gray-800 dark:text-gray-200">Jack97-coin:</span>
-                    <span class="text-rose-500 font-medium">4,4M (-12%)</span>
-                </div>
-            </div>
+<!-- Logo + search -->
+<div class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-4 sm:py-6">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+  <button onclick="toggleMobileNav()" class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"><i class="fas fa-bars text-xl"></i></button>
+  <a href="#" onclick="resetAll();return false;" class="flex items-center gap-2 group">
+   <div class="bg-brand text-white font-extrabold text-2xl sm:text-3xl px-3 py-1 rounded-lg tracking-wider shadow-md group-hover:scale-105 transition">VUTUNAN</div>
+   <div class="flex flex-col"><span class="font-extrabold text-xl sm:text-2xl tracking-tight leading-none">HUB 24H</span><span class="text-[10px] uppercase tracking-widest text-gray-500 dark:text-gray-400 font-semibold mt-0.5">Tin Tức Tin Cậy</span></div>
+  </a>
+  <div class="hidden sm:flex flex-1 max-w-md mx-4 relative">
+   <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Tìm kiếm tin tức, sự kiện, từ khóa..." class="w-full bg-gray-100 dark:bg-gray-800 text-sm rounded-full pl-10 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-brand border border-transparent dark:border-gray-700">
+   <i class="fas fa-search absolute left-3.5 top-2.5 text-gray-400"></i>
+   <button id="clear-search" onclick="clearSearch()" class="hidden absolute right-3.5 top-2.5 text-gray-400 hover:text-gray-600"><i class="fas fa-times-circle"></i></button>
+  </div>
+  <div class="hidden md:flex items-center gap-3 border-l border-gray-200 dark:border-gray-800 pl-4">
+   <div class="text-right"><div class="text-[10px] uppercase font-bold text-gray-400">Hotline Đường Dây Nóng</div><div class="text-sm font-extrabold text-brand">0335 900 710</div></div>
+  </div>
+ </div>
+</div>
 
-            
-            <div class="flex items-center space-x-3 ml-auto sm:ml-0">
-                
-                <button onclick="openSavedModal()" class="hover:text-brand transition flex items-center gap-1 bg-gray-100 dark:bg-gray-800 px-2.5 py-1 rounded-full relative">
-                    <i class="far fa-bookmark text-brand"></i>
-                    <span class="hidden sm:inline">Đã lưu</span>
-                    <span id="saved-count" class="bg-brand text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full hidden">0</span>
-                </button>
+<nav class="sticky top-0 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex items-center overflow-x-auto no-scrollbar py-1 gap-1" id="nav-categories"></div></div>
+</nav>
 
-                
-                <button id="theme-toggle" onclick="toggleTheme()" class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition" title="Chuyển chế độ Sáng/Tối">
-                    <i class="fas fa-moon dark:hidden text-gray-700"></i>
-                    <i class="fas fa-sun hidden dark:block text-amber-400"></i>
-                </button>
+<div id="mobile-menu" class="fixed inset-0 bg-black/60 z-50 hidden lg:hidden backdrop-blur-sm" onclick="if(event.target===this)toggleMobileNav()">
+ <div class="bg-white dark:bg-gray-900 w-4/5 max-w-xs h-full p-6 flex flex-col justify-between overflow-y-auto">
+  <div>
+   <div class="flex justify-between items-center mb-6"><span class="font-bold text-lg text-brand">DANH MỤC TIN TỨC</span><button onclick="toggleMobileNav()"><i class="fas fa-times text-xl"></i></button></div>
+   <input type="text" id="mobile-search-input" oninput="handleSearch(this.value)" placeholder="Tìm kiếm bài viết..." class="w-full mb-4 bg-gray-100 dark:bg-gray-800 text-sm rounded-lg px-4 py-2 border border-gray-200 dark:border-gray-700">
+   <div class="space-y-1" id="mobile-nav-categories"></div>
+  </div>
+  <div class="pt-6 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-500"><p>© 2026 VUTUNAN HUB 24H Online Portal.</p></div>
+ </div>
+</div>
 
-                <div class="h-3 w-[1px] bg-gray-300 dark:bg-gray-700"></div>
+<!-- Ticker -->
+<div class="bg-rose-50 dark:bg-gray-900 border-b border-rose-100 dark:border-gray-800 py-2 overflow-hidden">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
+  <div class="flex items-center gap-2 bg-brand text-white px-2.5 py-1 rounded text-xs font-bold shrink-0 uppercase tracking-wider mr-3"><i class="fas fa-bolt animate-pulse"></i> Tin Nóng</div>
+  <div class="overflow-hidden w-full flex items-center"><div class="animate-marquee text-xs sm:text-sm font-medium" id="ticker-content"></div></div>
+ </div>
+</div>
 
-                
-                <button onclick="openAuthModal()" class="font-medium text-gray-700 dark:text-gray-300 hover:text-brand flex items-center gap-1">
-                    <i class="far fa-user-circle text-base"></i> Đăng nhập
-                </button>
-            </div>
-        </div>
-    </header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+ <div id="filter-status" class="hidden mb-6 flex items-center justify-between bg-blue-50 dark:bg-gray-800 p-3 rounded-lg border border-blue-100 dark:border-gray-700">
+  <div class="flex items-center gap-2 flex-wrap"><span class="text-xs uppercase font-bold text-gray-500">Đang xem:</span><span id="filter-title" class="font-bold text-brand text-sm"></span><span id="filter-count" class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full"></span></div>
+  <button onclick="resetAll()" class="text-xs font-semibold text-gray-500 hover:text-brand flex items-center gap-1"><i class="fas fa-sync-alt"></i> Đặt lại tất cả</button>
+ </div>
 
-    
-    <div class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-4 sm:py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-            
-            <button onclick="toggleMobileNav()" class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
+ <section id="hero-section" class="mb-10"><div class="grid grid-cols-1 lg:grid-cols-12 gap-6" id="hero-grid"></div></section>
 
-            
-            <a href="#" onclick="filterByCategory('All'); return false;" class="flex items-center gap-2 group">
-                <div class="bg-brand text-white font-extrabold text-2xl sm:text-3xl px-3 py-1 rounded-lg tracking-wider shadow-md transform group-hover:scale-105 transition">
-                    VUTUNAN
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-extrabold text-xl sm:text-2xl tracking-tight text-gray-900 dark:text-white leading-none">HUB 24H</span>
-                    <span class="text-[10px] uppercase tracking-widest text-gray-500 dark:text-gray-400 font-semibold mt-0.5">Tin Tức Tin Cậy</span>
-                </div>
-            </a>
-
-            
-            <div class="hidden sm:flex flex-1 max-w-md mx-4 relative">
-                <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Tìm kiếm tin tức, sự kiện, từ khóa..." 
-                       class="w-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 text-sm rounded-full pl-10 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-brand border border-transparent dark:border-gray-700 transition">
-                <i class="fas fa-search absolute left-3.5 top-2.5 text-gray-400"></i>
-                <button id="clear-search" onclick="clearSearch()" class="hidden absolute right-3.5 top-2.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
-                    <i class="fas fa-times-circle"></i>
-                </button>
-            </div>
-
-            
-            <div class="hidden md:flex items-center gap-3 border-l border-gray-200 dark:border-gray-800 pl-4">
-                <div class="text-right">
-                    <div class="text-[10px] uppercase font-bold text-gray-400">Hotline Đường Dây Nóng</div>
-                    <div class="text-sm font-extrabold text-brand">0335 900 710</div>
-                </div>
-            </div>
-        </div>
+ <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+  <div class="lg:col-span-8 space-y-10">
+   <div class="flex items-center justify-between border-b-2 border-brand pb-2">
+    <h2 class="text-xl font-bold tracking-tight uppercase flex items-center gap-2"><span class="w-2.5 h-6 bg-brand rounded-sm inline-block"></span>Dòng Sự Kiện & Tin Mới</h2>
+    <div class="flex space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium">
+     <button onclick="setTab('latest')" id="tab-latest" class="px-3 py-1 rounded-md">Mới nhất</button>
+     <button onclick="setTab('popular')" id="tab-popular" class="px-3 py-1 rounded-md">Xem nhiều</button>
+     <button onclick="setTab('recommended')" id="tab-recommended" class="px-3 py-1 rounded-md">Đề xuất</button>
     </div>
-
-    
-    <nav class="sticky top-0 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between overflow-x-auto no-scrollbar scroll-smooth py-1" id="nav-categories">
-                
-            </div>
-        </div>
-    </nav>
-
-    
-    <div id="mobile-menu" class="fixed inset-0 bg-black/60 z-50 hidden lg:hidden backdrop-blur-sm transition-opacity">
-        <div class="bg-white dark:bg-gray-900 w-4/5 max-w-xs h-full p-6 flex flex-col justify-between overflow-y-auto">
-            <div>
-                <div class="flex justify-between items-center mb-6">
-                    <span class="font-bold text-lg text-brand">DANH MỤC TIN TỨC</span>
-                    <button onclick="toggleMobileNav()" class="text-gray-500 hover:text-gray-700 dark:hover:text-white">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                <div class="mb-4">
-                    <input type="text" id="mobile-search-input" onkeyup="handleMobileSearch()" placeholder="Tìm kiếm bài viết..." 
-                           class="w-full bg-gray-100 dark:bg-gray-800 text-sm rounded-lg px-4 py-2 border border-gray-200 dark:border-gray-700">
-                </div>
-                <div class="space-y-1" id="mobile-nav-categories">
-                    
-                </div>
-            </div>
-            <div class="pt-6 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-500">
-                <p>© 2026 VUTUNAN HUB 24H Online Portal.</p>
-            </div>
-        </div>
+   </div>
+   <div id="articles-container" class="space-y-6"></div>
+   <div id="tech-block" class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
+    <div class="flex items-center justify-between mb-6">
+     <h3 class="text-lg font-bold uppercase tracking-tight flex items-center gap-2"><i class="fas fa-microchip text-brand"></i> Công Nghệ & Khởi Nghiệp</h3>
+     <a href="#" onclick="filterByCategory('Công nghệ');return false;" class="text-xs font-semibold text-brand hover:underline">Xem tất cả <i class="fas fa-chevron-right text-[10px]"></i></a>
     </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="tech-spotlight-grid"></div>
+   </div>
+  </div>
 
-    
-    <div class="bg-rose-50 dark:bg-gray-900 border-b border-rose-100 dark:border-gray-800 py-2 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
-            <div class="flex items-center gap-2 bg-brand text-white px-2.5 py-1 rounded text-xs font-bold shrink-0 uppercase tracking-wider mr-3">
-                <i class="fas fa-bolt animate-pulse"></i> Tin Nóng
-            </div>
-            <div class="overflow-hidden relative w-full flex items-center">
-                <div class="animate-marquee text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-200 space-x-8" id="ticker-content">
-                    
-                </div>
-            </div>
-        </div>
+  <aside class="lg:col-span-4 space-y-8">
+   <div class="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+    <h3 class="text-base font-bold uppercase tracking-tight mb-4 flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-3"><i class="fas fa-fire text-rose-500"></i> Đọc Nhiều Nhất 24h</h3>
+    <div class="space-y-4" id="trending-widget"></div>
+   </div>
+
+   <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6 rounded-2xl shadow-md relative overflow-hidden">
+    <i class="far fa-paper-plane text-3xl mb-3 text-blue-200"></i>
+    <h3 class="text-lg font-bold mb-1">Đăng ký nhận bản tin sáng</h3>
+    <p class="text-xs text-blue-100 mb-4 leading-relaxed">Cập nhật 5 tin quan trọng nhất mỗi buổi sáng trực tiếp qua Email của bạn.</p>
+    <form onsubmit="handleNewsletterSubmit(event)" class="space-y-2">
+     <input type="email" id="newsletter-email" required placeholder="Nhập địa chỉ email..." class="w-full text-xs text-gray-900 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400">
+     <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold text-xs py-2.5 rounded-lg transition shadow">ĐĂNG KÝ NGAY</button>
+    </form>
+    <p id="newsletter-msg" class="text-[11px] text-emerald-200 mt-2 hidden"><i class="fas fa-check-circle"></i> Đã đăng ký nhận bản tin thành công!</p>
+   </div>
+
+   <div class="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+    <h3 class="text-base font-bold uppercase tracking-tight mb-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+     <span><i class="fas fa-podcast text-brand mr-2"></i> Multimedia & Podcast</span><span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold uppercase">Mới</span>
+    </h3>
+    <div class="relative rounded-xl overflow-hidden group cursor-pointer" onclick="openArticleModal(3)">
+     <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&auto=format&fit=crop&q=80" alt="Podcast Cover" class="w-full h-44 object-cover group-hover:scale-105 transition duration-300">
+     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-4">
+      <div class="w-10 h-10 bg-brand/90 text-white rounded-full flex items-center justify-center mb-2 shadow-lg"><i class="fas fa-play ml-1 text-sm"></i></div>
+      <span class="text-[10px] uppercase tracking-wider text-amber-400 font-semibold">Podcast • 15 phút</span>
+      <h4 class="text-sm font-bold text-white line-clamp-2 mt-1">Góc nhìn 360: Đột phá AI trong năm 2026 và tương lai thị trường lao động</h4>
+     </div>
     </div>
+   </div>
 
-    
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+   <div id="banner-container" class="space-y-4"></div>
+  </aside>
+ </div>
+</main>
 
-        
-        <div id="filter-status" class="hidden mb-6 flex items-center justify-between bg-blue-50 dark:bg-gray-800 p-3 rounded-lg border border-blue-100 dark:border-gray-700">
-            <div class="flex items-center gap-2">
-                <span class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400">Đang xem:</span>
-                <span id="filter-title" class="font-bold text-brand text-sm sm:text-base">Tất cả bài viết</span>
-                <span id="filter-count" class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full text-gray-600 dark:text-gray-300">0 kết quả</span>
-            </div>
-            <button onclick="filterByCategory('All')" class="text-xs font-semibold text-gray-500 hover:text-brand flex items-center gap-1">
-                <i class="fas fa-sync-alt"></i> Đặt lại tất cả
-            </button>
-        </div>
-
-        
-        <section id="hero-section" class="mb-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6" id="hero-grid">
-                
-            </div>
-        </section>
-
-        
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            
-            <div class="lg:col-span-8 space-y-10">
-
-                
-                <div class="flex items-center justify-between border-b-2 border-brand pb-2">
-                    <h2 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white uppercase flex items-center gap-2">
-                        <span class="w-2.5 h-6 bg-brand rounded-sm inline-block"></span>
-                        Dòng Sự Kiện & Tin Mới
-                    </h2>
-                    <div class="flex space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium">
-                        <button onclick="setTab('latest')" id="tab-latest" class="px-3 py-1 rounded-md bg-brand text-white transition">Mới nhất</button>
-                        <button onclick="setTab('popular')" id="tab-popular" class="px-3 py-1 rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition">Xem nhiều</button>
-                        <button onclick="setTab('recommended')" id="tab-recommended" class="px-3 py-1 rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition">Đề xuất</button>
-                    </div>
-                </div>
-
-                
-                <div id="articles-container" class="space-y-6">
-                    
-                </div>
-
-                
-                <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-lg font-bold uppercase tracking-tight flex items-center gap-2">
-                            <i class="fas fa-microchip text-brand"></i> Công Nghệ & Khởi Nghiệp
-                        </h3>
-                        <a href="#" onclick="filterByCategory('Công nghệ'); return false;" class="text-xs font-semibold text-brand hover:underline">Xem tất cả <i class="fas fa-chevron-right text-[10px]"></i></a>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="tech-spotlight-grid">
-                        
-                    </div>
-                </div>
-
-            </div>
-
-            
-            <aside class="lg:col-span-4 space-y-8">
-
-                
-                <div class="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-                    <h3 class="text-base font-bold text-gray-900 dark:text-white uppercase tracking-tight mb-4 flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-3">
-                        <i class="fas fa-fire text-rose-500"></i> Đọc Nhiều Nhất 24h
-                    </h3>
-                    <div class="space-y-4" id="trending-widget">
-                        
-                    </div>
-                </div>
-
-                
-                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6 rounded-2xl shadow-md relative overflow-hidden">
-                    <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
-                    <i class="far fa-paper-plane text-3xl mb-3 text-blue-200"></i>
-                    <h3 class="text-lg font-bold mb-1">Đăng ký nhận bản tin sáng</h3>
-                    <p class="text-xs text-blue-100 mb-4 leading-relaxed">Cập nhật 5 tin quan trọng nhất mỗi buổi sáng trực tiếp qua Email của bạn.</p>
-                    <form onsubmit="handleNewsletterSubmit(event)" class="space-y-2">
-                        <input type="email" id="newsletter-email" required placeholder="Nhập địa chỉ email..." class="w-full text-xs text-gray-900 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400">
-                        <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold text-xs py-2.5 rounded-lg transition shadow">
-                            ĐĂNG KÝ NGAY
-                        </button>
-                    </form>
-                    <p id="newsletter-msg" class="text-[11px] text-emerald-200 mt-2 hidden flex items-center gap-1">
-                        <i class="fas fa-check-circle"></i> Đã đăng ký nhận bản tin thành công!
-                    </p>
-                </div>
-
-                
-                <div class="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
-                    <h3 class="text-base font-bold text-gray-900 dark:text-white uppercase tracking-tight mb-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
-                        <span><i class="fas fa-podcast text-brand mr-2"></i> Multimedia & Podcast</span>
-                        <span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold uppercase">Mới</span>
-                    </h3>
-                    <div class="relative rounded-xl overflow-hidden group cursor-pointer" onclick="openArticleModal(3)">
-                        <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=600&auto=format&fit=crop&q=80" alt="Podcast Cover" class="w-full h-44 object-cover group-hover:scale-105 transition duration-300">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-4">
-                            <div class="w-10 h-10 bg-brand/90 text-white rounded-full flex items-center justify-center mb-2 shadow-lg group-hover:scale-110 transition">
-                                <i class="fas fa-play ml-1 text-sm"></i>
-                            </div>
-                            <span class="text-[10px] uppercase tracking-wider text-amber-400 font-semibold">Podcast • 15 phút</span>
-                            <h4 class="text-sm font-bold text-white line-clamp-2 mt-1">Góc nhìn 360: Đột phá AI trong năm 2026 và tương lai thị trường lao động</h4>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div id="banner-container" class="space-y-4">
-                    
-                </div>
-
-            </aside>
-        </div>
-    </main>
-
-    
-    <div id="article-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/75 backdrop-blur-sm flex justify-center items-start p-2 sm:p-4 md:p-6">
-        <div class="bg-white dark:bg-gray-900 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col border border-gray-200 dark:border-gray-800">
-            
-            
-            <div class="sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 px-6 py-3.5 flex items-center justify-between z-10">
-                <div class="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
-                    <span id="modal-category" class="bg-brand/10 text-brand px-2.5 py-1 rounded font-bold uppercase">Công nghệ</span>
-                    <span>•</span>
-                    <span id="modal-read-time"><i class="far fa-clock"></i> 5 phút đọc</span>
-                </div>
-                <div class="flex items-center space-x-3">
-                    
-                    <div class="hidden sm:flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1 text-xs">
-                        <button onclick="changeFontSize(-1)" class="px-2 py-0.5 rounded hover:bg-white dark:hover:bg-gray-700 font-bold" title="Giảm cỡ chữ">A-</button>
-                        <button onclick="changeFontSize(1)" class="px-2 py-0.5 rounded hover:bg-white dark:hover:bg-gray-700 font-bold" title="Tăng cỡ chữ">A+</button>
-                    </div>
-                    
-                    <button id="modal-bookmark-btn" onclick="toggleBookmarkCurrentModal()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
-                        <i class="far fa-bookmark text-lg"></i>
-                    </button>
-                    
-                    <button onclick="closeArticleModal()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            
-            <div class="p-6 sm:p-10 overflow-y-auto space-y-6 flex-grow" id="modal-scroll-body">
-                
-                <h1 id="modal-title" class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight font-serif">
-                    Loading article...
-                </h1>
-
-                
-                <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-gray-100 dark:border-gray-800 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                    <div class="flex items-center space-x-3">
-                        <img id="modal-author-avatar" src="https://i.pravatar.cc/100?img=33" alt="Author" class="w-10 h-10 rounded-full border border-gray-200">
-                        <div>
-                            <div id="modal-author" class="font-bold text-gray-900 dark:text-white">Nguyễn Văn A</div>
-                            <div id="modal-date" class="text-xs text-gray-500">28/09/2026 - 10:30 AM</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="shareArticle('facebook')" class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-facebook-f text-xs"></i></button>
-                        <button onclick="shareArticle('twitter')" class="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-twitter text-xs"></i></button>
-                        <button onclick="shareArticle('copy')" class="w-8 h-8 rounded-full bg-gray-600 text-white flex items-center justify-center hover:opacity-90" title="Sao chép liên kết"><i class="fas fa-link text-xs"></i></button>
-                    </div>
-                </div>
-
-                
-                <div class="rounded-xl overflow-hidden shadow-sm">
-                    <img id="modal-image" src="" alt="Article image" class="w-full h-auto max-h-[480px] object-cover">
-                    <p id="modal-image-caption" class="text-xs text-center text-gray-500 italic py-2 bg-gray-50 dark:bg-gray-800">Hình ảnh minh họa</p>
-                </div>
-
-                
-                <div id="modal-sapo" class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 leading-relaxed font-serif pl-4 border-l-4 border-brand italic bg-gray-50 dark:bg-gray-800/50 py-3 rounded-r-lg">
-                    Sapo content...
-                </div>
-
-                
-                <div id="modal-body-text" class="prose dark:prose-invert max-w-none text-base sm:text-lg leading-relaxed text-gray-800 dark:text-gray-200 font-serif space-y-4">
-                    
-                </div>
-
-                
-                <div class="pt-8 border-t border-gray-200 dark:border-gray-800">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                        <i class="far fa-comments text-brand"></i> Bình luận & Tranh luận (<span id="comments-count">0</span>)
-                    </h3>
-
-                    
-                    <form onsubmit="handleAddComment(event)" class="bg-gray-50 dark:bg-gray-800/60 p-4 rounded-xl border border-gray-200 dark:border-gray-700 mb-8 space-y-3">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" id="comment-author" required placeholder="Họ và tên của bạn *" class="bg-white dark:bg-gray-900 text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand">
-                            <input type="email" id="comment-email" placeholder="Email (không công khai)" class="bg-white dark:bg-gray-900 text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand">
-                        </div>
-                        <textarea id="comment-text" required rows="3" placeholder="Chia sẻ ý kiến của bạn về bài viết này..." class="w-full bg-white dark:bg-gray-900 text-xs sm:text-sm p-3.5 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand"></textarea>
-                        <div class="flex justify-between items-center">
-                            <span class="text-[11px] text-gray-500">Bình luận tuân thủ chuẩn văn hóa ứng xử trực tuyến.</span>
-                            <button type="submit" class="bg-brand hover:bg-rose-700 text-white font-bold text-xs px-5 py-2 rounded-lg transition shadow">
-                                Gửi Bình Luận
-                            </button>
-                        </div>
-                    </form>
-
-                    
-                    <div id="comments-list" class="space-y-4">
-                        
-                    </div>
-                </div>
-
-            </div>
-        </div>
+<!-- Article modal -->
+<div id="article-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/75 backdrop-blur-sm flex justify-center items-start p-2 sm:p-4 md:p-6" onclick="if(event.target===this)closeArticleModal()">
+ <div class="bg-white dark:bg-gray-900 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col border border-gray-200 dark:border-gray-800">
+  <div class="bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-800 px-6 py-3.5 flex items-center justify-between">
+   <div class="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+    <span id="modal-category" class="bg-brand/10 text-brand px-2.5 py-1 rounded font-bold uppercase"></span><span>•</span>
+    <span><i class="far fa-clock"></i> <span id="modal-read-time"></span> đọc</span>
+   </div>
+   <div class="flex items-center space-x-3">
+    <div class="hidden sm:flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1 text-xs">
+     <button onclick="changeFontSize(-1)" class="px-2 py-0.5 rounded hover:bg-white dark:hover:bg-gray-700 font-bold" title="Giảm cỡ chữ">A-</button>
+     <button onclick="changeFontSize(1)" class="px-2 py-0.5 rounded hover:bg-white dark:hover:bg-gray-700 font-bold" title="Tăng cỡ chữ">A+</button>
     </div>
-
-    
-    <div id="saved-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/70 backdrop-blur-sm flex justify-center items-center p-4">
-        <div class="bg-white dark:bg-gray-900 w-full max-w-2xl rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-gray-800">
-            <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-800 mb-4">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <i class="fas fa-bookmark text-brand"></i> Danh Sách Bài Viết Đã Lưu
-                </h3>
-                <button onclick="closeSavedModal()" class="text-gray-500 hover:text-gray-700 dark:hover:text-white">
-                    <i class="fas fa-times text-lg"></i>
-                </button>
-            </div>
-            <div id="saved-articles-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
-                
-            </div>
-        </div>
+    <button id="modal-bookmark-btn" onclick="toggleBookmarkCurrentModal()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"></button>
+    <button onclick="closeArticleModal()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"><i class="fas fa-times text-xl"></i></button>
+   </div>
+  </div>
+  <div class="p-6 sm:p-10 overflow-y-auto space-y-6 flex-grow" id="modal-scroll-body">
+   <h1 id="modal-title" class="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight font-serif"></h1>
+   <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-gray-100 dark:border-gray-800 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+    <div class="flex items-center space-x-3">
+     <img id="modal-author-avatar" src="" alt="Author" class="w-10 h-10 rounded-full border border-gray-200">
+     <div><div id="modal-author" class="font-bold text-gray-900 dark:text-white"></div><div class="text-xs text-gray-500"><span id="modal-date"></span> • <i class="far fa-eye"></i> <span id="modal-views"></span></div></div>
     </div>
-
-    
-    <footer class="bg-gray-900 text-gray-300 pt-12 pb-8 border-t border-gray-800 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
-            
-            
-            <div class="lg:col-span-2 space-y-4">
-                <a href="#" class="flex items-center gap-2">
-                    <div class="bg-brand text-white font-extrabold text-xl px-2.5 py-0.5 rounded">VUTUNAN</div>
-                    <span class="font-extrabold text-xl text-white tracking-tight">HUB 24H</span>
-                </a>
-                <p class="text-xs text-gray-400 leading-relaxed max-w-sm">
-                    Trang tin tức tổng hợp công nghệ, kinh tế, đời sống xã hội cập nhật liên tục 24/7. Thông tin chính xác, khách quan và chuyên sâu cho mọi độc giả.
-                </p>
-                <div class="text-xs text-gray-400 space-y-1">
-                    <p><i class="fas fa-building mr-2 text-brand"></i> THPT Chuyên Lê Quý Đôn Điện Biên</p>
-                    <p><i class="fas fa-phone-alt mr-2 text-brand"></i> Hotline: (84)335900710 - Email: vutuananh17b2nh@gmail.com</p>
-                    <p><i class="fas fa-certificate mr-2 text-brand"></i> Giấy phép xuất bản số 2503 cấp ngày 25/03/2009</p>
-                </div>
-            </div>
-
-            
-            <div>
-                <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 border-l-2 border-brand pl-2">Chuyên Mục</h4>
-                <ul class="space-y-2 text-xs text-gray-400">
-                    <li><a href="#" onclick="filterByCategory('Thời sự'); return false;" class="hover:text-white transition">Thời sự & Xã hội</a></li>
-                    <li><a href="#" onclick="filterByCategory('Thế giới'); return false;" class="hover:text-white transition">Thế giới 24h</a></li>
-                    <li><a href="#" onclick="filterByCategory('Kinh doanh'); return false;" class="hover:text-white transition">Kinh doanh & Tài chính</a></li>
-                    <li><a href="#" onclick="filterByCategory('Công nghệ'); return false;" class="hover:text-white transition">Công nghệ & AI</a></li>
-                    <li><a href="#" onclick="filterByCategory('Thể thao'); return false;" class="hover:text-white transition">Thể thao đỉnh cao</a></li>
-                </ul>
-            </div>
-
-            
-            <div>
-                <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 border-l-2 border-brand pl-2">Dịch Vụ & Tiện Ích</h4>
-                <ul class="space-y-2 text-xs text-gray-400">
-                    <li><a href="#" class="hover:text-white transition">Quảng cáo & PR</a></li>
-                    <li><a href="#" class="hover:text-white transition">Báo giá dịch vụ</a></li>
-                    <li><a href="#" class="hover:text-white transition">Điều khoản sử dụng</a></li>
-                    <li><a href="#" class="hover:text-white transition">Chính sách bảo mật</a></li>
-                    <li><a href="#" class="hover:text-white transition">Đội ngũ tòa soạn</a></li>
-                </ul>
-            </div>
-
-            
-            <div>
-                <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 border-l-2 border-brand pl-2">Kết Nối</h4>
-                <p class="text-xs text-gray-400 mb-3">Theo dõi chúng tôi trên các nền tảng truyền thông:</p>
-                <div class="flex space-x-3">
-                    <a href="https://web.facebook.com/profile.php?id=61579169085939" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-brand flex items-center justify-center text-white transition"><i class="fab fa-facebook-f text-xs"></i></a>
-                    <a href="https://www.instagram.com/vutunan/" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-brand flex items-center justify-center text-white transition"><i class="fab fa-instagram text-xs"></i></a>
-                    <a href="https://www.tiktok.com/@vutunan" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-brand flex items-center justify-center text-white transition"><i class="fab fa-tiktok text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-brand flex items-center justify-center text-white transition"><i class="fas fa-comment-dots text-xs"></i></a>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="border-t border-gray-800 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500">
-            <p>© 2026 VUTUNAN HUB 24H. Tất cả quyền được bảo lưu.</p>
-            <p class="mt-2 sm:mt-0">-Vũ Tuấn Anh 12C10-</p>
-        </div>
-    </footer>
-
-    
-    <button id="back-to-top" onclick="scrollToTop()" class="fixed bottom-6 right-6 z-40 w-10 h-10 bg-brand text-white rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    
-    <script>
-
-        
-        const BANNERS_DATA = [
-            {
-                id: 1,
-                label: "Quảng cáo",
-                title: "KHUYẾN MÃI CÔNG NGHỆ",
-                description: "Giảm tới 40% cho các thiết bị thông minh thế hệ mới.",
-                buttonText: "Khám phá ngay",
-                buttonLink: "#"
-            }
-        ];
-
-        
-        const ARTICLES_DATA = [
-            {
-                id: 1,
-                title: "Đội hình tuyển Việt Nam đấu Thái Lan: Hoàng Đức trở lại, Hai Long thay Xuân Son",
-                category: "Thể thao",
-                sapo: "Tuyển Việt Nam đấu Thái Lan với một số điều chỉnh về nhân sự của HLV Kim Sang Sik khi điền tên Hoàng Đức trở lại, trong khi Hai Long được chọn thay Xuân Son.",
-                body: `
-                    <p>HLV Kim Sang Sik nhiều khả năng sử dụng Hoàng Đức trong cuộc đối đầu Thái Lan. Tiền vệ của CLB Ninh Bình mới trở lại sau chấn thương háng nhẹ và việc đá chính vẫn tiềm ẩn rủi ro, nhưng tính chất trận đấu khiến phương án này trở nên đáng cân nhắc.</p>
-                    <p>Ở trận thắng Philippines 1-0, tuyến giữa tuyển Việt Nam không thực sự tạo được cảm giác an toàn. Thành Long chơi nỗ lực nhưng một mình khó quán xuyến toàn bộ khu vực trung tuyến, đặc biệt khi đối thủ nâng tốc độ và gây sức ép liên tục.</p>
-                    <p><strong>Hoàng Đức trở lại</strong></p>
-                    <p>Vì vậy, sự trở lại của Hoàng Đức không đơn thuần là thêm một cái tên giàu kinh nghiệm, bởi tiền vệ giúp tuyển Việt Nam tăng khả năng kiểm soát bóng và thoát pressing.</p>
-                `,
-                image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/29/hoangduc-1550.jpg?width=0&s=HGYWW5EKVFwU6lLB1WWg4g",
-                author: "Duy ",
-                authorAvatar: "https://i.pravatar.cc/100?img=12",
-                date: "29/09/2026 - 12:53",
-                views: "36,360",
-                readTime: "4 phút",
-                isHero: true,
-                trendingRank: 1
-            },
-            {
-                id: 2,
-                title: "Ba Lan nới lỏng quy định bắn hạ tên lửa và UAV Nga",
-                category: "Thế giới",
-                sapo: "Thứ trưởng Quốc phòng Ba Lan Cezary Tomczyk ngày 28/9 cho biết nước này sẽ thay đổi quy trình đối với máy bay quân sự và trực thăng trong việc xử lý các vật thể xâm nhập từ phía Nga.",
-                body: `
-                    <p>Theo Politico và Kyiv Independent, động thái này có thể làm căng thẳng giữa Warsaw và Moscow gia tăng sau khi Nga liên tiếp thực hiện các vụ xâm nhập đường không, thử thách khả năng phòng thủ của Ba Lan trong những tuần gần đây.</p>
-                    <p>Phát biểu với các phóng viên tại Deblin, Ba Lan, ông Tomczyk cho biết phi công hiện không chỉ phải “đọc radar” mà còn phải “nhận dạng bằng mắt” mối đe dọa trên không trước khi khai hỏa. “Điều đó có nghĩa phi công phải tiếp cận mục tiêu và tận mắt xác định chính xác vật thể là gì”</p>
-                `,
-                image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/29/chien-dau-co-cua-ba-lan-1997.jpg?width=0&s=ck0iLKyn30W6tzTLzPnZ_w",
-                author: "Hoài Linh",
-                authorAvatar: "https://i.pravatar.cc/100?img=47",
-                date: "29/09/2026 - 15:06",
-                views: "32,800",
-                readTime: "3 phút",
-                isHero: false,
-                heroSecondary: true,
-                trendingRank: 2
-            },
-            {
-                id: 3,
-                title: "iPhone Duo và iPhone 18 Pro sẽ vẫn thành công vang dội?",
-                category: "Công nghệ",
-                sapo: "iPhone 18 Pro và iPhone 18 Pro Max gần như bị lu mờ bởi màn ra mắt iPhone Duo – mẫu iPhone màn hình gập đầu tiên của Apple. Nhưng iPhone 18 Pro vẫn có nhiều lý do để thành công.",
-                body: `
-                    <p>iPhone Duo nhanh chóng trở thành tâm điểm chú ý và khiến hai mẫu iPhone cao cấp truyền thống không nhận được nhiều sự quan tâm như dự kiến.</p>
-                    <p>Điều này cũng kéo theo một số báo cáo đáng lo ngại về nhu cầu đối với iPhone 18 Pro và iPhone 18 Pro Max. Một số ước tính ban đầu cho rằng sức mua của bộ đôi này thấp hơn thế hệ iPhone 17 Pro năm ngoái. Tuy nhiên, một khảo sát mới cho thấy những nhận định đó có thể đã được đưa ra quá sớm và chưa phản ánh đầy đủ nhu cầu thực tế.</p>
-                `,
-                image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/28/iphone-duo-20-3553.png?width=0&s=hu8FzshzMJJCe6iPpTLXJg",
-                author: "Hải Phong",
-                authorAvatar: "https://i.pravatar.cc/100?img=33",
-                date: "29/09/2026 - 09:40",
-                views: "28,900",
-                readTime: "5 phút",
-                isHero: false,
-                heroSecondary: true,
-                trendingRank: 3
-            },
-            {
-                id: 4,
-                title: "Giá vàng hôm nay 29/9: Đảo chiều, vàng SJC bật tăng trở lại",
-                category: "Kinh doanh",
-                sapo: "Giá vàng hôm nay 29/9 trên thế giới giảm mạnh khi giá dầu tăng trở lại, làm gia tăng lo ngại về lạm phát và thúc đẩy kỳ vọng lãi suất Mỹ duy trì ở mức cao. Trong nước vàng miếng tiêp tục bốc hơi 1,4 triệu đồng/lượng.",
-                body: `
-                    <p>Lúc 13h45', giá vàng miếng và vàng nhẫn loại 1-5 chỉ của SJC tăng thêm 500.000 đồng mỗi lượng ở cả chiều mua và bán so với trưa nay, niêm yết lần lượt ở mức 139,5-142,5 triệu đồng/lượng (mua - bán) và 139-142 triệu đồng/lượng (mua vào - bán ra). </p>
-                    <p>Giá vàng nhẫn trơn tại Bảo Tín Minh Châu đầu giờ chiều nay được niêm yết ở mức 138,5-142,5 triệu đồng/lượng (mua vào - bán ra), tăng 300.000 đồng/lượng ở cả hai chiều giao dịch so với mức mở cửa hôm nay.</p>
-                `,
-                image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/8/4/giavangminhhien46-ok-2682.png?width=0&s=YMPjNoG9k5n7BqiHZUhFmQ",
-                author: "Duy Anh",
-                authorAvatar: "https://i.pravatar.cc/100?img=53",
-                date: "29/09/2026 - 06:00",
-                views: "19,450",
-                readTime: "3 phút",
-                isHero: false,
-                heroSecondary: true,
-                trendingRank: 4
-            },
-            {
-                id: 5,
-                title: "Xuất hiện nhóm ‘Con ghét bố mẹ’ với 90.000 thành viên, phụ huynh sốc khi vào xem",
-                category: "Đời sống",
-                sapo: "Những bài đăng thể hiện cảm xúc tiêu cực của con trẻ với cha mẹ trong nhóm Con ghét bố mẹ khiến nhiều người hoảng hốt.",
-                body: `
-                    <p>Những ngày gần đây, một nhóm mang tên “Con ghét bố mẹ” với số lượng thành viên tăng chóng mặt thu hút sự quan tâm của đông đảo người dùng mạng.</p>
-                    <p>Ngày 28/9, số thành viên tham gia nhóm là khoảng 50.000, chỉ sau 1 ngày, con số đó đã tăng lên 90.000.</p>
-                    <p>Trong đó, nhiều bạn trẻ thể hiện cảm xúc tiêu cực, nỗi thất vọng về bố mẹ khi không được lắng nghe, thấu hiểu. Một số nội dung có ngôn từ khiếm nhã, thể hiện suy nghĩ lệch lạc, không coi trọng giá trị gia đình.</p>
-                `,
-                image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/29/anh-1-1464.jpg?width=0&s=RryJZ2h0D6qtjBoZnA036w",
-                author: "Thanh Minh",
-                authorAvatar: "https://i.pravatar.cc/100?img=26",
-                date: "29/09/2026 - 12:19",
-                views: "15,300",
-                readTime: "4 phút",
-                isHero: false,
-                trendingRank: 5
-            },
-            {
-                id: 6,
-                title: "Phát hiện nhiều di vật đặc biệt trong mộ liệt sĩ vô danh",
-                category: "Thời sự",
-                sapo: "Sự kiện: Chiến dịch 500 ngày đêm đẩy mạnh thực hiện tìm kiếm, quy tập và xác định danh tính hài cốt liệt sĩ",
-                body: `
-                    <p>Tại Cà Mau và An Giang, lực lượng lấy mẫu liên tiếp phát hiện hàng loạt các di vật đặc biệt có giá trị phục vụ công tác xác minh danh tính hài cốt liệt sĩ.</p>
-                    <p>Ngày 29/9, Bộ Chỉ huy Quân sự tỉnh An Giang cho biết, Đội K93 đã quy tập được 38 hài cốt liệt sĩ giữa giai đoạn mùa khô 2026-2027.</p>
-                    <p>Trong số này, 18 hài cốt được tìm thấy trên địa bàn tỉnh An Giang và 20 hài cốt được quy tập tại Campuchia.</p>
-                `,
-                image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/29/1790585959752-5311245769070031143-5311245769070031143-f809e0c6b35ec9bcf5316937dd3dab6f-2574.jpg?width=0&s=JrC8x4Eoc3YloZsjOI4QgQ",
-                author: "Ký Long",
-                authorAvatar: "https://i.pravatar.cc/100?img=12",
-                date: "29/09/2026 - 17:17",
-                views: "12,100",
-                readTime: "3 phút"
-            },
-            {
-                id: 7,
-                title: "Toàn cảnh drama PUBG PC: Từ lời lẽ của nữ streamer Hàn, tới cách xử lý 'đi vào lòng đất', game nhận làn sóng phản ứng chưa từng có",
-                category: "Giải trí",
-                sapo: "Cộng đồng game thủ Việt Nam đang trải qua những ngày với nhiều vấn đề xoay quanh tựa game PUBG PC. Mọi chuyện xuất phát từ một cáo buộc tại giải đấu giao hữu PUBG Asia Star 2026, và ngày càng leo thang do những vấn đề trong khâu vận hành giải đấu và xử lý khủng hoảng của chính NPH.",
-                body: `
-                    <p>PUBG Asia Stars 2026 được Krafton tổ chức từ ngày 17/9/2026, với tổng giải thưởng 70.000 USD, quy tụ 48 người chơi đến từ 6 khu vực châu Á. Đây vốn được xác định là một sân chơi mang tính giao hữu, kết nối cộng đồng streamer và tuyển thủ chuyên nghiệp, không đặt nặng tính cạnh tranh khốc liệt như các giải đấu chính thức trong hệ thống PUBG Esports.</p>
-                    <p>Đại diện Việt Nam tham dự với đội hình Team VIE, trong đó Himass và TanVuu là hai gương mặt được chú ý nhờ phong độ nổi bật trong các giải đấu chuyên nghiệp thời gian gần đây và có bề dày thành tích đáng nể ở nhiều sân chơi quốc tế. Ngoài ra, đội hình Team VIE còn có nhiều streamer như Rambo, DJ Chip, Nhism, Levi, Dev Nguyen…</p>
-                `,
-                image: "https://kenh14cdn.com/203336854389633024/2026/9/24/f1ddb349-8532-4699-8d0f-a618729534b9-100644-082928-1790043252842-17900432533811469435416-102114-1790221701687-1790221702007723372436.jpg",
-                author: "Khả Văn",
-                authorAvatar: "https://i.pravatar.cc/100?img=49",
-                date: "24/09/2026 -11:41",
-                views: "22,400",
-                readTime: "4 phút"
-            }
-        ];
-
-        
-
-        const CATEGORIES = ["Tất cả", "Thời sự", "Thế giới", "Kinh doanh", "Công nghệ", "Thể thao", "Giải trí", "Đời sống"];
-
-        
-        let currentCategory = "Tất cả";
-        let searchQuery = "";
-        let savedArticleIds = JSON.parse(localStorage.getItem('news_saved_ids') || '[]');
-        let activeTab = 'latest';
-        let currentModalArticleId = null;
-        let currentFontSize = 18; // base px
-
-        let commentsStore = JSON.parse(localStorage.getItem('news_comments') || '{}');
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderCategoryNav();
-            renderBanners();
-            renderTicker();
-            renderHero();
-            renderArticles();
-            renderTrendingWidget();
-            renderTechSpotlight();
-            updateSavedCount();
-            setupScrollListener();
-        });
-
-        function renderCategoryNav() {
-            const navContainer = document.getElementById('nav-categories');
-            const mobileNavContainer = document.getElementById('mobile-nav-categories');
-            
-            navContainer.innerHTML = CATEGORIES.map(cat => {
-                const isActive = (cat === "Tất cả" && currentCategory === "All") || cat === currentCategory;
-                const activeClass = isActive 
-                    ? "bg-brand text-white font-bold" 
-                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 font-medium";
-                return `<button onclick="filterByCategory('${cat === 'Tất cả' ? 'All' : cat}')" 
-                                class="px-3.5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap transition-all ${activeClass}">
-                            ${cat}
-                        </button>`;
-            }).join('');
-
-            mobileNavContainer.innerHTML = CATEGORIES.map(cat => {
-                return `<button onclick="filterByCategory('${cat === 'Tất cả' ? 'All' : cat}'); toggleMobileNav();" 
-                                class="w-full text-left px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">
-                            ${cat}
-                        </button>`;
-            }).join('');
-        }
-
-
-        function renderBanners() {
-            const container = document.getElementById('banner-container');
-            if (!container) return;
-
-            container.innerHTML = BANNERS_DATA.map(banner => `
-                <div class="bg-gray-200 dark:bg-gray-800 rounded-2xl p-6 text-center border border-dashed border-gray-300 dark:border-gray-700">
-                    <span class="text-[10px] uppercase font-bold text-gray-400 block mb-2">${banner.label}</span>
-                    <div class="bg-gradient-to-r from-amber-500 to-rose-500 text-white p-6 rounded-xl font-bold">
-                        <div class="text-lg">${banner.title}</div>
-                        <div class="text-xs font-normal opacity-90 mt-1">${banner.description}</div>
-                        <a href="${banner.buttonLink}" class="inline-block mt-3 bg-white text-gray-900 text-xs px-4 py-1.5 rounded-full font-bold hover:bg-gray-100 transition shadow">
-                            ${banner.buttonText}
-                        </a>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderTicker() {
-            const tickerContainer = document.getElementById('ticker-content');
-            const items = ARTICLES_DATA.map(a => `<span><i class="fas fa-newspaper text-brand mr-1"></i> [${a.category}] ${a.title}</span>`).join('<span class="mx-4 text-gray-400">•</span>');
-            tickerContainer.innerHTML = items + '<span class="mx-4 text-gray-400">•</span>' + items; // duplicate for infinite loop
-        }
-
-        function renderHero() {
-            const heroGrid = document.getElementById('hero-grid');
-            const heroMain = ARTICLES_DATA.find(a => a.isHero) || ARTICLES_DATA[0];
-            const heroSecondaries = ARTICLES_DATA.filter(a => a.id !== heroMain.id).slice(0, 3);
-
-            const isSaved = savedArticleIds.includes(heroMain.id);
-
-            let html = `
-                
-                <div class="lg:col-span-7 group cursor-pointer" onclick="openArticleModal(${heroMain.id})">
-                    <div class="relative rounded-2xl overflow-hidden bg-gray-900 shadow-md">
-                        <img src="${heroMain.image}" alt="${heroMain.title}" class="w-full h-[340px] sm:h-[420px] object-cover group-hover:scale-105 transition duration-500 opacity-90">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-5 sm:p-7">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="bg-brand text-white text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded">${heroMain.category}</span>
-                                <span class="text-xs text-gray-300"><i class="far fa-clock"></i> ${heroMain.date}</span>
-                            </div>
-                            <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white leading-tight font-serif group-hover:text-amber-300 transition">
-                                ${heroMain.title}
-                            </h2>
-                            <p class="text-xs sm:text-sm text-gray-300 mt-2 line-clamp-2 leading-relaxed">
-                                ${heroMain.sapo}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div class="lg:col-span-5 flex flex-col justify-between gap-4">
-            `;
-
-            heroSecondaries.forEach(item => {
-                html += `
-                    <div class="flex gap-4 p-3 rounded-xl hover:bg-white dark:hover:bg-gray-900 border border-transparent hover:border-gray-200 dark:hover:border-gray-800 transition cursor-pointer group" onclick="openArticleModal(${item.id})">
-                        <img src="${item.image}" alt="${item.title}" class="w-28 h-20 sm:w-32 sm:h-24 object-cover rounded-lg shrink-0 group-hover:opacity-90">
-                        <div class="flex flex-col justify-between flex-grow">
-                            <div>
-                                <span class="text-[10px] font-bold text-brand uppercase tracking-wider">${item.category}</span>
-                                <h3 class="text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-brand transition leading-snug">
-                                    ${item.title}
-                                </h3>
-                            </div>
-                            <div class="text-[11px] text-gray-500 dark:text-gray-400 flex items-center justify-between mt-1">
-                                <span><i class="far fa-eye"></i> ${item.views}</span>
-                                <span>${item.date.split(' ')[0]}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            html += `</div>`;
-            heroGrid.innerHTML = html;
-        }
-
-        function renderArticles() {
-            const container = document.getElementById('articles-container');
-            let filtered = ARTICLES_DATA;
-
-            if (currentCategory !== "All" && currentCategory !== "Tất cả") {
-                filtered = filtered.filter(a => a.category === currentCategory);
-            }
-
-            if (searchQuery.trim() !== "") {
-                const query = searchQuery.toLowerCase();
-                filtered = filtered.filter(a => 
-                    a.title.toLowerCase().includes(query) || 
-                    a.sapo.toLowerCase().includes(query) ||
-                    a.category.toLowerCase().includes(query)
-                );
-            }
-
-            if (activeTab === 'popular') {
-                filtered = [...filtered].sort((a, b) => parseInt(b.views.replace(',', '')) - parseInt(a.views.replace(',', '')));
-            }
-
-            const filterStatus = document.getElementById('filter-status');
-            if (currentCategory !== "All" || searchQuery !== "") {
-                filterStatus.classList.remove('hidden');
-                document.getElementById('filter-title').innerText = searchQuery ? `Từ khóa "${searchQuery}"` : currentCategory;
-                document.getElementById('filter-count').innerText = `${filtered.length} bài viết`;
-            } else {
-                filterStatus.classList.add('hidden');
-            }
-
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800">
-                        <i class="fas fa-search-minus text-4xl text-gray-400 mb-3"></i>
-                        <p class="text-base font-bold text-gray-700 dark:text-gray-300">Không tìm thấy bài viết nào phù hợp.</p>
-                        <p class="text-xs text-gray-500 mt-1">Vui lòng thử tìm kiếm từ khóa khác hoặc chọn danh mục khác.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = filtered.map(item => {
-                const isSaved = savedArticleIds.includes(item.id);
-                return `
-                    <article class="bg-white dark:bg-gray-900 p-4 sm:p-5 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-md transition flex flex-col sm:flex-row gap-4 sm:gap-6 group">
-                        <div class="sm:w-1/3 shrink-0 relative rounded-xl overflow-hidden cursor-pointer" onclick="openArticleModal(${item.id})">
-                            <img src="${item.image}" alt="${item.title}" class="w-full h-48 sm:h-36 object-cover group-hover:scale-105 transition duration-300">
-                            <span class="absolute top-2 left-2 bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                                ${item.category}
-                            </span>
-                        </div>
-                        <div class="sm:w-2/3 flex flex-col justify-between">
-                            <div>
-                                <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white group-hover:text-brand transition leading-snug cursor-pointer font-serif" onclick="openArticleModal(${item.id})">
-                                    ${item.title}
-                                </h3>
-                                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-2 leading-relaxed">
-                                    ${item.sapo}
-                                </p>
-                            </div>
-                            <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500">
-                                <div class="flex items-center space-x-2">
-                                    <img src="${item.authorAvatar}" class="w-5 h-5 rounded-full" alt="${item.author}">
-                                    <span class="font-medium text-gray-700 dark:text-gray-300">${item.author}</span>
-                                    <span>•</span>
-                                    <span>${item.date.split(' ')[0]}</span>
-                                </div>
-                                <div class="flex items-center space-x-3">
-                                    <span><i class="far fa-eye"></i> ${item.views}</span>
-                                    <button onclick="toggleBookmark(${item.id}, event)" class="hover:text-brand transition ${isSaved ? 'text-brand' : 'text-gray-400'}" title="Lưu bài viết">
-                                        <i class="${isSaved ? 'fas' : 'far'} fa-bookmark"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                `;
-            }).join('');
-        }
-
-        function renderTrendingWidget() {
-            const container = document.getElementById('trending-widget');
-            const sorted = [...ARTICLES_DATA].sort((a,b) => (a.trendingRank || 99) - (b.trendingRank || 99)).slice(0, 5);
-
-            container.innerHTML = sorted.map((item, idx) => `
-                <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleModal(${item.id})">
-                    <span class="text-2xl font-black italic text-gray-300 dark:text-gray-700 group-hover:text-brand transition w-6 text-center shrink-0">
-                        0${idx + 1}
-                    </span>
-                    <div>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase">${item.category}</span>
-                        <h4 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-gray-200 group-hover:text-brand transition line-clamp-2 leading-snug">
-                            ${item.title}
-                        </h4>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderTechSpotlight() {
-            const container = document.getElementById('tech-spotlight-grid');
-            const techArticles = ARTICLES_DATA.filter(a => a.category === "Công nghệ").slice(0, 2);
-
-            container.innerHTML = techArticles.map(item => `
-                <div class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 cursor-pointer group" onclick="openArticleModal(${item.id})">
-                    <img src="${item.image}" class="w-full h-36 object-cover group-hover:scale-105 transition duration-300" alt="${item.title}">
-                    <div class="p-4">
-                        <span class="text-[10px] font-bold text-brand uppercase">${item.category}</span>
-                        <h4 class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-brand transition line-clamp-2 mt-1">
-                            ${item.title}
-                        </h4>
-                        <p class="text-xs text-gray-500 mt-2 line-clamp-2">${item.sapo}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function openArticleModal(id) {
-            const article = ARTICLES_DATA.find(a => a.id === id);
-            if (!article) return;
-
-            currentModalArticleId = id;
-            document.getElementById('modal-title').innerText = article.title;
-            document.getElementById('modal-category').innerText = article.category;
-            document.getElementById('modal-author').innerText = article.author;
-            document.getElementById('modal-author-avatar').src = article.authorAvatar;
-            document.getElementById('modal-date').innerText = article.date;
-            document.getElementById('modal-image').src = article.image;
-            document.getElementById('modal-image-caption').innerText = `Hình ảnh: ${article.title}`;
-            document.getElementById('modal-sapo').innerText = article.sapo;
-            document.getElementById('modal-body-text').innerHTML = article.body;
-            document.getElementById('modal-read-time').innerText = article.readTime || "4 phút đọc";
-
-            updateModalBookmarkBtn();
-            renderComments(id);
-
-            const modal = document.getElementById('article-modal');
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent body background scrolling
-        }
-
-        function closeArticleModal() {
-            document.getElementById('article-modal').classList.add('hidden');
-            document.body.style.overflow = '';
-            currentModalArticleId = null;
-        }
-
-        function changeFontSize(delta) {
-            currentFontSize = Math.min(Math.max(currentFontSize + delta, 14), 26);
-            document.getElementById('modal-body-text').style.fontSize = `${currentFontSize}px`;
-        }
-
-        function toggleBookmark(id, event) {
-            if (event) event.stopPropagation();
-            if (savedArticleIds.includes(id)) {
-                savedArticleIds = savedArticleIds.filter(i => i !== id);
-            } else {
-                savedArticleIds.push(id);
-            }
-            localStorage.setItem('news_saved_ids', JSON.stringify(savedArticleIds));
-            updateSavedCount();
-            renderArticles();
-            if (currentModalArticleId === id) {
-                updateModalBookmarkBtn();
-            }
-        }
-
-        function toggleBookmarkCurrentModal() {
-            if (currentModalArticleId) {
-                toggleBookmark(currentModalArticleId);
-            }
-        }
-
-        function updateModalBookmarkBtn() {
-            const btn = document.getElementById('modal-bookmark-btn');
-            const isSaved = savedArticleIds.includes(currentModalArticleId);
-            btn.innerHTML = `<i class="${isSaved ? 'fas text-brand' : 'far'} fa-bookmark text-lg"></i>`;
-        }
-
-        function updateSavedCount() {
-            const badge = document.getElementById('saved-count');
-            badge.innerText = savedArticleIds.length;
-            if (savedArticleIds.length > 0) {
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
-
-        function openSavedModal() {
-            const listContainer = document.getElementById('saved-articles-list');
-            const savedItems = ARTICLES_DATA.filter(a => savedArticleIds.includes(a.id));
-
-            if (savedItems.length === 0) {
-                listContainer.innerHTML = `
-                    <div class="text-center py-8 text-gray-500 text-sm">
-                        Chưa có bài viết nào được lưu.
-                    </div>
-                `;
-            } else {
-                listContainer.innerHTML = savedItems.map(item => `
-                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                        <div class="flex items-center gap-3 cursor-pointer" onclick="closeSavedModal(); openArticleModal(${item.id})">
-                            <img src="${item.image}" class="w-14 h-14 object-cover rounded-lg shrink-0">
-                            <div>
-                                <span class="text-[10px] font-bold text-brand uppercase">${item.category}</span>
-                                <h4 class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white line-clamp-1">${item.title}</h4>
-                                <span class="text-[11px] text-gray-400">${item.date}</span>
-                            </div>
-                        </div>
-                        <button onclick="toggleBookmark(${item.id}); openSavedModal();" class="text-red-500 hover:text-red-700 p-2 text-xs">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                `).join('');
-            }
-            document.getElementById('saved-modal').classList.remove('hidden');
-        }
-
-        function closeSavedModal() {
-            document.getElementById('saved-modal').classList.add('hidden');
-        }
-
-        function renderComments(articleId) {
-            const commentsList = document.getElementById('comments-list');
-            const commentsCount = document.getElementById('comments-count');
-            const articleComments = commentsStore[articleId] || [
-                { author: "Độc giả Hoàng Nam", date: "28/09/2026 09:00", text: "Bài viết rất hay và kịp thời. Cảm ơn tòa soạn!" }
-            ];
-
-            commentsCount.innerText = articleComments.length;
-
-            commentsList.innerHTML = articleComments.map(c => `
-                <div class="bg-gray-50 dark:bg-gray-800/40 p-4 rounded-xl border border-gray-100 dark:border-gray-800 space-y-1">
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="font-bold text-gray-900 dark:text-white">${c.author}</span>
-                        <span class="text-gray-400">${c.date}</span>
-                    </div>
-                    <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">${c.text}</p>
-                </div>
-            `).join('');
-        }
-
-        function handleAddComment(e) {
-            e.preventDefault();
-            if (!currentModalArticleId) return;
-
-            const authorInput = document.getElementById('comment-author');
-            const textInput = document.getElementById('comment-text');
-
-            const newComment = {
-                author: authorInput.value.trim(),
-                date: new Date().toLocaleString('vi-VN'),
-                text: textInput.value.trim()
-            };
-
-            if (!commentsStore[currentModalArticleId]) {
-                commentsStore[currentModalArticleId] = [];
-            }
-            commentsStore[currentModalArticleId].unshift(newComment);
-            localStorage.setItem('news_comments', JSON.stringify(commentsStore));
-
-            renderComments(currentModalArticleId);
-            textInput.value = '';
-        }
-
-        function filterByCategory(category) {
-            currentCategory = category;
-            searchQuery = "";
-            document.getElementById('search-input').value = "";
-            document.getElementById('clear-search').classList.add('hidden');
-            renderCategoryNav();
-            renderArticles();
-        }
-
-        function handleSearch() {
-            const val = document.getElementById('search-input').value;
-            searchQuery = val;
-            const clearBtn = document.getElementById('clear-search');
-            if (val) clearBtn.classList.remove('hidden');
-            else clearBtn.classList.add('hidden');
-            renderArticles();
-        }
-
-        function clearSearch() {
-            document.getElementById('search-input').value = "";
-            searchQuery = "";
-            document.getElementById('clear-search').classList.add('hidden');
-            renderArticles();
-        }
-
-        function handleMobileSearch() {
-            searchQuery = document.getElementById('mobile-search-input').value;
-            renderArticles();
-        }
-
-        function setTab(tab) {
-            activeTab = tab;
-            ['latest', 'popular', 'recommended'].forEach(t => {
-                const btn = document.getElementById(`tab-${t}`);
-                if (t === tab) {
-                    btn.className = "px-3 py-1 rounded-md bg-brand text-white transition font-bold";
-                } else {
-                    btn.className = "px-3 py-1 rounded-md text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800 transition";
-                }
-            });
-            renderArticles();
-        }
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-
-        function toggleMobileNav() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        function setupScrollListener() {
-            const btn = document.getElementById('back-to-top');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 400) {
-                    btn.classList.remove('opacity-0', 'pointer-events-none');
-                } else {
-                    btn.classList.add('opacity-0', 'pointer-events-none');
-                }
-            });
-        }
-
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function handleNewsletterSubmit(e) {
-            e.preventDefault();
-            document.getElementById('newsletter-msg').classList.remove('hidden');
-            document.getElementById('newsletter-email').value = '';
-        }
-
-        function openAuthModal() {
-            alert('Tính năng Đăng nhập / Đăng ký tài khoản dành cho độc giả đang mở rộng!');
-        }
-
-        function shareArticle(platform) {
-            if (platform === 'copy') {
-                document.execCommand('copy');
-                alert('Đã sao chép liên kết bài viết vào bộ nhớ tạm!');
-            } else {
-                alert(`Chia sẻ bài viết qua ${platform}!`);
-            }
-        }
-    </script>
+    <div class="flex items-center space-x-2">
+     <button onclick="shareArticle('facebook')" class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-facebook-f text-xs"></i></button>
+     <button onclick="shareArticle('twitter')" class="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center hover:opacity-90"><i class="fab fa-twitter text-xs"></i></button>
+     <button onclick="shareArticle('copy')" class="w-8 h-8 rounded-full bg-gray-600 text-white flex items-center justify-center hover:opacity-90" title="Sao chép liên kết"><i class="fas fa-link text-xs"></i></button>
+    </div>
+   </div>
+   <div class="rounded-xl overflow-hidden shadow-sm">
+    <img id="modal-image" src="" alt="" class="w-full h-auto max-h-[480px] object-cover">
+    <p id="modal-image-caption" class="text-xs text-center text-gray-500 italic py-2 bg-gray-50 dark:bg-gray-800"></p>
+   </div>
+   <div id="modal-sapo" class="text-base sm:text-lg font-semibold leading-relaxed font-serif pl-4 border-l-4 border-brand italic bg-gray-50 dark:bg-gray-800/50 py-3 rounded-r-lg"></div>
+   <div id="modal-body-text" class="max-w-none text-lg leading-relaxed font-serif space-y-4"></div>
+
+   <div id="related-block" class="pt-6 border-t border-gray-200 dark:border-gray-800">
+    <h3 class="text-base font-bold mb-3"><i class="fas fa-layer-group text-brand mr-1"></i> Bài viết liên quan</h3>
+    <div id="related-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+   </div>
+
+   <div class="pt-8 border-t border-gray-200 dark:border-gray-800">
+    <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i class="far fa-comments text-brand"></i> Bình luận & Tranh luận (<span id="comments-count">0</span>)</h3>
+    <form onsubmit="handleAddComment(event)" class="bg-gray-50 dark:bg-gray-800/60 p-4 rounded-xl border border-gray-200 dark:border-gray-700 mb-8 space-y-3">
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <input type="text" id="comment-author" required maxlength="40" placeholder="Họ và tên của bạn *" class="bg-white dark:bg-gray-900 text-sm px-3.5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand">
+      <input type="email" id="comment-email" placeholder="Email (không công khai)" class="bg-white dark:bg-gray-900 text-sm px-3.5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand">
+     </div>
+     <textarea id="comment-text" required maxlength="1000" rows="3" placeholder="Chia sẻ ý kiến của bạn về bài viết này..." class="w-full bg-white dark:bg-gray-900 text-sm p-3.5 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-brand"></textarea>
+     <div class="flex justify-between items-center">
+      <span class="text-[11px] text-gray-500">Bình luận tuân thủ chuẩn văn hóa ứng xử trực tuyến.</span>
+      <button type="submit" class="bg-brand hover:bg-rose-700 text-white font-bold text-xs px-5 py-2 rounded-lg transition shadow">Gửi Bình Luận</button>
+     </div>
+    </form>
+    <div id="comments-list" class="space-y-4"></div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- Saved modal -->
+<div id="saved-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/70 backdrop-blur-sm flex justify-center items-center p-4" onclick="if(event.target===this)closeSavedModal()">
+ <div class="bg-white dark:bg-gray-900 w-full max-w-2xl rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-gray-800">
+  <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-800 mb-4">
+   <h3 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-bookmark text-brand"></i> Danh Sách Bài Viết Đã Lưu</h3>
+   <button onclick="closeSavedModal()"><i class="fas fa-times text-lg"></i></button>
+  </div>
+  <div id="saved-articles-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-1"></div>
+ </div>
+</div>
+
+<!-- Auth modal -->
+<div id="auth-modal" class="fixed inset-0 z-[60] hidden bg-black/70 backdrop-blur-sm flex justify-center items-center p-4" onclick="if(event.target===this)closeAuthModal()">
+ <div class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-gray-800">
+  <div class="flex justify-between items-center mb-4">
+   <h3 id="auth-title" class="text-lg font-bold">Đăng nhập</h3>
+   <button onclick="closeAuthModal()"><i class="fas fa-times text-lg"></i></button>
+  </div>
+  <form onsubmit="handleAuth(event)" class="space-y-3">
+   <input id="auth-name" type="text" maxlength="40" placeholder="Họ và tên" class="hidden w-full text-sm px-3.5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand">
+   <input id="auth-email" type="email" required placeholder="Email" class="w-full text-sm px-3.5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand">
+   <input id="auth-pass" type="password" required minlength="6" placeholder="Mật khẩu (tối thiểu 6 ký tự)" class="w-full text-sm px-3.5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand">
+   <input id="auth-pass2" type="password" placeholder="Nhập lại mật khẩu" class="hidden w-full text-sm px-3.5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand">
+   <p id="auth-error" class="text-xs text-rose-500 hidden"></p>
+   <button id="auth-submit" type="submit" class="w-full bg-brand hover:bg-rose-700 text-white font-bold text-sm py-2.5 rounded-lg transition">Đăng nhập</button>
+  </form>
+  <p class="text-xs text-center text-gray-500 mt-4"><span id="auth-switch-text">Chưa có tài khoản?</span> <button id="auth-switch" onclick="switchAuthMode()" class="text-brand font-semibold hover:underline">Đăng ký</button></p>
+ </div>
+</div>
+
+<footer class="bg-gray-900 text-gray-300 pt-12 pb-8 border-t border-gray-800 mt-16">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+  <div class="lg:col-span-2 space-y-4">
+   <a href="#" onclick="resetAll();return false;" class="flex items-center gap-2"><div class="bg-brand text-white font-extrabold text-xl px-2.5 py-0.5 rounded">VUTUNAN</div><span class="font-extrabold text-xl text-white tracking-tight">HUB 24H</span></a>
+   <p class="text-xs text-gray-400 leading-relaxed max-w-sm">Trang tin tức tổng hợp công nghệ, kinh tế, đời sống xã hội cập nhật liên tục 24/7. Thông tin chính xác, khách quan và chuyên sâu cho mọi độc giả.</p>
+   <div class="text-xs text-gray-400 space-y-1">
+    <p><i class="fas fa-building mr-2 text-brand"></i> THPT Chuyên Lê Quý Đôn Điện Biên</p>
+    <p><i class="fas fa-phone-alt mr-2 text-brand"></i> Hotline: (84)335900710 - Email: vutuananh17b2nh@gmail.com</p>
+    <p><i class="fas fa-certificate mr-2 text-brand"></i> Giấy phép xuất bản số 2503 cấp ngày 25/03/2009</p>
+   </div>
+  </div>
+  <div>
+   <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 border-l-2 border-brand pl-2">Chuyên Mục</h4>
+   <ul class="space-y-2 text-xs text-gray-400">
+    <li><a href="#" onclick="filterByCategory('Thời sự');return false;" class="hover:text-white">Thời sự & Xã hội</a></li>
+    <li><a href="#" onclick="filterByCategory('Thế giới');return false;" class="hover:text-white">Thế giới 24h</a></li>
+    <li><a href="#" onclick="filterByCategory('Kinh doanh');return false;" class="hover:text-white">Kinh doanh & Tài chính</a></li>
+    <li><a href="#" onclick="filterByCategory('Công nghệ');return false;" class="hover:text-white">Công nghệ & AI</a></li>
+    <li><a href="#" onclick="filterByCategory('Thể thao');return false;" class="hover:text-white">Thể thao đỉnh cao</a></li>
+   </ul>
+  </div>
+  <div>
+   <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 border-l-2 border-brand pl-2">Dịch Vụ & Tiện Ích</h4>
+   <ul class="space-y-2 text-xs text-gray-400">
+    <li><a href="#" class="hover:text-white">Quảng cáo & PR</a></li><li><a href="#" class="hover:text-white">Báo giá dịch vụ</a></li>
+    <li><a href="#" class="hover:text-white">Điều khoản sử dụng</a></li><li><a href="#" class="hover:text-white">Chính sách bảo mật</a></li>
+    <li><a href="#" class="hover:text-white">Đội ngũ tòa soạn</a></li>
+   </ul>
+  </div>
+  <div>
+   <h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 border-l-2 border-brand pl-2">Kết Nối</h4>
+   <p class="text-xs text-gray-400 mb-3">Theo dõi chúng tôi trên các nền tảng truyền thông:</p>
+   <div class="flex space-x-3">
+    <a target="_blank" rel="noopener" href="https://web.facebook.com/profile.php?id=61579169085939" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-brand flex items-center justify-center text-white transition"><i class="fab fa-facebook-f text-xs"></i></a>
+    <a target="_blank" rel="noopener" href="https://www.instagram.com/vutunan/" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-brand flex items-center justify-center text-white transition"><i class="fab fa-instagram text-xs"></i></a>
+    <a target="_blank" rel="noopener" href="https://www.tiktok.com/@vutunan" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-brand flex items-center justify-center text-white transition"><i class="fab fa-tiktok text-xs"></i></a>
+    <a href="#" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-brand flex items-center justify-center text-white transition"><i class="fas fa-comment-dots text-xs"></i></a>
+   </div>
+  </div>
+ </div>
+ <div class="border-t border-gray-800 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500">
+  <p>© 2026 VUTUNAN HUB 24H. Tất cả quyền được bảo lưu.</p><p class="mt-2 sm:mt-0">-Vũ Tuấn Anh 12C10-</p>
+ </div>
+</footer>
+
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-10 h-10 bg-brand text-white rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110"><i class="fas fa-arrow-up"></i></button>
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] bg-gray-900 text-white text-sm px-4 py-2 rounded-lg shadow-lg opacity-0 pointer-events-none"></div>
+
+<script>
+/* ===== DỮ LIỆU (giữ nguyên) ===== */
+const BANNERS_DATA = [
+ { id: 1, label: "Quảng cáo", title: "KHUYẾN MÃI CÔNG NGHỆ", description: "Giảm tới 40% cho các thiết bị thông minh thế hệ mới.", buttonText: "Khám phá ngay", buttonLink: "#" }
+];
+
+const ARTICLES_DATA = [
+ {
+  id: 1,
+  title: "Đội hình tuyển Việt Nam đấu Thái Lan: Hoàng Đức trở lại, Hai Long thay Xuân Son",
+  category: "Thể thao",
+  sapo: "Tuyển Việt Nam đấu Thái Lan với một số điều chỉnh về nhân sự của HLV Kim Sang Sik khi điền tên Hoàng Đức trở lại, trong khi Hai Long được chọn thay Xuân Son.",
+  body: `
+   <p>HLV Kim Sang Sik nhiều khả năng sử dụng Hoàng Đức trong cuộc đối đầu Thái Lan. Tiền vệ của CLB Ninh Bình mới trở lại sau chấn thương háng nhẹ và việc đá chính vẫn tiềm ẩn rủi ro, nhưng tính chất trận đấu khiến phương án này trở nên đáng cân nhắc.</p>
+   <p>Ở trận thắng Philippines 1-0, tuyến giữa tuyển Việt Nam không thực sự tạo được cảm giác an toàn. Thành Long chơi nỗ lực nhưng một mình khó quán xuyến toàn bộ khu vực trung tuyến, đặc biệt khi đối thủ nâng tốc độ và gây sức ép liên tục.</p>
+   <p><strong>Hoàng Đức trở lại</strong></p>
+   <p>Vì vậy, sự trở lại của Hoàng Đức không đơn thuần là thêm một cái tên giàu kinh nghiệm, bởi tiền vệ giúp tuyển Việt Nam tăng khả năng kiểm soát bóng và thoát pressing.</p>
+  `,
+  image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/29/hoangduc-1550.jpg?width=0&s=HGYWW5EKVFwU6lLB1WWg4g",
+  author: "Duy ", authorAvatar: "https://i.pravatar.cc/100?img=12",
+  date: "29/09/2026 - 12:53", views: "36,360", readTime: "4 phút", isHero: true, trendingRank: 1
+ },
+ {
+  id: 2,
+  title: "Ba Lan nới lỏng quy định bắn hạ tên lửa và UAV Nga",
+  category: "Thế giới",
+  sapo: "Thứ trưởng Quốc phòng Ba Lan Cezary Tomczyk ngày 28/9 cho biết nước này sẽ thay đổi quy trình đối với máy bay quân sự và trực thăng trong việc xử lý các vật thể xâm nhập từ phía Nga.",
+  body: `
+   <p>Theo Politico và Kyiv Independent, động thái này có thể làm căng thẳng giữa Warsaw và Moscow gia tăng sau khi Nga liên tiếp thực hiện các vụ xâm nhập đường không, thử thách khả năng phòng thủ của Ba Lan trong những tuần gần đây.</p>
+   <p>Phát biểu với các phóng viên tại Deblin, Ba Lan, ông Tomczyk cho biết phi công hiện không chỉ phải “đọc radar” mà còn phải “nhận dạng bằng mắt” mối đe dọa trên không trước khi khai hỏa. “Điều đó có nghĩa phi công phải tiếp cận mục tiêu và tận mắt xác định chính xác vật thể là gì”</p>
+  `,
+  image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/29/chien-dau-co-cua-ba-lan-1997.jpg?width=0&s=ck0iLKyn30W6tzTLzPnZ_w",
+  author: "Hoài Linh", authorAvatar: "https://i.pravatar.cc/100?img=47",
+  date: "29/09/2026 - 15:06", views: "32,800", readTime: "3 phút", isHero: false, heroSecondary: true, trendingRank: 2
+ },
+ {
+  id: 3,
+  title: "iPhone Duo và iPhone 18 Pro sẽ vẫn thành công vang dội?",
+  category: "Công nghệ",
+  sapo: "iPhone 18 Pro và iPhone 18 Pro Max gần như bị lu mờ bởi màn ra mắt iPhone Duo – mẫu iPhone màn hình gập đầu tiên của Apple. Nhưng iPhone 18 Pro vẫn có nhiều lý do để thành công.",
+  body: `
+   <p>iPhone Duo nhanh chóng trở thành tâm điểm chú ý và khiến hai mẫu iPhone cao cấp truyền thống không nhận được nhiều sự quan tâm như dự kiến.</p>
+   <p>Điều này cũng kéo theo một số báo cáo đáng lo ngại về nhu cầu đối với iPhone 18 Pro và iPhone 18 Pro Max. Một số ước tính ban đầu cho rằng sức mua của bộ đôi này thấp hơn thế hệ iPhone 17 Pro năm ngoái. Tuy nhiên, một khảo sát mới cho thấy những nhận định đó có thể đã được đưa ra quá sớm và chưa phản ánh đầy đủ nhu cầu thực tế.</p>
+  `,
+  image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/28/iphone-duo-20-3553.png?width=0&s=hu8FzshzMJJCe6iPpTLXJg",
+  author: "Hải Phong", authorAvatar: "https://i.pravatar.cc/100?img=33",
+  date: "29/09/2026 - 09:40", views: "28,900", readTime: "5 phút", isHero: false, heroSecondary: true, trendingRank: 3
+ },
+ {
+  id: 4,
+  title: "Giá vàng hôm nay 29/9: Đảo chiều, vàng SJC bật tăng trở lại",
+  category: "Kinh doanh",
+  sapo: "Giá vàng hôm nay 29/9 trên thế giới giảm mạnh khi giá dầu tăng trở lại, làm gia tăng lo ngại về lạm phát và thúc đẩy kỳ vọng lãi suất Mỹ duy trì ở mức cao. Trong nước vàng miếng tiêp tục bốc hơi 1,4 triệu đồng/lượng.",
+  body: `
+   <p>Lúc 13h45', giá vàng miếng và vàng nhẫn loại 1-5 chỉ của SJC tăng thêm 500.000 đồng mỗi lượng ở cả chiều mua và bán so với trưa nay, niêm yết lần lượt ở mức 139,5-142,5 triệu đồng/lượng (mua - bán) và 139-142 triệu đồng/lượng (mua vào - bán ra). </p>
+   <p>Giá vàng nhẫn trơn tại Bảo Tín Minh Châu đầu giờ chiều nay được niêm yết ở mức 138,5-142,5 triệu đồng/lượng (mua vào - bán ra), tăng 300.000 đồng/lượng ở cả hai chiều giao dịch so với mức mở cửa hôm nay.</p>
+  `,
+  image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/8/4/giavangminhhien46-ok-2682.png?width=0&s=YMPjNoG9k5n7BqiHZUhFmQ",
+  author: "Duy Anh", authorAvatar: "https://i.pravatar.cc/100?img=53",
+  date: "29/09/2026 - 06:00", views: "19,450", readTime: "3 phút", isHero: false, heroSecondary: true, trendingRank: 4
+ },
+ {
+  id: 5,
+  title: "Xuất hiện nhóm ‘Con ghét bố mẹ’ với 90.000 thành viên, phụ huynh sốc khi vào xem",
+  category: "Đời sống",
+  sapo: "Những bài đăng thể hiện cảm xúc tiêu cực của con trẻ với cha mẹ trong nhóm Con ghét bố mẹ khiến nhiều người hoảng hốt.",
+  body: `
+   <p>Những ngày gần đây, một nhóm mang tên “Con ghét bố mẹ” với số lượng thành viên tăng chóng mặt thu hút sự quan tâm của đông đảo người dùng mạng.</p>
+   <p>Ngày 28/9, số thành viên tham gia nhóm là khoảng 50.000, chỉ sau 1 ngày, con số đó đã tăng lên 90.000.</p>
+   <p>Trong đó, nhiều bạn trẻ thể hiện cảm xúc tiêu cực, nỗi thất vọng về bố mẹ khi không được lắng nghe, thấu hiểu. Một số nội dung có ngôn từ khiếm nhã, thể hiện suy nghĩ lệch lạc, không coi trọng giá trị gia đình.</p>
+  `,
+  image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/29/anh-1-1464.jpg?width=0&s=RryJZ2h0D6qtjBoZnA036w",
+  author: "Thanh Minh", authorAvatar: "https://i.pravatar.cc/100?img=26",
+  date: "29/09/2026 - 12:19", views: "15,300", readTime: "4 phút", isHero: false, trendingRank: 5
+ },
+ {
+  id: 6,
+  title: "Phát hiện nhiều di vật đặc biệt trong mộ liệt sĩ vô danh",
+  category: "Thời sự",
+  sapo: "Sự kiện: Chiến dịch 500 ngày đêm đẩy mạnh thực hiện tìm kiếm, quy tập và xác định danh tính hài cốt liệt sĩ",
+  body: `
+   <p>Tại Cà Mau và An Giang, lực lượng lấy mẫu liên tiếp phát hiện hàng loạt các di vật đặc biệt có giá trị phục vụ công tác xác minh danh tính hài cốt liệt sĩ.</p>
+   <p>Ngày 29/9, Bộ Chỉ huy Quân sự tỉnh An Giang cho biết, Đội K93 đã quy tập được 38 hài cốt liệt sĩ giữa giai đoạn mùa khô 2026-2027.</p>
+   <p>Trong số này, 18 hài cốt được tìm thấy trên địa bàn tỉnh An Giang và 20 hài cốt được quy tập tại Campuchia.</p>
+  `,
+  image: "https://static-images.vnncdn.net/vps_images_publish/000001/000003/2026/9/29/1790585959752-5311245769070031143-5311245769070031143-f809e0c6b35ec9bcf5316937dd3dab6f-2574.jpg?width=0&s=JrC8x4Eoc3YloZsjOI4QgQ",
+  author: "Ký Long", authorAvatar: "https://i.pravatar.cc/100?img=12",
+  date: "29/09/2026 - 17:17", views: "12,100", readTime: "3 phút"
+ },
+ {
+  id: 7,
+  title: "Toàn cảnh drama PUBG PC: Từ lời lẽ của nữ streamer Hàn, tới cách xử lý 'đi vào lòng đất', game nhận làn sóng phản ứng chưa từng có",
+  category: "Giải trí",
+  sapo: "Cộng đồng game thủ Việt Nam đang trải qua những ngày với nhiều vấn đề xoay quanh tựa game PUBG PC. Mọi chuyện xuất phát từ một cáo buộc tại giải đấu giao hữu PUBG Asia Star 2026, và ngày càng leo thang do những vấn đề trong khâu vận hành giải đấu và xử lý khủng hoảng của chính NPH.",
+  body: `
+   <p>PUBG Asia Stars 2026 được Krafton tổ chức từ ngày 17/9/2026, với tổng giải thưởng 70.000 USD, quy tụ 48 người chơi đến từ 6 khu vực châu Á. Đây vốn được xác định là một sân chơi mang tính giao hữu, kết nối cộng đồng streamer và tuyển thủ chuyên nghiệp, không đặt nặng tính cạnh tranh khốc liệt như các giải đấu chính thức trong hệ thống PUBG Esports.</p>
+   <p>Đại diện Việt Nam tham dự với đội hình Team VIE, trong đó Himass và TanVuu là hai gương mặt được chú ý nhờ phong độ nổi bật trong các giải đấu chuyên nghiệp thời gian gần đây và có bề dày thành tích đáng nể ở nhiều sân chơi quốc tế. Ngoài ra, đội hình Team VIE còn có nhiều streamer như Rambo, DJ Chip, Nhism, Levi, Dev Nguyen…</p>
+  `,
+  image: "https://kenh14cdn.com/203336854389633024/2026/9/24/f1ddb349-8532-4699-8d0f-a618729534b9-100644-082928-1790043252842-17900432533811469435416-102114-1790221701687-1790221702007723372436.jpg",
+  author: "Khả Văn", authorAvatar: "https://i.pravatar.cc/100?img=49",
+  date: "24/09/2026 -11:41", views: "22,400", readTime: "4 phút"
+ }
+];
+
+const CATEGORIES = ["Tất cả", "Thời sự", "Thế giới", "Kinh doanh", "Công nghệ", "Thể thao", "Giải trí", "Đời sống"];
+
+/* ===== TIỆN ÍCH ===== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+const num = s => parseInt(String(s).replace(/\D/g, '')) || 0;
+const parseDate = s => { const m = s.match(/(\d+)\/(\d+)\/(\d+)\s*-\s*(\d+):(\d+)/); return m ? new Date(m[3], m[2]-1, m[1], m[4], m[5]).getTime() : 0; };
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
+const dayOf = s => s.split(' ')[0];
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.remove('opacity-0'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.add('opacity-0'), 2200); }
+
+/* ===== TRẠNG THÁI ===== */
+let currentCategory = "All", searchQuery = "", activeTab = 'latest', currentModalArticleId = null, currentFontSize = 18;
+let savedArticleIds = store.get('news_saved_ids', []);
+let commentsStore = store.get('news_comments', {});
+let viewsExtra = store.get('news_views_extra', {});
+let users = store.get('vtn_users', []);
+let session = store.get('vtn_session', null);
+let authMode = 'login';
+
+const viewsOf = a => num(a.views) + (viewsExtra[a.id] || 0);
+const fmtViews = n => n.toLocaleString('en-US');
+
+window.addEventListener('DOMContentLoaded', () => {
+  $('current-date').textContent = new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+  renderCategoryNav(); renderBanners(); renderTicker(); renderAll(); updateSavedCount(); renderAuthArea(); updateTabs();
+  window.addEventListener('scroll', () => { const off = scrollY <= 400, b = $('back-to-top'); b.classList.toggle('opacity-0', off); b.classList.toggle('pointer-events-none', off); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (!$('auth-modal').classList.contains('hidden')) closeAuthModal();
+    else if (!$('saved-modal').classList.contains('hidden')) closeSavedModal();
+    else if (!$('article-modal').classList.contains('hidden')) closeArticleModal();
+  });
+  const id = num(location.hash.replace('#bai-', ''));
+  if (location.hash.startsWith('#bai-') && ARTICLES_DATA.some(a => a.id === id)) openArticleModal(id);
+});
+
+function renderAll() { renderHero(); renderArticles(); renderTrendingWidget(); renderTechSpotlight(); }
+
+/* ===== ĐIỀU HƯỚNG / LỌC ===== */
+function renderCategoryNav() {
+  $('nav-categories').innerHTML = CATEGORIES.map(cat => {
+    const key = cat === 'Tất cả' ? 'All' : cat;
+    const cls = key === currentCategory ? "bg-brand text-white font-bold" : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 font-medium";
+    return `<button onclick="filterByCategory('${key}')" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap transition-all ${cls}">${cat}</button>`;
+  }).join('');
+  $('mobile-nav-categories').innerHTML = CATEGORIES.map(cat => {
+    const key = cat === 'Tất cả' ? 'All' : cat;
+    return `<button onclick="filterByCategory('${key}');toggleMobileNav()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-800 ${key === currentCategory ? 'text-brand font-bold' : ''}">${cat}</button>`;
+  }).join('');
+}
+
+function filterByCategory(cat) { currentCategory = cat; renderCategoryNav(); renderAll(); if (scrollY > 300) scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function handleSearch(val) {
+  searchQuery = val;
+  ['search-input', 'mobile-search-input'].forEach(i => { if ($(i).value !== val) $(i).value = val; });
+  $('clear-search').classList.toggle('hidden', !val);
+  renderAll();
+}
+function clearSearch() { handleSearch(''); }
+function resetAll() { currentCategory = "All"; activeTab = 'latest'; updateTabs(); renderCategoryNav(); handleSearch(''); scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function setTab(tab) { activeTab = tab; updateTabs(); renderArticles(); }
+function updateTabs() {
+  ['latest', 'popular', 'recommended'].forEach(t => {
+    $('tab-' + t).className = "px-3 py-1 rounded-md transition " + (t === activeTab ? "bg-brand text-white font-bold" : "text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800");
+  });
+}
+
+function getFiltered() {
+  let list = [...ARTICLES_DATA];
+  if (currentCategory !== "All") list = list.filter(a => a.category === currentCategory);
+  const q = norm(searchQuery.trim());
+  if (q) list = list.filter(a => norm(a.title + ' ' + a.sapo + ' ' + a.category + ' ' + a.author).includes(q));
+  if (activeTab === 'popular') list.sort((a, b) => viewsOf(b) - viewsOf(a));
+  else if (activeTab === 'recommended') {
+    // Đề xuất: ưu tiên chuyên mục bạn đã lưu, sau đó là bài có thứ hạng nổi bật
+    const favCats = ARTICLES_DATA.filter(a => savedArticleIds.includes(a.id)).map(a => a.category);
+    const score = a => (favCats.includes(a.category) ? 100 : 0) + (a.trendingRank ? 10 - a.trendingRank : 0);
+    list.sort((a, b) => score(b) - score(a) || parseDate(b.date) - parseDate(a.date));
+  } else list.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+  return list;
+}
+
+/* ===== RENDER ===== */
+function renderBanners() {
+  $('banner-container').innerHTML = BANNERS_DATA.map(b => `
+   <div class="bg-gray-200 dark:bg-gray-800 rounded-2xl p-6 text-center border border-dashed border-gray-300 dark:border-gray-700">
+    <span class="text-[10px] uppercase font-bold text-gray-400 block mb-2">${b.label}</span>
+    <div class="bg-gradient-to-r from-amber-500 to-rose-500 text-white p-6 rounded-xl font-bold">
+     <div class="text-lg">${b.title}</div><div class="text-xs font-normal opacity-90 mt-1">${b.description}</div>
+     <a href="${b.buttonLink}" class="inline-block mt-3 bg-white text-gray-900 text-xs px-4 py-1.5 rounded-full font-bold hover:bg-gray-100 transition shadow">${b.buttonText}</a>
+    </div></div>`).join('');
+}
+
+function renderTicker() {
+  const items = ARTICLES_DATA.map(a => `<span class="cursor-pointer hover:text-brand" onclick="openArticleModal(${a.id})"><i class="fas fa-newspaper text-brand mr-1"></i> [${a.category}] ${esc(a.title)}</span>`).join('<span class="mx-4 text-gray-400">•</span>');
+  $('ticker-content').innerHTML = items + '<span class="mx-4 text-gray-400">•</span>' + items;
+}
+
+function renderHero() {
+  const filtering = currentCategory !== "All" || searchQuery.trim() !== "";
+  $('hero-section').classList.toggle('hidden', filtering);
+  $('tech-block').classList.toggle('hidden', filtering);
+  if (filtering) return;
+  const main = ARTICLES_DATA.find(a => a.isHero) || ARTICLES_DATA[0];
+  const subs = ARTICLES_DATA.filter(a => a.id !== main.id).slice(0, 3);
+  $('hero-grid').innerHTML = `
+   <div class="lg:col-span-7 group cursor-pointer" onclick="openArticleModal(${main.id})">
+    <div class="relative rounded-2xl overflow-hidden bg-gray-900 shadow-md">
+     <img src="${main.image}" alt="${esc(main.title)}" class="w-full h-[340px] sm:h-[420px] object-cover group-hover:scale-105 transition duration-500 opacity-90">
+     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-5 sm:p-7">
+      <div class="flex items-center gap-2 mb-2"><span class="bg-brand text-white text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded">${main.category}</span><span class="text-xs text-gray-300"><i class="far fa-clock"></i> ${main.date}</span></div>
+      <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-white leading-tight font-serif group-hover:text-amber-300 transition">${main.title}</h2>
+      <p class="text-xs sm:text-sm text-gray-300 mt-2 line-clamp-2 leading-relaxed">${main.sapo}</p>
+     </div></div></div>
+   <div class="lg:col-span-5 flex flex-col justify-between gap-4">${subs.map(i => `
+    <div class="flex gap-4 p-3 rounded-xl hover:bg-white dark:hover:bg-gray-900 border border-transparent hover:border-gray-200 dark:hover:border-gray-800 transition cursor-pointer group" onclick="openArticleModal(${i.id})">
+     <img src="${i.image}" alt="${esc(i.title)}" class="w-28 h-20 sm:w-32 sm:h-24 object-cover rounded-lg shrink-0">
+     <div class="flex flex-col justify-between flex-grow">
+      <div><span class="text-[10px] font-bold text-brand uppercase tracking-wider">${i.category}</span>
+       <h3 class="text-xs sm:text-sm font-bold line-clamp-2 group-hover:text-brand transition leading-snug">${i.title}</h3></div>
+      <div class="text-[11px] text-gray-500 dark:text-gray-400 flex items-center justify-between mt-1"><span><i class="far fa-eye"></i> ${fmtViews(viewsOf(i))}</span><span>${dayOf(i.date)}</span></div>
+     </div></div>`).join('')}</div>`;
+}
+
+function renderArticles() {
+  const list = getFiltered(), box = $('articles-container');
+  const filtering = currentCategory !== "All" || searchQuery.trim() !== "";
+  $('filter-status').classList.toggle('hidden', !filtering);
+  if (filtering) {
+    $('filter-title').textContent = (currentCategory !== "All" ? currentCategory : "Tất cả") + (searchQuery.trim() ? ` • Từ khóa "${searchQuery.trim()}"` : '');
+    $('filter-count').textContent = `${list.length} bài viết`;
+  }
+  if (!list.length) {
+    box.innerHTML = `<div class="text-center py-12 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800"><i class="fas fa-search-minus text-4xl text-gray-400 mb-3"></i><p class="text-base font-bold">Không tìm thấy bài viết nào phù hợp.</p><p class="text-xs text-gray-500 mt-1">Vui lòng thử từ khóa khác hoặc chọn danh mục khác.</p></div>`;
+    return;
+  }
+  box.innerHTML = list.map(item => {
+    const saved = savedArticleIds.includes(item.id), nC = (commentsStore[item.id] || []).length;
+    return `
+    <article class="bg-white dark:bg-gray-900 p-4 sm:p-5 rounded-2xl border border-gray-200 dark:border-gray-800 hover:shadow-md transition flex flex-col sm:flex-row gap-4 sm:gap-6 group">
+     <div class="sm:w-1/3 shrink-0 relative rounded-xl overflow-hidden cursor-pointer" onclick="openArticleModal(${item.id})">
+      <img src="${item.image}" alt="${esc(item.title)}" class="w-full h-48 sm:h-36 object-cover group-hover:scale-105 transition duration-300">
+      <span class="absolute top-2 left-2 bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-0.5 rounded">${item.category}</span>
+     </div>
+     <div class="sm:w-2/3 flex flex-col justify-between">
+      <div>
+       <h3 class="text-base sm:text-lg font-bold group-hover:text-brand transition leading-snug cursor-pointer font-serif" onclick="openArticleModal(${item.id})">${item.title}</h3>
+       <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-2 leading-relaxed">${item.sapo}</p>
+      </div>
+      <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500">
+       <div class="flex items-center space-x-2"><img src="${item.authorAvatar}" class="w-5 h-5 rounded-full" alt=""><span class="font-medium text-gray-700 dark:text-gray-300">${esc(item.author)}</span><span>•</span><span>${dayOf(item.date)}</span></div>
+       <div class="flex items-center space-x-3">
+        <span><i class="far fa-comment"></i> ${nC}</span><span><i class="far fa-eye"></i> ${fmtViews(viewsOf(item))}</span>
+        <button onclick="toggleBookmark(${item.id}, event)" class="hover:text-brand transition ${saved ? 'text-brand' : 'text-gray-400'}" title="Lưu bài viết"><i class="${saved ? 'fas' : 'far'} fa-bookmark"></i></button>
+       </div>
+      </div>
+     </div>
+    </article>`;
+  }).join('');
+}
+
+function renderTrendingWidget() {
+  const top = [...ARTICLES_DATA].sort((a, b) => viewsOf(b) - viewsOf(a)).slice(0, 5);
+  $('trending-widget').innerHTML = top.map((item, i) => `
+   <div class="flex items-start gap-3 cursor-pointer group" onclick="openArticleModal(${item.id})">
+    <span class="text-2xl font-black italic text-gray-300 dark:text-gray-700 group-hover:text-brand transition w-6 text-center shrink-0">0${i + 1}</span>
+    <div><span class="text-[10px] font-bold text-gray-400 uppercase">${item.category}</span>
+     <h4 class="text-xs sm:text-sm font-bold group-hover:text-brand transition line-clamp-2 leading-snug">${item.title}</h4></div>
+   </div>`).join('');
+}
+
+function renderTechSpotlight() {
+  const tech = ARTICLES_DATA.filter(a => a.category === "Công nghệ").slice(0, 2);
+  $('tech-spotlight-grid').innerHTML = tech.map(item => `
+   <div class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 cursor-pointer group" onclick="openArticleModal(${item.id})">
+    <img src="${item.image}" class="w-full h-36 object-cover group-hover:scale-105 transition duration-300" alt="${esc(item.title)}">
+    <div class="p-4"><span class="text-[10px] font-bold text-brand uppercase">${item.category}</span>
+     <h4 class="text-sm font-bold group-hover:text-brand transition line-clamp-2 mt-1">${item.title}</h4>
+     <p class="text-xs text-gray-500 mt-2 line-clamp-2">${item.sapo}</p></div>
+   </div>`).join('');
+}
+
+/* ===== BÀI VIẾT (MODAL) ===== */
+function openArticleModal(id) {
+  const a = ARTICLES_DATA.find(x => x.id === id); if (!a) return;
+  currentModalArticleId = id;
+  viewsExtra[id] = (viewsExtra[id] || 0) + 1; store.set('news_views_extra', viewsExtra);
+  $('modal-title').textContent = a.title;
+  $('modal-category').textContent = a.category;
+  $('modal-author').textContent = a.author;
+  $('modal-author-avatar').src = a.authorAvatar;
+  $('modal-date').textContent = a.date;
+  $('modal-views').textContent = fmtViews(viewsOf(a));
+  $('modal-image').src = a.image;
+  $('modal-image-caption').textContent = `Hình ảnh: ${a.title}`;
+  $('modal-sapo').textContent = a.sapo;
+  $('modal-body-text').innerHTML = a.body;
+  $('modal-body-text').style.fontSize = currentFontSize + 'px';
+  $('modal-read-time').textContent = a.readTime || "4 phút";
+  const rel = ARTICLES_DATA.filter(x => x.id !== id).sort((x, y) => (y.category === a.category) - (x.category === a.category)).slice(0, 2);
+  $('related-list').innerHTML = rel.map(r => `
+   <div class="flex gap-3 cursor-pointer group" onclick="openArticleModal(${r.id})">
+    <img src="${r.image}" class="w-20 h-16 object-cover rounded-lg shrink-0" alt="">
+    <div><span class="text-[10px] font-bold text-brand uppercase">${r.category}</span><h4 class="text-xs font-bold line-clamp-2 group-hover:text-brand">${r.title}</h4></div>
+   </div>`).join('');
+  fillCommentUser(); updateModalBookmarkBtn(); renderComments(id);
+  $('article-modal').classList.remove('hidden');
+  $('modal-scroll-body').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  history.replaceState(null, '', '#bai-' + id);
+  renderArticles(); renderTrendingWidget();
+  if (!$('hero-section').classList.contains('hidden')) renderHero();
+}
+
+function closeArticleModal() {
+  $('article-modal').classList.add('hidden');
+  document.body.style.overflow = '';
+  currentModalArticleId = null;
+  history.replaceState(null, '', location.pathname + location.search);
+}
+
+function changeFontSize(d) {
+  currentFontSize = Math.min(Math.max(currentFontSize + d, 14), 26);
+  $('modal-body-text').style.fontSize = currentFontSize + 'px';
+}
+
+function shareArticle(platform) {
+  const a = ARTICLES_DATA.find(x => x.id === currentModalArticleId); if (!a) return;
+  const url = location.href.split('#')[0] + '#bai-' + a.id;
+  if (platform === 'copy') {
+    const done = () => toast('Đã sao chép liên kết bài viết!');
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => toast('Không thể sao chép, hãy copy thủ công: ' + url));
+    else { const t = document.createElement('textarea'); t.value = url; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); done(); }
+  } else if (platform === 'facebook') window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
+  else window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(a.title) + '&url=' + encodeURIComponent(url), '_blank', 'noopener');
+}
+
+/* ===== LƯU BÀI ===== */
+function toggleBookmark(id, e) {
+  if (e) e.stopPropagation();
+  const was = savedArticleIds.includes(id);
+  savedArticleIds = was ? savedArticleIds.filter(i => i !== id) : [...savedArticleIds, id];
+  store.set('news_saved_ids', savedArticleIds);
+  updateSavedCount(); renderArticles();
+  if (currentModalArticleId === id) updateModalBookmarkBtn();
+  toast(was ? 'Đã bỏ lưu bài viết' : 'Đã lưu bài viết');
+}
+function toggleBookmarkCurrentModal() { if (currentModalArticleId) toggleBookmark(currentModalArticleId); }
+function updateModalBookmarkBtn() {
+  const s = savedArticleIds.includes(currentModalArticleId);
+  $('modal-bookmark-btn').innerHTML = `<i class="${s ? 'fas text-brand' : 'far'} fa-bookmark text-lg"></i>`;
+}
+function updateSavedCount() {
+  $('saved-count').textContent = savedArticleIds.length;
+  $('saved-count').classList.toggle('hidden', !savedArticleIds.length);
+}
+function openSavedModal() {
+  const items = ARTICLES_DATA.filter(a => savedArticleIds.includes(a.id));
+  $('saved-articles-list').innerHTML = !items.length
+    ? `<div class="text-center py-8 text-gray-500 text-sm">Chưa có bài viết nào được lưu.</div>`
+    : items.map(i => `
+     <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+      <div class="flex items-center gap-3 cursor-pointer min-w-0" onclick="closeSavedModal();openArticleModal(${i.id})">
+       <img src="${i.image}" class="w-14 h-14 object-cover rounded-lg shrink-0" alt="">
+       <div class="min-w-0"><span class="text-[10px] font-bold text-brand uppercase">${i.category}</span>
+        <h4 class="text-xs sm:text-sm font-bold line-clamp-1">${i.title}</h4><span class="text-[11px] text-gray-400">${i.date}</span></div>
+      </div>
+      <button onclick="toggleBookmark(${i.id});openSavedModal()" class="text-red-500 hover:text-red-700 p-2 text-xs" title="Bỏ lưu"><i class="fas fa-trash-alt"></i></button>
+     </div>`).join('');
+  $('saved-modal').classList.remove('hidden');
+}
+function closeSavedModal() { $('saved-modal').classList.add('hidden'); }
+
+/* ===== BÌNH LUẬN ===== */
+const DEFAULT_COMMENT = { id: 'default', author: "Độc giả Hoàng Nam", date: "28/09/2026 09:00", text: "Bài viết rất hay và kịp thời. Cảm ơn tòa soạn!", likes: 0, likedBy: [] };
+function getComments(id) { return commentsStore[id] || [DEFAULT_COMMENT]; }
+function saveComments(id, list) { commentsStore[id] = list; store.set('news_comments', commentsStore); }
+
+function fillCommentUser() {
+  const n = $('comment-author'), e = $('comment-email');
+  if (session) { n.value = session.name; e.value = session.email; n.readOnly = e.readOnly = true; n.classList.add('opacity-70'); e.classList.add('opacity-70'); }
+  else { n.readOnly = e.readOnly = false; n.value = e.value = ''; n.classList.remove('opacity-70'); e.classList.remove('opacity-70'); }
+  $('comment-text').value = '';
+}
+
+function renderComments(id) {
+  const list = getComments(id), me = session ? session.email : null;
+  $('comments-count').textContent = list.length;
+  $('comments-list').innerHTML = list.map(c => {
+    const liked = me && (c.likedBy || []).includes(me);
+    const mine = me && c.email && c.email === me;
+    return `
+    <div class="bg-gray-50 dark:bg-gray-800/40 p-4 rounded-xl border border-gray-100 dark:border-gray-800 space-y-2">
+     <div class="flex justify-between items-center text-xs"><span class="font-bold">${esc(c.author)}</span><span class="text-gray-400">${esc(c.date)}</span></div>
+     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">${esc(c.text)}</p>
+     <div class="flex items-center gap-4 text-xs text-gray-500">
+      <button onclick="likeComment('${c.id}')" class="${liked ? 'text-brand font-semibold' : 'hover:text-brand'}"><i class="${liked ? 'fas' : 'far'} fa-thumbs-up"></i> ${c.likes || 0}</button>
+      ${mine ? `<button onclick="deleteComment('${c.id}')" class="hover:text-red-600"><i class="far fa-trash-alt"></i> Xóa</button>` : ''}
+     </div>
+    </div>`;
+  }).join('');
+}
+
+function handleAddComment(e) {
+  e.preventDefault();
+  if (!currentModalArticleId) return;
+  const text = $('comment-text').value.trim(), author = $('comment-author').value.trim();
+  if (!text || !author) return;
+  const list = [...getComments(currentModalArticleId).filter(c => c.id !== 'default' || commentsStore[currentModalArticleId])];
+  const base = commentsStore[currentModalArticleId] ? list : [DEFAULT_COMMENT];
+  base.unshift({ id: 'c' + Date.now(), author, email: session ? session.email : '', date: new Date().toLocaleString('vi-VN'), text, likes: 0, likedBy: [] });
+  saveComments(currentModalArticleId, base);
+  $('comment-text').value = '';
+  renderComments(currentModalArticleId); renderArticles();
+  toast('Đã gửi bình luận');
+}
+
+function likeComment(cid) {
+  if (!session) { toast('Vui lòng đăng nhập để thích bình luận'); openAuthModal(); return; }
+  const list = getComments(currentModalArticleId).map(c => {
+    if (c.id !== cid) return c;
+    const by = c.likedBy || [], has = by.includes(session.email);
+    return { ...c, likedBy: has ? by.filter(x => x !== session.email) : [...by, session.email], likes: Math.max(0, (c.likes || 0) + (has ? -1 : 1)) };
+  });
+  saveComments(currentModalArticleId, list); renderComments(currentModalArticleId);
+}
+
+function deleteComment(cid) {
+  if (!confirm('Xóa bình luận này?')) return;
+  saveComments(currentModalArticleId, getComments(currentModalArticleId).filter(c => c.id !== cid));
+  renderComments(currentModalArticleId); renderArticles();
+}
+
+/* ===== ĐĂNG NHẬP / ĐĂNG KÝ (lưu cục bộ trên trình duyệt) ===== */
+async function hash(s) {
+  try { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('vtn::' + s)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
+  catch { return btoa(unescape(encodeURIComponent(s))); }
+}
+
+function renderAuthArea() {
+  $('auth-area').innerHTML = session
+    ? `<div class="flex items-center gap-2"><span class="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-300"><span class="w-6 h-6 rounded-full bg-brand text-white flex items-center justify-center text-[11px] font-bold">${esc(session.name.charAt(0).toUpperCase())}</span><span class="hidden sm:inline max-w-[110px] truncate">${esc(session.name)}</span></span><button onclick="logout()" class="text-gray-500 hover:text-brand" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></button></div>`
+    : `<button onclick="openAuthModal()" class="font-medium text-gray-700 dark:text-gray-300 hover:text-brand flex items-center gap-1"><i class="far fa-user-circle text-base"></i> Đăng nhập</button>`;
+}
+
+function openAuthModal(mode = 'login') { authMode = mode; applyAuthMode(); $('auth-error').classList.add('hidden'); $('auth-modal').classList.remove('hidden'); setTimeout(() => $(mode === 'login' ? 'auth-email' : 'auth-name').focus(), 50); }
+function closeAuthModal() { $('auth-modal').classList.add('hidden'); $('auth-pass').value = $('auth-pass2').value = ''; }
+function switchAuthMode() { authMode = authMode === 'login' ? 'register' : 'login'; applyAuthMode(); }
+function applyAuthMode() {
+  const reg = authMode === 'register';
+  $('auth-title').textContent = reg ? 'Đăng ký tài khoản' : 'Đăng nhập';
+  $('auth-submit').textContent = reg ? 'Đăng ký' : 'Đăng nhập';
+  $('auth-name').classList.toggle('hidden', !reg); $('auth-name').required = reg;
+  $('auth-pass2').classList.toggle('hidden', !reg); $('auth-pass2').required = reg;
+  $('auth-switch-text').textContent = reg ? 'Đã có tài khoản?' : 'Chưa có tài khoản?';
+  $('auth-switch').textContent = reg ? 'Đăng nhập' : 'Đăng ký';
+  $('auth-error').classList.add('hidden');
+}
+function authError(m) { $('auth-error').textContent = m; $('auth-error').classList.remove('hidden'); }
+
+async function handleAuth(e) {
+  e.preventDefault();
+  const email = $('auth-email').value.trim().toLowerCase(), pass = $('auth-pass').value;
+  if (authMode === 'register') {
+    const name = $('auth-name').value.trim();
+    if (!name) return authError('Vui lòng nhập họ và tên.');
+    if (pass !== $('auth-pass2').value) return authError('Mật khẩu nhập lại không khớp.');
+    if (users.some(u => u.email === email)) return authError('Email này đã được đăng ký.');
+    users.push({ name, email, pass: await hash(pass) }); store.set('vtn_users', users);
+    session = { name, email };
+  } else {
+    const u = users.find(x => x.email === email);
+    if (!u || u.pass !== await hash(pass)) return authError('Email hoặc mật khẩu không đúng.');
+    session = { name: u.name, email: u.email };
+  }
+  store.set('vtn_session', session);
+  closeAuthModal(); renderAuthArea();
+  if (currentModalArticleId) { fillCommentUser(); renderComments(currentModalArticleId); }
+  toast('Xin chào, ' + session.name + '!');
+}
+
+function logout() {
+  session = null; try { localStorage.removeItem('vtn_session'); } catch {}
+  renderAuthArea();
+  if (currentModalArticleId) { fillCommentUser(); renderComments(currentModalArticleId); }
+  toast('Đã đăng xuất');
+}
+
+/* ===== KHÁC ===== */
+function toggleTheme() {
+  const dark = document.documentElement.classList.toggle('dark');
+  try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch {}
+}
+try {
+  const th = localStorage.getItem('theme');
+  document.documentElement.classList.toggle('dark', th === 'dark' || (!th && matchMedia('(prefers-color-scheme: dark)').matches));
+} catch {}
+
+function toggleMobileNav() { $('mobile-menu').classList.toggle('hidden'); }
+
+function handleNewsletterSubmit(e) {
+  e.preventDefault();
+  const email = $('newsletter-email').value.trim().toLowerCase();
+  const subs = store.get('news_subscribers', []);
+  if (subs.includes(email)) { toast('Email này đã đăng ký trước đó'); }
+  else { subs.push(email); store.set('news_subscribers', subs); }
+  $('newsletter-msg').classList.remove('hidden');
+  $('newsletter-email').value = '';
+  setTimeout(() => $('newsletter-msg').classList.add('hidden'), 4000);
+}
+</script>
 </body>
 </html>
