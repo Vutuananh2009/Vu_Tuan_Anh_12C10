@@ -23,8 +23,6 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
 </style>
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 font-sans transition-colors duration-200 min-h-screen flex flex-col">
-
-<!-- Top bar -->
 <header class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-xs text-gray-600 dark:text-gray-400">
  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
   <div class="flex items-center space-x-4">
@@ -49,8 +47,6 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
   </div>
  </div>
 </header>
-
-<!-- Logo + search -->
 <div class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 py-4 sm:py-6">
  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
   <button onclick="toggleMobileNav()" class="lg:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"><i class="fas fa-bars text-xl"></i></button>
@@ -68,11 +64,9 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
   </div>
  </div>
 </div>
-
 <nav class="sticky top-0 z-30 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex items-center overflow-x-auto no-scrollbar py-1 gap-1" id="nav-categories"></div></div>
 </nav>
-
 <div id="mobile-menu" class="fixed inset-0 bg-black/60 z-50 hidden lg:hidden backdrop-blur-sm" onclick="if(event.target===this)toggleMobileNav()">
  <div class="bg-white dark:bg-gray-900 w-4/5 max-w-xs h-full p-6 flex flex-col justify-between overflow-y-auto">
   <div>
@@ -83,23 +77,18 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
   <div class="pt-6 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-500"><p>© 2026 VUTUNAN HUB 24H Online Portal.</p></div>
  </div>
 </div>
-
-<!-- Ticker -->
 <div class="bg-rose-50 dark:bg-gray-900 border-b border-rose-100 dark:border-gray-800 py-2 overflow-hidden">
  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
   <div class="flex items-center gap-2 bg-brand text-white px-2.5 py-1 rounded text-xs font-bold shrink-0 uppercase tracking-wider mr-3"><i class="fas fa-bolt animate-pulse"></i> Tin Nóng</div>
   <div class="overflow-hidden w-full flex items-center"><div class="animate-marquee text-xs sm:text-sm font-medium" id="ticker-content"></div></div>
  </div>
 </div>
-
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
  <div id="filter-status" class="hidden mb-6 flex items-center justify-between bg-blue-50 dark:bg-gray-800 p-3 rounded-lg border border-blue-100 dark:border-gray-700">
   <div class="flex items-center gap-2 flex-wrap"><span class="text-xs uppercase font-bold text-gray-500">Đang xem:</span><span id="filter-title" class="font-bold text-brand text-sm"></span><span id="filter-count" class="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full"></span></div>
   <button onclick="resetAll()" class="text-xs font-semibold text-gray-500 hover:text-brand flex items-center gap-1"><i class="fas fa-sync-alt"></i> Đặt lại tất cả</button>
  </div>
-
  <section id="hero-section" class="mb-10"><div class="grid grid-cols-1 lg:grid-cols-12 gap-6" id="hero-grid"></div></section>
-
  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
   <div class="lg:col-span-8 space-y-10">
    <div class="flex items-center justify-between border-b-2 border-brand pb-2">
@@ -119,13 +108,11 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="tech-spotlight-grid"></div>
    </div>
   </div>
-
   <aside class="lg:col-span-4 space-y-8">
    <div class="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
     <h3 class="text-base font-bold uppercase tracking-tight mb-4 flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-3"><i class="fas fa-fire text-rose-500"></i> Đọc Nhiều Nhất 24h</h3>
     <div class="space-y-4" id="trending-widget"></div>
    </div>
-
    <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6 rounded-2xl shadow-md relative overflow-hidden">
     <i class="far fa-paper-plane text-3xl mb-3 text-blue-200"></i>
     <h3 class="text-lg font-bold mb-1">Đăng ký nhận bản tin sáng</h3>
@@ -136,7 +123,6 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
     </form>
     <p id="newsletter-msg" class="text-[11px] text-emerald-200 mt-2 hidden"><i class="fas fa-check-circle"></i> Đã đăng ký nhận bản tin thành công!</p>
    </div>
-
    <div class="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
     <h3 class="text-base font-bold uppercase tracking-tight mb-4 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
      <span><i class="fas fa-podcast text-brand mr-2"></i> Multimedia & Podcast</span><span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold uppercase">Mới</span>
@@ -150,13 +136,10 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
      </div>
     </div>
    </div>
-
    <div id="banner-container" class="space-y-4"></div>
   </aside>
  </div>
 </main>
-
-<!-- Article modal -->
 <div id="article-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/75 backdrop-blur-sm flex justify-center items-start p-2 sm:p-4 md:p-6" onclick="if(event.target===this)closeArticleModal()">
  <div class="bg-white dark:bg-gray-900 w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col border border-gray-200 dark:border-gray-800">
   <div class="bg-white/95 dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-800 px-6 py-3.5 flex items-center justify-between">
@@ -197,7 +180,6 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
     <h3 class="text-base font-bold mb-3"><i class="fas fa-layer-group text-brand mr-1"></i> Bài viết liên quan</h3>
     <div id="related-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
    </div>
-
    <div class="pt-8 border-t border-gray-200 dark:border-gray-800">
     <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i class="far fa-comments text-brand"></i> Bình luận & Tranh luận (<span id="comments-count">0</span>)</h3>
     <form onsubmit="handleAddComment(event)" class="bg-gray-50 dark:bg-gray-800/60 p-4 rounded-xl border border-gray-200 dark:border-gray-700 mb-8 space-y-3">
@@ -216,8 +198,6 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
   </div>
  </div>
 </div>
-
-<!-- Saved modal -->
 <div id="saved-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/70 backdrop-blur-sm flex justify-center items-center p-4" onclick="if(event.target===this)closeSavedModal()">
  <div class="bg-white dark:bg-gray-900 w-full max-w-2xl rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-gray-800">
   <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-800 mb-4">
@@ -227,8 +207,6 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
   <div id="saved-articles-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-1"></div>
  </div>
 </div>
-
-<!-- Auth modal -->
 <div id="auth-modal" class="fixed inset-0 z-[60] hidden bg-black/70 backdrop-blur-sm flex justify-center items-center p-4" onclick="if(event.target===this)closeAuthModal()">
  <div class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-gray-800">
   <div class="flex justify-between items-center mb-4">
@@ -246,7 +224,6 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
   <p class="text-xs text-center text-gray-500 mt-4"><span id="auth-switch-text">Chưa có tài khoản?</span> <button id="auth-switch" onclick="switchAuthMode()" class="text-brand font-semibold hover:underline">Đăng ký</button></p>
  </div>
 </div>
-
 <footer class="bg-gray-900 text-gray-300 pt-12 pb-8 border-t border-gray-800 mt-16">
  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
   <div class="lg:col-span-2 space-y-4">
@@ -291,16 +268,12 @@ tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:'#e11d48'},fontFa
   <p>© 2026 VUTUNAN HUB 24H. Tất cả quyền được bảo lưu.</p><p class="mt-2 sm:mt-0">-Vũ Tuấn Anh 12C10-</p>
  </div>
 </footer>
-
 <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-40 w-10 h-10 bg-brand text-white rounded-full shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110"><i class="fas fa-arrow-up"></i></button>
 <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[70] bg-gray-900 text-white text-sm px-4 py-2 rounded-lg shadow-lg opacity-0 pointer-events-none"></div>
-
 <script>
-/* ===== DỮ LIỆU (giữ nguyên) ===== */
 const BANNERS_DATA = [
  { id: 1, label: "Quảng cáo", title: "KHUYẾN MÃI CÔNG NGHỆ", description: "Giảm tới 40% cho các thiết bị thông minh thế hệ mới.", buttonText: "Khám phá ngay", buttonLink: "#" }
 ];
-
 const ARTICLES_DATA = [
  {
   id: 1,
@@ -396,12 +369,61 @@ const ARTICLES_DATA = [
   image: "https://kenh14cdn.com/203336854389633024/2026/9/24/f1ddb349-8532-4699-8d0f-a618729534b9-100644-082928-1790043252842-17900432533811469435416-102114-1790221701687-1790221702007723372436.jpg",
   author: "Khả Văn", authorAvatar: "https://i.pravatar.cc/100?img=49",
   date: "24/09/2026 -11:41", views: "22,400", readTime: "4 phút"
- }
+ },
+ {
+  id: 8,
+  title: "TP HCM tăng 17 bậc xếp hạng trung tâm tài chính toàn cầu",
+  category: "Kinh doanh",
+  sapo: "Thứ hạng trung tâm tài chính toàn cầu của TP HCM tăng 17 bậc, trong khi Đà Nẵng lần đầu vào bảng danh sách, đứng thứ 71.",
+  body: `
+   <p>Chỉ số Trung tâm Tài chính toàn cầu ấn bản lần 40 (GFCI 40) được Tổ chức Z/Yen Partners (Anh) và Viện Phát triển Trung Quốc (CDI) công bố ngày 30/9.</p>
+   <p>Với tổng điểm 692, xếp hạng của TP HCM tăng vọt 17 bậc lên vị trí 67 trên 117 thành phố. Tốc độ tăng thứ hạng của đầu tàu kinh tế ghi nhận nhanh thứ hai trong kỳ đánh giá này, chỉ sau Copenhagen. Mức tăng điểm của địa phương đạt khoảng 4,1%, cao hơn ngưỡng tăng bình quân toàn cầu (0,8%) và khu vực châu Á - Thái Bình Dương (1,48%).</p>
+  `,
+  image: "https://img6.thuthuatphanmem.vn/uploads/2022/02/09/anh-dep-nhat-ve-thanh-pho-ho-chi-minh_031024990.jpg",
+  author: "Viễn Thông", authorAvatar: "https://i.pravatar.cc/100?img=49",
+  date: "1/10/2026 -00:05", views: "36,366", readTime: "12 phút"
+ },
+ {
+  id: 9,
+  title: "Chàng trai 23 tuổi mở startup 10 tỷ USD đối đầu Meta",
+  category: "Công nghệ",
+  sapo: "Mỹ-Noah Shinn, kỹ sư AI từng bỏ đại học, gây sốt khi phát triển trợ lý AI Instinct cạnh tranh với Muse của Meta.",
+  body: `
+   <p>Ở tuổi 23, Noah Shinn, kỹ sư và doanh nhân công nghệ người Mỹ, đã thành lập công ty khởi nghiệp Spear Street Technology tại California. Instinct, trợ lý AI cá nhân hoạt động theo hình thức giới hạn do Shinn phát triển và ra mắt trong mùa hè năm nay, nhanh chóng lan truyền trong giới công nghệ Thung lũng Silicon.</p>
+   <p>Với Instinct, công ty này gọi vốn thành công hơn một tỷ USD để đạt mức định giá 10 tỷ USD nhờ khả năng thực hiện hành động trực tiếp thay cho người dùng. Sự bùng nổ này biến chàng trai từng bỏ dở đại học thành một trong những nhà sáng lập trẻ sáng giá nhất giới AI, đồng thời đưa công ty khởi nghiệp nhỏ của anh thành đối thủ cạnh tranh trực tiếp với những ông lớn công nghệ như Meta của Mark Zuckerberg.</p>
+  `,
+  image: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA2dfUS4.img?w=750&h=450&m=4&q=93",
+  author: "An Khang", authorAvatar: "https://i.pravatar.cc/100?img=49",
+  date: "30/9/2026 -14:01", views: "67,900", readTime: "36 phút"
+ },
+ {
+  id: 10,
+  title: "Cristiano Ronaldo bất ngờ rời khỏi đội tuyển Bồ Đào Nha",
+  category: "Thể thao",
+  sapo: "Tiền đạo Cristiano Ronaldo tuyên bố rời khỏi nơi tập trung của đội tuyển Bồ Đào Nha, chỉ ít giờ sau những lùm xùm quanh việc anh phải ngồi dự bị và mâu thuẫn với HLV Jorge Jesus.",
+  body: `
+   <p>Làng túc cầu thế giới đang chấn động trước thông tin Cristiano Ronaldo chính thức rời đại bản doanh của đội tuyển Bồ Đào Nha vào ngày 30/9. Sự việc diễn ra ngay trước thềm trận đấu quan trọng gặp Đan Mạch tại UEFA Nations League, khiến tương lai của siêu sao 41 tuổi tại đội tuyển quốc gia trở thành một dấu hỏi lớn, dù anh chưa đưa ra bất kỳ tuyên bố giã từ sự nghiệp quốc tế nào.</p>
+   <p>Chia sẻ trên trang Instagram cá nhân, Ronaldo viết: "Sau cuộc họp báo của đội tuyển và cuộc trao đổi với Chủ tịch Liên đoàn Bóng đá Bồ Đào Nha, tôi quyết định rời nơi tập trung. Đến thời điểm thích hợp, tôi sẽ nói với người dân Bồ Đào Nha sự thật về những lý do khiến tôi ra đi". Tiền đạo kỳ cựu không giải thích thêm chi tiết nhưng gửi lời chúc may mắn đến các đồng đội trong các trận đấu sắp tới.</p>
+  `,
+  image: "https://tse3.mm.bing.net/th/id/OIP.rFFsCEVw-XsBGEmrA5g0XAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+  author: "Quyết Thắng", authorAvatar: "https://i.pravatar.cc/100?img=49",
+  date: "01/10/2026 -06:45", views: "99,999", readTime: "2 phút"
+ },
+ {
+  id: 11,
+  title: "Bưu điện Hà Nội, dáng hình quen thuộc bên hồ Gươm qua hơn một thế kỷ",
+  category: "Thời sự",
+  sapo: "Hơn một thế kỷ hiện diện bên hồ Gươm, Bưu điện Hà Nội không chỉ là một công trình kiến trúc mang dấu ấn nhiều thời kỳ mà còn trở thành hình ảnh thân thuộc, gắn bó với người dân Thủ đô.",
+  body: `
+   <p>Giữa không gian hồ Gươm, nơi mỗi góc phố đều gắn với những lớp ký ức của Thủ đô, Bưu điện Hà Nội (nay là tòa nhà VNPT Hà Nội) hiện diện như một người bạn cũ.</p>
+   <p>Công trình nằm sát mép hồ, gần Tháp Hòa Phong và những tuyến phố quen thuộc của khu phố trung tâm, tạo nên một khung cảnh mà nhiều thế hệ người Hà Nội đã nhìn thấy, đi qua và gắn bó.</p>
+  `,
+  image: "https://kenh14cdn.com/2018/11/13/photo-1-15421221596901454564671.jpg",
+  author: "Mạnh Quân", authorAvatar: "https://i.pravatar.cc/100?img=49",
+  date: "01/10/2026 -06:59", views: "10,101", readTime: "6 phút"
+ },
 ];
-
 const CATEGORIES = ["Tất cả", "Thời sự", "Thế giới", "Kinh doanh", "Công nghệ", "Thể thao", "Giải trí", "Đời sống"];
-
-/* ===== TIỆN ÍCH ===== */
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const store = {
@@ -413,8 +435,6 @@ const parseDate = s => { const m = s.match(/(\d+)\/(\d+)\/(\d+)\s*-\s*(\d+):(\d+
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
 const dayOf = s => s.split(' ')[0];
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.remove('opacity-0'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.add('opacity-0'), 2200); }
-
-/* ===== TRẠNG THÁI ===== */
 let currentCategory = "All", searchQuery = "", activeTab = 'latest', currentModalArticleId = null, currentFontSize = 18;
 let savedArticleIds = store.get('news_saved_ids', []);
 let commentsStore = store.get('news_comments', {});
@@ -422,10 +442,8 @@ let viewsExtra = store.get('news_views_extra', {});
 let users = store.get('vtn_users', []);
 let session = store.get('vtn_session', null);
 let authMode = 'login';
-
 const viewsOf = a => num(a.views) + (viewsExtra[a.id] || 0);
 const fmtViews = n => n.toLocaleString('en-US');
-
 window.addEventListener('DOMContentLoaded', () => {
   $('current-date').textContent = new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
   renderCategoryNav(); renderBanners(); renderTicker(); renderAll(); updateSavedCount(); renderAuthArea(); updateTabs();
@@ -439,10 +457,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const id = num(location.hash.replace('#bai-', ''));
   if (location.hash.startsWith('#bai-') && ARTICLES_DATA.some(a => a.id === id)) openArticleModal(id);
 });
-
 function renderAll() { renderHero(); renderArticles(); renderTrendingWidget(); renderTechSpotlight(); }
-
-/* ===== ĐIỀU HƯỚNG / LỌC ===== */
 function renderCategoryNav() {
   $('nav-categories').innerHTML = CATEGORIES.map(cat => {
     const key = cat === 'Tất cả' ? 'All' : cat;
@@ -454,7 +469,6 @@ function renderCategoryNav() {
     return `<button onclick="filterByCategory('${key}');toggleMobileNav()" class="w-full text-left px-3 py-2 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-800 ${key === currentCategory ? 'text-brand font-bold' : ''}">${cat}</button>`;
   }).join('');
 }
-
 function filterByCategory(cat) { currentCategory = cat; renderCategoryNav(); renderAll(); if (scrollY > 300) scrollTo({ top: 0, behavior: 'smooth' }); }
 
 function handleSearch(val) {
@@ -472,7 +486,6 @@ function updateTabs() {
     $('tab-' + t).className = "px-3 py-1 rounded-md transition " + (t === activeTab ? "bg-brand text-white font-bold" : "text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800");
   });
 }
-
 function getFiltered() {
   let list = [...ARTICLES_DATA];
   if (currentCategory !== "All") list = list.filter(a => a.category === currentCategory);
@@ -480,15 +493,12 @@ function getFiltered() {
   if (q) list = list.filter(a => norm(a.title + ' ' + a.sapo + ' ' + a.category + ' ' + a.author).includes(q));
   if (activeTab === 'popular') list.sort((a, b) => viewsOf(b) - viewsOf(a));
   else if (activeTab === 'recommended') {
-    // Đề xuất: ưu tiên chuyên mục bạn đã lưu, sau đó là bài có thứ hạng nổi bật
     const favCats = ARTICLES_DATA.filter(a => savedArticleIds.includes(a.id)).map(a => a.category);
     const score = a => (favCats.includes(a.category) ? 100 : 0) + (a.trendingRank ? 10 - a.trendingRank : 0);
     list.sort((a, b) => score(b) - score(a) || parseDate(b.date) - parseDate(a.date));
   } else list.sort((a, b) => parseDate(b.date) - parseDate(a.date));
   return list;
 }
-
-/* ===== RENDER ===== */
 function renderBanners() {
   $('banner-container').innerHTML = BANNERS_DATA.map(b => `
    <div class="bg-gray-200 dark:bg-gray-800 rounded-2xl p-6 text-center border border-dashed border-gray-300 dark:border-gray-700">
@@ -498,12 +508,10 @@ function renderBanners() {
      <a href="${b.buttonLink}" class="inline-block mt-3 bg-white text-gray-900 text-xs px-4 py-1.5 rounded-full font-bold hover:bg-gray-100 transition shadow">${b.buttonText}</a>
     </div></div>`).join('');
 }
-
 function renderTicker() {
   const items = ARTICLES_DATA.map(a => `<span class="cursor-pointer hover:text-brand" onclick="openArticleModal(${a.id})"><i class="fas fa-newspaper text-brand mr-1"></i> [${a.category}] ${esc(a.title)}</span>`).join('<span class="mx-4 text-gray-400">•</span>');
   $('ticker-content').innerHTML = items + '<span class="mx-4 text-gray-400">•</span>' + items;
 }
-
 function renderHero() {
   const filtering = currentCategory !== "All" || searchQuery.trim() !== "";
   $('hero-section').classList.toggle('hidden', filtering);
@@ -529,7 +537,6 @@ function renderHero() {
       <div class="text-[11px] text-gray-500 dark:text-gray-400 flex items-center justify-between mt-1"><span><i class="far fa-eye"></i> ${fmtViews(viewsOf(i))}</span><span>${dayOf(i.date)}</span></div>
      </div></div>`).join('')}</div>`;
 }
-
 function renderArticles() {
   const list = getFiltered(), box = $('articles-container');
   const filtering = currentCategory !== "All" || searchQuery.trim() !== "";
@@ -566,7 +573,6 @@ function renderArticles() {
     </article>`;
   }).join('');
 }
-
 function renderTrendingWidget() {
   const top = [...ARTICLES_DATA].sort((a, b) => viewsOf(b) - viewsOf(a)).slice(0, 5);
   $('trending-widget').innerHTML = top.map((item, i) => `
@@ -576,7 +582,6 @@ function renderTrendingWidget() {
      <h4 class="text-xs sm:text-sm font-bold group-hover:text-brand transition line-clamp-2 leading-snug">${item.title}</h4></div>
    </div>`).join('');
 }
-
 function renderTechSpotlight() {
   const tech = ARTICLES_DATA.filter(a => a.category === "Công nghệ").slice(0, 2);
   $('tech-spotlight-grid').innerHTML = tech.map(item => `
@@ -587,8 +592,6 @@ function renderTechSpotlight() {
      <p class="text-xs text-gray-500 mt-2 line-clamp-2">${item.sapo}</p></div>
    </div>`).join('');
 }
-
-/* ===== BÀI VIẾT (MODAL) ===== */
 function openArticleModal(id) {
   const a = ARTICLES_DATA.find(x => x.id === id); if (!a) return;
   currentModalArticleId = id;
@@ -619,19 +622,16 @@ function openArticleModal(id) {
   renderArticles(); renderTrendingWidget();
   if (!$('hero-section').classList.contains('hidden')) renderHero();
 }
-
 function closeArticleModal() {
   $('article-modal').classList.add('hidden');
   document.body.style.overflow = '';
   currentModalArticleId = null;
   history.replaceState(null, '', location.pathname + location.search);
 }
-
 function changeFontSize(d) {
   currentFontSize = Math.min(Math.max(currentFontSize + d, 14), 26);
   $('modal-body-text').style.fontSize = currentFontSize + 'px';
 }
-
 function shareArticle(platform) {
   const a = ARTICLES_DATA.find(x => x.id === currentModalArticleId); if (!a) return;
   const url = location.href.split('#')[0] + '#bai-' + a.id;
@@ -642,8 +642,6 @@ function shareArticle(platform) {
   } else if (platform === 'facebook') window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), '_blank', 'noopener');
   else window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(a.title) + '&url=' + encodeURIComponent(url), '_blank', 'noopener');
 }
-
-/* ===== LƯU BÀI ===== */
 function toggleBookmark(id, e) {
   if (e) e.stopPropagation();
   const was = savedArticleIds.includes(id);
@@ -678,19 +676,15 @@ function openSavedModal() {
   $('saved-modal').classList.remove('hidden');
 }
 function closeSavedModal() { $('saved-modal').classList.add('hidden'); }
-
-/* ===== BÌNH LUẬN ===== */
 const DEFAULT_COMMENT = { id: 'default', author: "Độc giả Hoàng Nam", date: "28/09/2026 09:00", text: "Bài viết rất hay và kịp thời. Cảm ơn tòa soạn!", likes: 0, likedBy: [] };
 function getComments(id) { return commentsStore[id] || [DEFAULT_COMMENT]; }
 function saveComments(id, list) { commentsStore[id] = list; store.set('news_comments', commentsStore); }
-
 function fillCommentUser() {
   const n = $('comment-author'), e = $('comment-email');
   if (session) { n.value = session.name; e.value = session.email; n.readOnly = e.readOnly = true; n.classList.add('opacity-70'); e.classList.add('opacity-70'); }
   else { n.readOnly = e.readOnly = false; n.value = e.value = ''; n.classList.remove('opacity-70'); e.classList.remove('opacity-70'); }
   $('comment-text').value = '';
 }
-
 function renderComments(id) {
   const list = getComments(id), me = session ? session.email : null;
   $('comments-count').textContent = list.length;
@@ -708,7 +702,6 @@ function renderComments(id) {
     </div>`;
   }).join('');
 }
-
 function handleAddComment(e) {
   e.preventDefault();
   if (!currentModalArticleId) return;
@@ -722,7 +715,6 @@ function handleAddComment(e) {
   renderComments(currentModalArticleId); renderArticles();
   toast('Đã gửi bình luận');
 }
-
 function likeComment(cid) {
   if (!session) { toast('Vui lòng đăng nhập để thích bình luận'); openAuthModal(); return; }
   const list = getComments(currentModalArticleId).map(c => {
@@ -732,25 +724,20 @@ function likeComment(cid) {
   });
   saveComments(currentModalArticleId, list); renderComments(currentModalArticleId);
 }
-
 function deleteComment(cid) {
   if (!confirm('Xóa bình luận này?')) return;
   saveComments(currentModalArticleId, getComments(currentModalArticleId).filter(c => c.id !== cid));
   renderComments(currentModalArticleId); renderArticles();
 }
-
-/* ===== ĐĂNG NHẬP / ĐĂNG KÝ (lưu cục bộ trên trình duyệt) ===== */
 async function hash(s) {
   try { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('vtn::' + s)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
   catch { return btoa(unescape(encodeURIComponent(s))); }
 }
-
 function renderAuthArea() {
   $('auth-area').innerHTML = session
     ? `<div class="flex items-center gap-2"><span class="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-300"><span class="w-6 h-6 rounded-full bg-brand text-white flex items-center justify-center text-[11px] font-bold">${esc(session.name.charAt(0).toUpperCase())}</span><span class="hidden sm:inline max-w-[110px] truncate">${esc(session.name)}</span></span><button onclick="logout()" class="text-gray-500 hover:text-brand" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></button></div>`
     : `<button onclick="openAuthModal()" class="font-medium text-gray-700 dark:text-gray-300 hover:text-brand flex items-center gap-1"><i class="far fa-user-circle text-base"></i> Đăng nhập</button>`;
 }
-
 function openAuthModal(mode = 'login') { authMode = mode; applyAuthMode(); $('auth-error').classList.add('hidden'); $('auth-modal').classList.remove('hidden'); setTimeout(() => $(mode === 'login' ? 'auth-email' : 'auth-name').focus(), 50); }
 function closeAuthModal() { $('auth-modal').classList.add('hidden'); $('auth-pass').value = $('auth-pass2').value = ''; }
 function switchAuthMode() { authMode = authMode === 'login' ? 'register' : 'login'; applyAuthMode(); }
@@ -765,7 +752,6 @@ function applyAuthMode() {
   $('auth-error').classList.add('hidden');
 }
 function authError(m) { $('auth-error').textContent = m; $('auth-error').classList.remove('hidden'); }
-
 async function handleAuth(e) {
   e.preventDefault();
   const email = $('auth-email').value.trim().toLowerCase(), pass = $('auth-pass').value;
@@ -786,15 +772,12 @@ async function handleAuth(e) {
   if (currentModalArticleId) { fillCommentUser(); renderComments(currentModalArticleId); }
   toast('Xin chào, ' + session.name + '!');
 }
-
 function logout() {
   session = null; try { localStorage.removeItem('vtn_session'); } catch {}
   renderAuthArea();
   if (currentModalArticleId) { fillCommentUser(); renderComments(currentModalArticleId); }
   toast('Đã đăng xuất');
 }
-
-/* ===== KHÁC ===== */
 function toggleTheme() {
   const dark = document.documentElement.classList.toggle('dark');
   try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch {}
@@ -803,9 +786,7 @@ try {
   const th = localStorage.getItem('theme');
   document.documentElement.classList.toggle('dark', th === 'dark' || (!th && matchMedia('(prefers-color-scheme: dark)').matches));
 } catch {}
-
 function toggleMobileNav() { $('mobile-menu').classList.toggle('hidden'); }
-
 function handleNewsletterSubmit(e) {
   e.preventDefault();
   const email = $('newsletter-email').value.trim().toLowerCase();
