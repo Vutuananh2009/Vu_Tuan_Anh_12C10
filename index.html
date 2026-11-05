@@ -1,1106 +1,1530 @@
-<!DOCTYPE html>
-<html lang="vi" class="h-full">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flashcard SRS - Học Từ Vựng Tiếng Anh</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            theme: {
-              50: 'var(--color-theme-50)',
-              100: 'var(--color-theme-100)',
-              200: 'var(--color-theme-200)',
-              300: 'var(--color-theme-300)',
-              400: 'var(--color-theme-400)',
-              500: 'var(--color-theme-500)',
-              600: 'var(--color-theme-600)',
-              700: 'var(--color-theme-700)',
-              800: 'var(--color-theme-800)',
-              900: 'var(--color-theme-900)',
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  BookOpen,
+  Brain,
+  Trophy,
+  Flame,
+  Award,
+  Volume2,
+  CheckCircle2,
+  XCircle,
+  RotateCw,
+  Plus,
+  Search,
+  Sparkles,
+  Zap,
+  Moon,
+  Sun,
+  Play,
+  Check,
+  ChevronRight,
+  Mic,
+  Star,
+  RefreshCw,
+  BarChart2,
+  Target,
+  GraduationCap
+} from 'lucide-react';
+
+// --- INITIAL MOCK DATA ---
+const INITIAL_TOPICS = [
+  {
+    id: 'ielts-7',
+    title: 'IELTS Band 7.0+',
+    description: 'Từ vựng học thuật nâng cao cho bài thi IELTS Writing & Speaking',
+    level: 'Advanced',
+    icon: 'GraduationCap',
+    color: 'from-purple-500 to-indigo-600',
+    wordsCount: 15
+  },
+  {
+    id: 'toeic-office',
+    title: 'TOEIC Công sở & Business',
+    description: 'Từ vựng chuyên ngành kinh tế, hợp đồng và môi trường làm việc',
+    level: 'Intermediate',
+    icon: 'Briefcase',
+    color: 'from-blue-500 to-cyan-600',
+    wordsCount: 12
+  },
+  {
+    id: 'it-tech',
+    title: 'Tiếng Anh IT & Tech',
+    description: 'Thuật ngữ chuyên ngành Lập trình, Phần mềm & AI',
+    level: 'Intermediate',
+    icon: 'Cpu',
+    color: 'from-emerald-500 to-teal-600',
+    wordsCount: 10
+  },
+  {
+    id: 'daily-spoken',
+    title: 'Giao tiếp Hàng ngày',
+    description: 'Cụm từ thông dụng, idiom và phrasal verbs tự nhiên như người bản xứ',
+    level: 'Elementary',
+    icon: 'MessageCircle',
+    color: 'from-amber-500 to-orange-600',
+    wordsCount: 15
+  }
+];
+
+const INITIAL_WORDS = [
+  {
+    id: 1,
+    topicId: 'ielts-7',
+    word: 'Resilience',
+    phonetic: '/rɪˈzɪl.jəns/',
+    partOfSpeech: 'noun',
+    definition: 'Khả năng phục hồi nhanh chóng sau khó khăn, sự kiên cường',
+    example: 'Her resilience in facing adversity inspired everyone in the team.',
+    exampleMeaning: 'Sự kiên cường của cô ấy khi đối mặt với nghịch cảnh đã truyền cảm hứng cho mọi người trong nhóm.',
+    status: 'LEARNING', // NEW, LEARNING, MASTERED
+    repetitionLevel: 1,
+    intervalDays: 1,
+    easeFactor: 2.5,
+    nextReviewDate: new Date().toISOString(),
+    isFavorite: true
+  },
+  {
+    id: 2,
+    topicId: 'ielts-7',
+    word: 'Meticulous',
+    phonetic: '/məˈtɪk.jə.ləs/',
+    partOfSpeech: 'adjective',
+    definition: 'Tỉ mỉ, cẩn thận, chú ý đến từng chi tiết nhỏ',
+    example: 'He showed meticulous attention to detail in his research paper.',
+    exampleMeaning: 'Anh ấy thể hiện sự chú ý tỉ mỉ đến từng chi tiết trong bài báo nghiên cứu của mình.',
+    status: 'NEW',
+    repetitionLevel: 0,
+    intervalDays: 0,
+    easeFactor: 2.5,
+    nextReviewDate: new Date().toISOString(),
+    isFavorite: false
+  },
+  {
+    id: 3,
+    topicId: 'ielts-7',
+    word: 'Ubiquitous',
+    phonetic: '/juːˈbɪk.wə.təs/',
+    partOfSpeech: 'adjective',
+    definition: 'Có mặt ở khắp nơi, phổ biến rộng rãi',
+    example: 'Smartphones have become ubiquitous in modern daily life.',
+    exampleMeaning: 'Điện thoại thông minh đã trở nên phổ biến khắp nơi trong cuộc sống hiện đại.',
+    status: 'MASTERED',
+    repetitionLevel: 4,
+    intervalDays: 15,
+    easeFactor: 2.6,
+    nextReviewDate: new Date(Date.now() + 864000000).toISOString(),
+    isFavorite: true
+  },
+  {
+    id: 4,
+    topicId: 'toeic-office',
+    word: 'Negotiate',
+    phonetic: '/nəˈɡəʊ.ʃi.eɪt/',
+    partOfSpeech: 'verb',
+    definition: 'Đàm phán, thương lượng các điều khoản',
+    example: 'We managed to negotiate a better deal with our supplier.',
+    exampleMeaning: 'Chúng tôi đã đàm phán thành công hợp đồng tốt hơn với nhà cung cấp.',
+    status: 'LEARNING',
+    repetitionLevel: 2,
+    intervalDays: 3,
+    easeFactor: 2.4,
+    nextReviewDate: new Date().toISOString(),
+    isFavorite: false
+  },
+  {
+    id: 5,
+    topicId: 'toeic-office',
+    word: 'Prerequisite',
+    phonetic: '/ˌpriːˈrek.wɪ.zɪt/',
+    partOfSpeech: 'noun',
+    definition: 'Điều kiện tiên quyết, bắt buộc phải có trước',
+    example: 'A degree in computer science is a prerequisite for this position.',
+    exampleMeaning: 'Bằng cấp về khoa học máy tính là điều kiện tiên quyết cho vị trí này.',
+    status: 'NEW',
+    repetitionLevel: 0,
+    intervalDays: 0,
+    easeFactor: 2.5,
+    nextReviewDate: new Date().toISOString(),
+    isFavorite: true
+  },
+  {
+    id: 6,
+    topicId: 'it-tech',
+    word: 'Scalability',
+    phonetic: '/ˌskeɪ.ləˈbɪl.ə.ti/',
+    partOfSpeech: 'noun',
+    definition: 'Khả năng mở rộng của hệ thống khi khối lượng công việc tăng',
+    example: 'Cloud architecture offers high scalability for growing startups.',
+    exampleMeaning: 'Kiến trúc đám mây mang lại khả năng mở rộng cao cho các công ty khởi nghiệp đang phát triển.',
+    status: 'LEARNING',
+    repetitionLevel: 1,
+    intervalDays: 1,
+    easeFactor: 2.5,
+    nextReviewDate: new Date().toISOString(),
+    isFavorite: false
+  },
+  {
+    id: 7,
+    topicId: 'it-tech',
+    word: 'Deprecate',
+    phonetic: '/ˈdep.rə.keɪt/',
+    partOfSpeech: 'verb',
+    definition: 'Khai tử / Không còn khuyến khích sử dụng (trong lập trình)',
+    example: 'This API function will be deprecated in the upcoming release.',
+    exampleMeaning: 'Hàm API này sẽ không còn được hỗ trợ trong phiên bản sắp tới.',
+    status: 'NEW',
+    repetitionLevel: 0,
+    intervalDays: 0,
+    easeFactor: 2.5,
+    nextReviewDate: new Date().toISOString(),
+    isFavorite: false
+  },
+  {
+    id: 8,
+    topicId: 'daily-spoken',
+    word: 'Hit the nail on the head',
+    phonetic: '/hɪt ðə neɪl ɒn ðə hed/',
+    partOfSpeech: 'idiom',
+    definition: 'Nói chính xác hoàn toàn vấn đề, gãi đúng chỗ ngứa',
+    example: 'You hit the nail on the head with your analysis of the problem.',
+    exampleMeaning: 'Bạn đã nói chính xác hoàn toàn với phân tích của mình về vấn đề này.',
+    status: 'MASTERED',
+    repetitionLevel: 5,
+    intervalDays: 20,
+    easeFactor: 2.7,
+    nextReviewDate: new Date(Date.now() + 1000000000).toISOString(),
+    isFavorite: true
+  }
+];
+
+const INITIAL_BADGES = [
+  { id: 'streak_3', name: 'Chiến Binh Chăm Chỉ', desc: 'Duy trì chuỗi học 3 ngày liên tiếp', icon: 'Flame', unlocked: true, progress: '3/3' },
+  { id: 'words_10', name: 'Nhà Sưu Tầm Từ', desc: 'Thuộc lòng 10 từ vựng đầu tiên', icon: 'BookOpen', unlocked: true, progress: '10/10' },
+  { id: 'quiz_master', name: 'Vua Trắc Nghiệm', desc: 'Đạt điểm tối đa trong bài Quiz', icon: 'Trophy', unlocked: false, progress: '0/1' },
+  { id: 'speed_demon', name: 'Phản Xạ Thần Tốc', desc: 'Nối từ trong trò chơi Speed Match dưới 30 giây', icon: 'Zap', unlocked: false, progress: '0/1' }
+];
+
+const INITIAL_LEADERBOARD = [
+  { rank: 1, name: 'Minh Anh (IELTS 8.0)', xp: 2450, streak: 15, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=60' },
+  { rank: 2, name: 'Hoàng Nam (Dev)', xp: 1980, streak: 12, avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=60' },
+  { rank: 3, name: 'Bạn (User)', xp: 850, streak: 5, isUser: true, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=60' },
+  { rank: 4, name: 'Thùy Trâm', xp: 720, streak: 4, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format&fit=crop&q=60' },
+  { rank: 5, name: 'Quốc Bảo', xp: 510, streak: 2, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=60' }
+];
+
+export default function App() {
+  // App state
+  const [theme, setTheme] = useState('dark');
+  const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, study, topics, practice, notebook, leaderboard
+  const [words, setWords] = useState(INITIAL_WORDS);
+  const [userStats, setUserStats] = useState({
+    streak: 5,
+    xp: 850,
+    masteredCount: 2,
+    dueTodayCount: 4,
+    wordsStudiedToday: 8
+  });
+  const [selectedTopic, setSelectedTopic] = useState(null);
+
+  // Toggle Dark / Light Theme
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  // Audio speech utility
+  const speakWord = (text) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert('Trình duyệt của bạn không hỗ trợ đọc âm thanh tự động.');
+    }
+  };
+
+  // Add XP and Update Stats Helper
+  const addXP = (amount) => {
+    setUserStats(prev => ({
+      ...prev,
+      xp: prev.xp + amount,
+      wordsStudiedToday: prev.wordsStudiedToday + 1
+    }));
+  };
+
+  return (
+    <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark' ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
+      
+      {/* --- TOP NAVIGATION BAR --- */}
+      <header className={`sticky top-0 z-40 backdrop-blur-md border-b ${theme === 'dark' ? 'bg-slate-900/80 border-slate-800' : 'bg-white/80 border-slate-200'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
+            <div className="p-2.5 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl text-white shadow-lg shadow-indigo-500/30">
+              <Sparkles className="w-6 h-6 animate-pulse" />
+            </div>
+            <div>
+              <span className="text-xl font-extrabold bg-gradient-to-r from-indigo-400 to-violet-500 bg-clip-text text-transparent">
+                VocabMaster
+              </span>
+              <span className="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 ml-2 bg-indigo-500/10 text-indigo-400 rounded-full border border-indigo-500/20">
+                PRO SRS
+              </span>
+            </div>
+          </div>
+
+          {/* Quick Stats Pill */}
+          <div className="flex items-center gap-2 sm:gap-4">
+            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${theme === 'dark' ? 'bg-slate-900 border-amber-500/30 text-amber-400' : 'bg-amber-50 border-amber-200 text-amber-600'} font-bold text-sm shadow-sm`}>
+              <Flame className="w-4 h-4 fill-amber-500 text-amber-500 animate-bounce" />
+              <span>{userStats.streak} Ngày</span>
+            </div>
+
+            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${theme === 'dark' ? 'bg-slate-900 border-violet-500/30 text-violet-400' : 'bg-violet-50 border-violet-200 text-violet-600'} font-bold text-sm shadow-sm`}>
+              <Zap className="w-4 h-4 text-violet-500 fill-violet-500" />
+              <span>{userStats.xp} XP</span>
+            </div>
+
+            {/* Theme Switcher */}
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className={`p-2.5 rounded-xl border transition-all ${theme === 'dark' ? 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800' : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'}`}
+              title="Chuyển chế độ Sáng/Tối"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-indigo-600" />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* --- MAIN LAYOUT WITH SIDEBAR & CONTENT --- */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        {/* SIDEBAR NAVIGATION */}
+        <aside className="lg:col-span-3">
+          <nav className={`sticky top-24 p-3 rounded-2xl border space-y-1.5 ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800/80 backdrop-blur-xl' : 'bg-white border-slate-200 shadow-sm'}`}>
+            <NavButton
+              active={activeTab === 'dashboard'}
+              onClick={() => setActiveTab('dashboard')}
+              icon={<BarChart2 className="w-5 h-5" />}
+              label="Tổng quan & Tiến độ"
+              badge={null}
+              theme={theme}
+            />
+            <NavButton
+              active={activeTab === 'study'}
+              onClick={() => setActiveTab('study')}
+              icon={<Brain className="w-5 h-5" />}
+              label="Học SRS Flashcard"
+              badge={`${words.filter(w => new Date(w.nextReviewDate) <= new Date()).length}`}
+              theme={theme}
+              highlight
+            />
+            <NavButton
+              active={activeTab === 'topics'}
+              onClick={() => setActiveTab('topics')}
+              icon={<BookOpen className="w-5 h-5" />}
+              label="Bộ Chủ Đề Học"
+              theme={theme}
+            />
+            <NavButton
+              active={activeTab === 'practice'}
+              onClick={() => setActiveTab('practice')}
+              icon={<Target className="w-5 h-5" />}
+              label="Luyện Tập & Games"
+              theme={theme}
+            />
+            <NavButton
+              active={activeTab === 'notebook'}
+              onClick={() => setActiveTab('notebook')}
+              icon={<Star className="w-5 h-5" />}
+              label="Sổ Tay Từ Vựng"
+              badge={`${words.length}`}
+              theme={theme}
+            />
+            <NavButton
+              active={activeTab === 'leaderboard'}
+              onClick={() => setActiveTab('leaderboard')}
+              icon={<Trophy className="w-5 h-5" />}
+              label="Bảng Xếp Hạng"
+              theme={theme}
+            />
+          </nav>
+        </aside>
+
+        {/* MAIN VIEW CONTAINER */}
+        <main className="lg:col-span-9 space-y-6">
+          {activeTab === 'dashboard' && (
+            <DashboardView
+              userStats={userStats}
+              words={words}
+              onStartStudy={() => setActiveTab('study')}
+              onBrowseTopics={() => setActiveTab('topics')}
+              theme={theme}
+            />
+          )}
+
+          {activeTab === 'study' && (
+            <StudySRSView
+              words={words}
+              setWords={setWords}
+              addXP={addXP}
+              speakWord={speakWord}
+              selectedTopic={selectedTopic}
+              setSelectedTopic={setSelectedTopic}
+              theme={theme}
+            />
+          )}
+
+          {activeTab === 'topics' && (
+            <TopicsView
+              topics={INITIAL_TOPICS}
+              words={words}
+              onSelectTopic={(topicId) => {
+                setSelectedTopic(topicId);
+                setActiveTab('study');
+              }}
+              theme={theme}
+            />
+          )}
+
+          {activeTab === 'practice' && (
+            <PracticeGamesView
+              words={words}
+              addXP={addXP}
+              speakWord={speakWord}
+              theme={theme}
+            />
+          )}
+
+          {activeTab === 'notebook' && (
+            <NotebookView
+              words={words}
+              setWords={setWords}
+              speakWord={speakWord}
+              theme={theme}
+            />
+          )}
+
+          {activeTab === 'leaderboard' && (
+            <LeaderboardView
+              badges={INITIAL_BADGES}
+              leaderboard={INITIAL_LEADERBOARD}
+              userStats={userStats}
+              theme={theme}
+            />
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+// --- NAVIGATION BUTTON COMPONENT ---
+function NavButton({ active, onClick, icon, label, badge, highlight, theme }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
+        active
+          ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20'
+          : theme === 'dark'
+          ? 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        <span className={active ? 'text-white' : highlight ? 'text-indigo-400' : ''}>{icon}</span>
+        <span className="text-sm font-semibold">{label}</span>
+      </div>
+      {badge !== null && badge !== undefined && (
+        <span
+          className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+            active
+              ? 'bg-white/20 text-white'
+              : highlight
+              ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
+              : theme === 'dark'
+              ? 'bg-slate-800 text-slate-400'
+              : 'bg-slate-200 text-slate-600'
+          }`}
+        >
+          {badge}
+        </span>
+      )}
+    </button>
+  );
+}
+
+// ==========================================
+// 1. DASHBOARD VIEW COMPONENT
+// ==========================================
+function DashboardView({ userStats, words, onStartStudy, onBrowseTopics, theme }) {
+  const masteredWords = words.filter(w => w.status === 'MASTERED').length;
+  const learningWords = words.filter(w => w.status === 'LEARNING').length;
+  const newWords = words.filter(w => w.status === 'NEW').length;
+  const dueToday = words.filter(w => new Date(w.nextReviewDate) <= new Date()).length;
+
+  return (
+    <div className="space-y-6 animate-fadeIn">
+      {/* HERO BANNER */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-700 p-6 sm:p-8 text-white shadow-xl">
+        <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="relative z-10 max-w-xl space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold uppercase tracking-wider text-indigo-100">
+            <Sparkles className="w-3.5 h-3.5" /> Thuật toán Spaced Repetition (SRS)
+          </div>
+          <h1 className="text-2xl sm:text-4xl font-extrabold leading-tight">
+            Sẵn sàng chinh phục từ vựng tiếng Anh hôm nay?
+          </h1>
+          <p className="text-indigo-100 text-sm sm:text-base leading-relaxed">
+            Bạn có <span className="font-bold underline decoration-amber-400 text-amber-300">{dueToday} từ cần ôn tập</span> theo chu kỳ nhớ quên thông minh.
+          </p>
+          <div className="pt-2 flex flex-wrap gap-3">
+            <button
+              onClick={onStartStudy}
+              className="px-6 py-3 bg-white text-indigo-600 hover:bg-indigo-50 font-bold rounded-xl shadow-lg transition-transform hover:scale-105 flex items-center gap-2 text-sm"
+            >
+              <Play className="w-4 h-4 fill-indigo-600" /> Bắt đầu ôn tập ngay
+            </button>
+            <button
+              onClick={onBrowseTopics}
+              className="px-6 py-3 bg-indigo-900/40 hover:bg-indigo-900/60 border border-white/20 text-white font-semibold rounded-xl backdrop-blur-md transition-all text-sm"
+            >
+              Khám phá chủ đề
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* STATS OVERVIEW CARDS */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <StatCard
+          icon={<Flame className="w-6 h-6 text-amber-500" />}
+          label="Streak Hiện Tại"
+          value={`${userStats.streak} ngày`}
+          subtext="Giữ vững phong độ!"
+          theme={theme}
+        />
+        <StatCard
+          icon={<Brain className="w-6 h-6 text-indigo-500" />}
+          label="Cần Ôn Hôm Nay"
+          value={`${dueToday} từ`}
+          subtext="Theo lịch SRS"
+          theme={theme}
+        />
+        <StatCard
+          icon={<CheckCircle2 className="w-6 h-6 text-emerald-500" />}
+          label="Đã Thành Thạo"
+          value={`${masteredWords} từ`}
+          subtext={`${Math.round((masteredWords / words.length) * 100)}% tổng kho từ`}
+          theme={theme}
+        />
+        <StatCard
+          icon={<Zap className="w-6 h-6 text-violet-500" />}
+          label="Tổng XP Tích Lũy"
+          value={`${userStats.xp} XP`}
+          subtext="Hạng 3 tuần này"
+          theme={theme}
+        />
+      </div>
+
+      {/* LEARNING PROGRESS BREAKDOWN */}
+      <div className={`p-6 rounded-2xl border ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
+          <BarChart2 className="w-5 h-5 text-indigo-500" /> Phân bổ trạng thái từ vựng
+        </h2>
+        
+        {/* Progress Bar */}
+        <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden flex mb-4">
+          <div
+            style={{ width: `${(masteredWords / words.length) * 100}%` }}
+            className="bg-emerald-500 transition-all duration-500"
+            title="Đã thành thạo"
+          />
+          <div
+            style={{ width: `${(learningWords / words.length) * 100}%` }}
+            className="bg-amber-500 transition-all duration-500"
+            title="Đang học"
+          />
+          <div
+            style={{ width: `${(newWords / words.length) * 100}%` }}
+            className="bg-indigo-500 transition-all duration-500"
+            title="Từ mới chưa học"
+          />
+        </div>
+
+        {/* Legend */}
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+            <div className="text-xs font-semibold text-emerald-500">Đã Thuộc (Mastered)</div>
+            <div className="text-xl font-black text-emerald-400 mt-1">{masteredWords}</div>
+          </div>
+          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+            <div className="text-xs font-semibold text-amber-500">Đang Luyện (Learning)</div>
+            <div className="text-xl font-black text-amber-400 mt-1">{learningWords}</div>
+          </div>
+          <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
+            <div className="text-xs font-semibold text-indigo-500">Từ Mới (New)</div>
+            <div className="text-xl font-black text-indigo-400 mt-1">{newWords}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatCard({ icon, label, value, subtext, theme }) {
+  return (
+    <div className={`p-4 sm:p-5 rounded-2xl border transition-all hover:scale-[1.02] ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-xs font-medium text-slate-400">{label}</span>
+        <div className={`p-2 rounded-xl ${theme === 'dark' ? 'bg-slate-800' : 'bg-slate-100'}`}>{icon}</div>
+      </div>
+      <div className="text-xl sm:text-2xl font-black tracking-tight">{value}</div>
+      <div className="text-xs text-slate-500 mt-1 font-medium">{subtext}</div>
+    </div>
+  );
+}
+
+// ==========================================
+// 2. SRS STUDY FLASHCARD VIEW
+// ==========================================
+function StudySRSView({ words, setWords, addXP, speakWord, selectedTopic, setSelectedTopic, theme }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [completedSession, setCompletedSession] = useState(false);
+
+  // Filter words due for review or belonging to selected topic
+  const dueWords = words.filter(w => {
+    if (selectedTopic) return w.topicId === selectedTopic;
+    return true; // review all in queue
+  });
+
+  const currentWord = dueWords[currentIndex];
+
+  const handleFlip = () => {
+    setIsFlipped(!isFlipped);
+  };
+
+  // SRS Rating calculation implementation (SuperMemo SM-2 inspired)
+  const handleRating = (rating) => {
+    if (!currentWord) return;
+
+    let newLevel = currentWord.repetitionLevel;
+    let newInterval = currentWord.intervalDays;
+    let newEase = currentWord.easeFactor;
+    let newStatus = currentWord.status;
+
+    // Rating: 1 = Again (Forgotten), 2 = Hard, 3 = Good, 4 = Easy
+    if (rating === 1) {
+      newLevel = 0;
+      newInterval = 1;
+      newEase = Math.max(1.3, newEase - 0.2);
+      newStatus = 'LEARNING';
+    } else if (rating === 2) {
+      newInterval = Math.max(1, Math.round(newInterval * 1.2));
+      newStatus = 'LEARNING';
+    } else if (rating === 3) {
+      newLevel += 1;
+      newInterval = newLevel === 1 ? 1 : newLevel === 2 ? 6 : Math.round(newInterval * newEase);
+      newStatus = newLevel >= 3 ? 'MASTERED' : 'LEARNING';
+    } else if (rating === 4) {
+      newLevel += 2;
+      newInterval = Math.round((newInterval || 1) * newEase * 1.3);
+      newEase += 0.15;
+      newStatus = 'MASTERED';
+    }
+
+    // Next review timestamp
+    const nextDate = new Date();
+    nextDate.setDate(nextDate.getDate() + newInterval);
+
+    // Update state
+    setWords(prevWords =>
+      prevWords.map(w =>
+        w.id === currentWord.id
+          ? {
+              ...w,
+              repetitionLevel: newLevel,
+              intervalDays: newInterval,
+              easeFactor: newEase,
+              status: newStatus,
+              nextReviewDate: nextDate.toISOString()
+            }
+          : w
+      )
+    );
+
+    addXP(rating * 5); // XP earned based on difficulty
+
+    // Move to next card
+    setIsFlipped(false);
+    if (currentIndex + 1 < dueWords.length) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      setCompletedSession(true);
+    }
+  };
+
+  if (dueWords.length === 0 || completedSession) {
+    return (
+      <div className={`p-8 sm:p-12 rounded-3xl border text-center space-y-5 animate-fadeIn ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <div className="w-20 h-20 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto border border-emerald-500/20">
+          <Trophy className="w-10 h-10" />
+        </div>
+        <h2 className="text-2xl sm:text-3xl font-black">Chúc mừng! Bạn đã hoàn thành bài học!</h2>
+        <p className="text-slate-400 max-w-md mx-auto text-sm">
+          Tất cả thẻ từ vựng trong lượt học này đã được cập nhật thuật toán SRS thành công.
+        </p>
+        <div className="flex justify-center gap-4 pt-4">
+          <button
+            onClick={() => {
+              setCompletedSession(false);
+              setCurrentIndex(0);
+              setSelectedTopic(null);
+            }}
+            className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition-transform hover:scale-105 text-sm"
+          >
+            Ôn tập lại từ đầu
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6 max-w-2xl mx-auto animate-fadeIn">
+      {/* Header bar */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {selectedTopic && (
+            <button
+              onClick={() => setSelectedTopic(null)}
+              className="text-xs px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 border border-indigo-500/20"
+            >
+              ← Tất cả chủ đề
+            </button>
+          )}
+          <span className="text-xs font-semibold text-slate-400">
+            Thẻ {currentIndex + 1} / {dueWords.length}
+          </span>
+        </div>
+        <div className="w-36 h-2 bg-slate-800 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all"
+            style={{ width: `${((currentIndex + 1) / dueWords.length) * 100}%` }}
+          />
+        </div>
+      </div>
+
+      {/* 3D FLIP CARD CONTAINER */}
+      <div
+        onClick={handleFlip}
+        className="w-full h-80 sm:h-96 cursor-pointer perspective-1000 group"
+      >
+        <div
+          className={`relative w-full h-full rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-transform duration-500 transform-style-3d border shadow-2xl ${
+            isFlipped ? 'rotate-y-180' : ''
+          } ${
+            theme === 'dark'
+              ? 'bg-gradient-to-b from-slate-900 to-slate-900/90 border-slate-800 text-slate-100'
+              : 'bg-white border-slate-200 text-slate-800'
+          }`}
+        >
+          {/* CARD FRONT SIDE */}
+          <div className={`absolute inset-0 p-8 flex flex-col justify-between backface-hidden ${isFlipped ? 'hidden' : 'flex'}`}>
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full">
+                {currentWord.partOfSpeech}
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  speakWord(currentWord.word);
+                }}
+                className="p-3 bg-indigo-600 text-white rounded-full hover:bg-indigo-500 shadow-md transition-transform hover:scale-110"
+                title="Nghe phát âm chuẩn"
+              >
+                <Volume2 className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="text-center space-y-3 my-auto">
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-indigo-400">
+                {currentWord.word}
+              </h2>
+              <p className="text-slate-400 font-mono text-base sm:text-lg">{currentWord.phonetic}</p>
+            </div>
+
+            <div className="text-center text-xs text-slate-500 font-medium flex items-center justify-center gap-2">
+              <RotateCw className="w-3.5 h-3.5 animate-spin" /> Chạm vào thẻ để xem đáp án
+            </div>
+          </div>
+
+          {/* CARD BACK SIDE */}
+          <div className={`absolute inset-0 p-8 flex flex-col justify-between backface-hidden transform rotate-y-180 ${!isFlipped ? 'hidden' : 'flex'}`}>
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
+                Ý Nghĩa & Ví Dụ
+              </span>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  speakWord(currentWord.example);
+                }}
+                className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs flex items-center gap-1.5"
+              >
+                <Volume2 className="w-4 h-4 text-indigo-400" /> Nghe câu
+              </button>
+            </div>
+
+            <div className="space-y-4 my-auto">
+              <h3 className="text-xl sm:text-2xl font-bold text-emerald-400 text-center">
+                {currentWord.definition}
+              </h3>
+              <div className="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 space-y-1 text-left">
+                <p className="text-sm font-semibold italic text-indigo-300">"{currentWord.example}"</p>
+                <p className="text-xs text-slate-400">{currentWord.exampleMeaning}</p>
+              </div>
+            </div>
+
+            <div className="text-center text-xs text-slate-500 font-medium">
+              Đánh giá mức độ ghi nhớ ở bên dưới 👇
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SRS RATING BUTTONS */}
+      {isFlipped && (
+        <div className="grid grid-cols-4 gap-2 sm:gap-3 pt-2 animate-fadeIn">
+          <button
+            onClick={() => handleRating(1)}
+            className="p-3 rounded-2xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 text-center transition-all hover:scale-105"
+          >
+            <div className="font-bold text-xs sm:text-sm">Quên</div>
+            <div className="text-[10px] opacity-75 mt-0.5">Gặp lại ngay</div>
+          </button>
+          <button
+            onClick={() => handleRating(2)}
+            className="p-3 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-400 text-center transition-all hover:scale-105"
+          >
+            <div className="font-bold text-xs sm:text-sm">Khó</div>
+            <div className="text-[10px] opacity-75 mt-0.5">+1 ngày</div>
+          </button>
+          <button
+            onClick={() => handleRating(3)}
+            className="p-3 rounded-2xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-400 text-center transition-all hover:scale-105"
+          >
+            <div className="font-bold text-xs sm:text-sm">Tốt</div>
+            <div className="text-[10px] opacity-75 mt-0.5">+3 ngày</div>
+          </button>
+          <button
+            onClick={() => handleRating(4)}
+            className="p-3 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-center transition-all hover:scale-105"
+          >
+            <div className="font-bold text-xs sm:text-sm">Dễ</div>
+            <div className="text-[10px] opacity-75 mt-0.5">+7 ngày</div>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ==========================================
+// 3. TOPICS VIEW COMPONENT
+// ==========================================
+function TopicsView({ topics, words, onSelectTopic, theme }) {
+  return (
+    <div className="space-y-6 animate-fadeIn">
+      <div>
+        <h1 className="text-2xl font-black">Danh Mục Chủ Đề Từ Vựng</h1>
+        <p className="text-slate-400 text-sm">Chọn chủ đề bạn muốn tập trung ôn luyện hôm nay</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {topics.map(topic => {
+          const topicWords = words.filter(w => w.topicId === topic.id);
+          const masteredCount = topicWords.filter(w => w.status === 'MASTERED').length;
+          const progressPercent = topicWords.length > 0 ? Math.round((masteredCount / topicWords.length) * 100) : 0;
+
+          return (
+            <div
+              key={topic.id}
+              onClick={() => onSelectTopic(topic.id)}
+              className={`p-6 rounded-2xl border transition-all cursor-pointer hover:scale-[1.02] flex flex-col justify-between space-y-4 ${
+                theme === 'dark' ? 'bg-slate-900/60 border-slate-800 hover:border-indigo-500/50' : 'bg-white border-slate-200 shadow-sm hover:border-indigo-500'
+              }`}
+            >
+              <div className="space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className={`p-3 rounded-xl bg-gradient-to-r ${topic.color} text-white shadow-md`}>
+                    <BookOpen className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                    {topic.level}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold">{topic.title}</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">{topic.description}</p>
+              </div>
+
+              {/* Progress bar */}
+              <div className="space-y-1.5 pt-2">
+                <div className="flex justify-between text-xs font-semibold">
+                  <span className="text-slate-400">Tiến độ thành thạo</span>
+                  <span className="text-indigo-400">{progressPercent}%</span>
+                </div>
+                <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all duration-300"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// 4. PRACTICE & MINI-GAMES VIEW COMPONENT
+// ==========================================
+function PracticeGamesView({ words, addXP, speakWord, theme }) {
+  const [activeGame, setActiveGame] = useState('quiz'); // 'quiz', 'matching', 'voice'
+
+  return (
+    <div className="space-y-6 animate-fadeIn">
+      {/* Game Mode Switcher */}
+      <div className="flex gap-2 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 max-w-md">
+        <button
+          onClick={() => setActiveGame('quiz')}
+          className={`flex-1 py-2.5 rounded-xl font-bold text-xs transition-all ${
+            activeGame === 'quiz' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          Trắc nghiệm Quiz
+        </button>
+        <button
+          onClick={() => setActiveGame('matching')}
+          className={`flex-1 py-2.5 rounded-xl font-bold text-xs transition-all ${
+            activeGame === 'matching' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          Nối Từ Thần Tốc
+        </button>
+        <button
+          onClick={() => setActiveGame('voice')}
+          className={`flex-1 py-2.5 rounded-xl font-bold text-xs transition-all ${
+            activeGame === 'voice' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          Luyện Phát Âm AI
+        </button>
+      </div>
+
+      {activeGame === 'quiz' && <QuizGame words={words} addXP={addXP} theme={theme} />}
+      {activeGame === 'matching' && <MatchingGame words={words} addXP={addXP} theme={theme} />}
+      {activeGame === 'voice' && <VoiceGame words={words} speakWord={speakWord} addXP={addXP} theme={theme} />}
+    </div>
+  );
+}
+
+// --- SUB-GAME 1: MULTIPLE CHOICE QUIZ ---
+function QuizGame({ words, addXP, theme }) {
+  const [quizList, setQuizList] = useState([]);
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [score, setScore] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+
+  useEffect(() => {
+    generateQuiz();
+  }, [words]);
+
+  const generateQuiz = () => {
+    const shuffled = [...words].sort(() => 0.5 - Math.random()).slice(0, 5);
+    const questions = shuffled.map(w => {
+      // Pick 3 wrong options
+      const wrongDefs = words
+        .filter(other => other.id !== w.id)
+        .map(other => other.definition)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
+      
+      const options = [...wrongDefs, w.definition].sort(() => 0.5 - Math.random());
+      return { word: w, options, correctAnswer: w.definition };
+    });
+    setQuizList(questions);
+    setCurrentIdx(0);
+    setScore(0);
+    setIsFinished(false);
+    setSelectedAnswer(null);
+  };
+
+  const handleAnswer = (option) => {
+    if (selectedAnswer !== null) return;
+    setSelectedAnswer(option);
+
+    if (option === quizList[currentIdx].correctAnswer) {
+      setScore(prev => prev + 1);
+      addXP(10);
+    }
+
+    setTimeout(() => {
+      if (currentIdx + 1 < quizList.length) {
+        setCurrentIdx(currentIdx + 1);
+        setSelectedAnswer(null);
+      } else {
+        setIsFinished(true);
+      }
+    }, 1200);
+  };
+
+  if (quizList.length === 0) return null;
+  const currentQ = quizList[currentIdx];
+
+  if (isFinished) {
+    return (
+      <div className={`p-8 rounded-3xl border text-center space-y-4 ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'}`}>
+        <Trophy className="w-12 h-12 text-amber-400 mx-auto" />
+        <h3 className="text-2xl font-bold">Hoàn thành Bài Quiz!</h3>
+        <p className="text-slate-400 text-sm">Bạn đã trả lời đúng {score} / {quizList.length} câu hỏi.</p>
+        <button
+          onClick={generateQuiz}
+          className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm"
+        >
+          Chơi lượt mới
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`p-6 sm:p-8 rounded-3xl border space-y-6 ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+      <div className="flex justify-between items-center text-xs font-semibold text-slate-400">
+        <span>Câu hỏi {currentIdx + 1} / {quizList.length}</span>
+        <span>Điểm hiện tại: {score * 10} XP</span>
+      </div>
+
+      <div className="text-center py-4">
+        <div className="text-xs text-indigo-400 font-bold uppercase tracking-wider mb-1">Nghĩa của từ này là gì?</div>
+        <h2 className="text-3xl font-black text-indigo-300">{currentQ.word.word}</h2>
+        <span className="text-xs text-slate-400 font-mono">{currentQ.word.phonetic}</span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3">
+        {currentQ.options.map((opt, i) => {
+          let btnStyle = theme === 'dark' ? 'bg-slate-800/80 hover:bg-slate-800 text-slate-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-800';
+          
+          if (selectedAnswer !== null) {
+            if (opt === currentQ.correctAnswer) {
+              btnStyle = 'bg-emerald-500/20 border-emerald-500 text-emerald-400 font-bold';
+            } else if (opt === selectedAnswer) {
+              btnStyle = 'bg-red-500/20 border-red-500 text-red-400';
             }
           }
-        }
-      }
-    }
-  </script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Google Fonts Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    /* CSS Custom Property Theme Colors */
-    body.theme-indigo {
-      --color-theme-50: #eep2ff;
-      --color-theme-100: #e0e7ff;
-      --color-theme-200: #c7d2fe;
-      --color-theme-300: #a5b4fc;
-      --color-theme-400: #818cf8;
-      --color-theme-500: #6366f1;
-      --color-theme-600: #4f46e5;
-      --color-theme-700: #4338ca;
-      --color-theme-800: #3730a3;
-      --color-theme-900: #312e81;
-    }
-
-    body.theme-emerald {
-      --color-theme-50: #ecfdf5;
-      --color-theme-100: #d1fae5;
-      --color-theme-200: #a7f3d0;
-      --color-theme-300: #6ee7b7;
-      --color-theme-400: #34d399;
-      --color-theme-500: #10b981;
-      --color-theme-600: #059669;
-      --color-theme-700: #047857;
-      --color-theme-800: #065f46;
-      --color-theme-900: #064e3b;
-    }
-
-    body.theme-violet {
-      --color-theme-50: #f5f3ff;
-      --color-theme-100: #ede9fe;
-      --color-theme-200: #ddd6fe;
-      --color-theme-300: #c4b5fd;
-      --color-theme-400: #a78bfa;
-      --color-theme-500: #8b5cf6;
-      --color-theme-600: #7c3aed;
-      --color-theme-700: #6d28d9;
-      --color-theme-800: #5b21b6;
-      --color-theme-900: #4c1d95;
-    }
-
-    body.theme-amber {
-      --color-theme-50: #fffbeb;
-      --color-theme-100: #fef3c7;
-      --color-theme-200: #fde68a;
-      --color-theme-300: #fcd34d;
-      --color-theme-400: #fbbf24;
-      --color-theme-500: #f59e0b;
-      --color-theme-600: #d97706;
-      --color-theme-700: #b45309;
-      --color-theme-800: #92400e;
-      --color-theme-900: #78350f;
-    }
-
-    .glass-card {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-  </style>
-</head>
-
-<body class="theme-indigo bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-full flex flex-col antialiased selection:bg-theme-500 selection:text-white">
-
-  <!-- Application Header -->
-  <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      
-      <!-- Logo & App Name -->
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-theme-600 to-theme-400 flex items-center justify-center text-white shadow-lg shadow-theme-500/30">
-          <i data-lucide="brain-circuit" class="w-6 h-6"></i>
-        </div>
-        <div>
-          <h1 class="font-bold text-lg tracking-tight leading-tight">SRS Flashcards</h1>
-          <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Spaced Repetition System</p>
-        </div>
+          return (
+            <button
+              key={i}
+              onClick={() => handleAnswer(opt)}
+              className={`p-4 rounded-xl text-left border border-transparent transition-all font-medium text-sm flex items-center justify-between ${btnStyle}`}
+            >
+              <span>{opt}</span>
+              {selectedAnswer !== null && opt === currentQ.correctAnswer && (
+                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+              )}
+            </button>
+          );
+        })}
       </div>
-
-      <!-- Navigation Tabs -->
-      <nav class="flex space-x-1 sm:space-x-2">
-        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-medium text-sm flex items-center space-x-2 transition-all">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Thống kê</span>
-        </button>
-        <button onclick="switchTab('practice')" id="tab-practice" class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-medium text-sm flex items-center space-x-2 transition-all">
-          <i data-lucide="book-open" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Luyện tập</span>
-        </button>
-        <button onclick="switchTab('manage')" id="tab-manage" class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-medium text-sm flex items-center space-x-2 transition-all">
-          <i data-lucide="list-plus" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Quản lý từ</span>
-        </button>
-        <button onclick="switchTab('settings')" id="tab-settings" class="nav-btn px-3 sm:px-4 py-2 rounded-xl font-medium text-sm flex items-center space-x-2 transition-all">
-          <i data-lucide="palette" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Giao diện</span>
-        </button>
-      </nav>
     </div>
-  </header>
+  );
+}
 
-  <!-- Main Content Body -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+// --- SUB-GAME 2: SPEED MATCHING GAME ---
+function MatchingGame({ words, addXP, theme }) {
+  const [cards, setCards] = useState([]);
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [matchedIds, setMatchedIds] = useState([]);
+  const [timer, setTimer] = useState(30);
+  const [isGameOver, setIsGameOver] = useState(false);
 
-    <!-- 1. DASHBOARD VIEW -->
-    <section id="view-dashboard" class="space-y-6 hidden">
-      <!-- Metric Cards Grid -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <!-- Total Vocab -->
-        <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl p-5 border border-slate-200 dark:border-slate-700/60 shadow-sm">
-          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-            <span class="text-xs font-semibold uppercase tracking-wider">Tổng số từ</span>
-            <div class="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
-              <i data-lucide="library" class="w-5 h-5"></i>
-            </div>
-          </div>
-          <div class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white" id="stat-total">0</div>
-          <p class="text-xs text-slate-500 mt-1">Từ trong kho dữ liệu</p>
-        </div>
+  useEffect(() => {
+    initGame();
+  }, [words]);
 
-        <!-- Mastered Vocab -->
-        <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl p-5 border border-slate-200 dark:border-slate-700/60 shadow-sm">
-          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-            <span class="text-xs font-semibold uppercase tracking-wider">Thành thạo</span>
-            <div class="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
-              <i data-lucide="award" class="w-5 h-5"></i>
-            </div>
-          </div>
-          <div class="text-3xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400" id="stat-mastered">0</div>
-          <p class="text-xs text-slate-500 mt-1">Đạt Level 5 Leitner</p>
-        </div>
-
-        <!-- Learning Vocab -->
-        <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl p-5 border border-slate-200 dark:border-slate-700/60 shadow-sm">
-          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-            <span class="text-xs font-semibold uppercase tracking-wider">Đang học</span>
-            <div class="p-2 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
-              <i data-lucide="flame" class="w-5 h-5"></i>
-            </div>
-          </div>
-          <div class="text-3xl font-bold tracking-tight text-amber-600 dark:text-amber-400" id="stat-learning">0</div>
-          <p class="text-xs text-slate-500 mt-1">Level 1 tới Level 4</p>
-        </div>
-
-        <!-- Accuracy -->
-        <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl p-5 border border-slate-200 dark:border-slate-700/60 shadow-sm">
-          <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-            <span class="text-xs font-semibold uppercase tracking-wider">Tỉ lệ chính xác</span>
-            <div class="p-2 rounded-lg bg-theme-50 dark:bg-theme-900/30 text-theme-600 dark:text-theme-400">
-              <i data-lucide="target" class="w-5 h-5"></i>
-            </div>
-          </div>
-          <div class="text-3xl font-bold tracking-tight text-theme-600 dark:text-theme-400" id="stat-accuracy">0%</div>
-          <p class="text-xs text-slate-500 mt-1">Toàn bộ lượt luyện tập</p>
-        </div>
-      </div>
-
-      <!-- Charts Row -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Bar Chart: Level Distribution -->
-        <div class="lg:col-span-2 glass-card bg-white dark:bg-slate-800/80 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm flex flex-col justify-between">
-          <div>
-            <h3 class="font-bold text-slate-900 dark:text-white text-base">Phân bố cấp độ Spaced Repetition</h3>
-            <p class="text-xs text-slate-500 mb-4">Số lượng từ vựng ở từng hộp Leitner (Level 1 - 5)</p>
-          </div>
-          <div class="h-64 w-full relative">
-            <canvas id="chart-srs-levels"></canvas>
-          </div>
-        </div>
-
-        <!-- Doughnut Chart: Mastery Ratio -->
-        <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl p-6 border border-slate-200 dark:border-slate-700/60 shadow-sm flex flex-col justify-between">
-          <div>
-            <h3 class="font-bold text-slate-900 dark:text-white text-base">Tiến độ ghi nhớ</h3>
-            <p class="text-xs text-slate-500 mb-4">Tỉ lệ từ đã thuộc hẳn vs đang học</p>
-          </div>
-          <div class="h-64 w-full relative flex items-center justify-center">
-            <canvas id="chart-status-pie"></canvas>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. PRACTICE VIEW -->
-    <section id="view-practice" class="space-y-6 hidden">
-      <!-- Options Filter Header -->
-      <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700/60 flex flex-wrap gap-4 items-center justify-between">
-        <div class="flex flex-wrap items-center gap-3">
-          <div class="flex items-center space-x-2">
-            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Chế độ:</label>
-            <select id="practice-mode" onchange="changePracticeMode(this.value)" class="bg-slate-100 dark:bg-slate-700 border-none text-sm font-medium rounded-xl px-3 py-2 focus:ring-2 focus:ring-theme-500 outline-none">
-              <option value="en-vi">Viết Nghĩa (Tiếng Anh ➔ Tiếng Việt)</option>
-              <option value="vi-en">Viết Từ (Tiếng Việt ➔ Tiếng Anh)</option>
-              <option value="mcq-listen">Nghe & Chọn (Trắc nghiệm)</option>
-              <option value="random">Luyện tập Ngẫu nhiên</option>
-            </select>
-          </div>
-
-          <div class="flex items-center space-x-2">
-            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Chủ đề:</label>
-            <select id="practice-tag-filter" onchange="changePracticeTagFilter(this.value)" class="bg-slate-100 dark:bg-slate-700 border-none text-sm font-medium rounded-xl px-3 py-2 focus:ring-2 focus:ring-theme-500 outline-none">
-              <option value="all">Tất cả chủ đề</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="flex items-center space-x-6 text-sm font-medium text-slate-600 dark:text-slate-300">
-          <div class="flex items-center space-x-1.5" title="Chuỗi trả lời đúng liên tiếp">
-            <i data-lucide="flame" class="w-5 h-5 text-amber-500"></i>
-            <span>Chuỗi: <strong id="streak-count" class="text-amber-500 text-base">0</strong></span>
-          </div>
-          <div class="flex items-center space-x-1.5" title="Số từ cần ôn theo SRS ngay lúc này">
-            <i data-lucide="clock" class="w-5 h-5 text-theme-500"></i>
-            <span>Cần ôn: <strong id="due-count" class="text-theme-500 text-base">0</strong></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Flashcard Review Box -->
-      <div id="card-container" class="max-w-xl mx-auto glass-card bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/80 p-6 sm:p-8 relative overflow-hidden transition-all">
-        <!-- Flashcard Header Info -->
-        <div class="flex justify-between items-center mb-6">
-          <div class="flex items-center space-x-2">
-            <span id="card-level-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-theme-100 text-theme-700 dark:bg-theme-900/50 dark:text-theme-300">
-              Level 1 (Hàng ngày)
-            </span>
-            <div id="card-tags-badges" class="flex flex-wrap gap-1"></div>
-          </div>
-          <button onclick="speakWord()" class="p-2.5 text-slate-400 hover:text-theme-600 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700/60 transition" title="Phát âm tiếng Anh">
-            <i data-lucide="volume-2" class="w-6 h-6"></i>
-          </button>
-        </div>
-
-        <!-- Flashcard Prompt -->
-        <div class="text-center py-6 space-y-2">
-          <h2 id="card-prompt" class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">...</h2>
-          <p id="card-subprompt" class="text-slate-400 dark:text-slate-400 font-mono text-sm">...</p>
-        </div>
-
-        <!-- Example Hint Toggle -->
-        <div class="text-center mb-6">
-          <button onclick="toggleHint()" class="inline-flex items-center space-x-1 text-xs font-semibold text-theme-600 dark:text-theme-400 hover:underline">
-            <i data-lucide="help-circle" class="w-4 h-4"></i>
-            <span>Gợi ý ví dụ</span>
-          </button>
-          <div id="card-hint-example" class="hidden mt-3 p-3 bg-slate-50 dark:bg-slate-900/60 rounded-xl text-xs text-slate-600 dark:text-slate-300 italic border border-slate-100 dark:border-slate-800"></div>
-        </div>
-
-        <!-- PRACTICE INTERACTION MODES -->
-        <!-- Mode A: Text Input -->
-        <div id="input-mode-container" class="space-y-4">
-          <form onsubmit="event.preventDefault(); checkAnswer();" class="flex flex-col sm:flex-row gap-3">
-            <input type="text" id="answer-input" placeholder="Nhập câu trả lời của bạn..." autocomplete="off" 
-              class="flex-grow px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-700/70 border-2 border-transparent focus:border-theme-500 outline-none text-base font-medium transition">
-            <button type="submit" class="px-6 py-3 bg-theme-600 hover:bg-theme-700 text-white font-bold rounded-2xl shadow-lg shadow-theme-500/20 transition active:scale-95">
-              Kiểm tra
-            </button>
-          </form>
-        </div>
-
-        <!-- Mode B: MCQ Options Grid -->
-        <div id="mcq-mode-container" class="grid grid-cols-1 gap-3 hidden"></div>
-
-        <!-- Feedback & SRS Action Card -->
-        <div id="feedback-box" class="hidden mt-6 p-4 rounded-2xl transition-all space-y-3">
-          <div class="flex items-start space-x-3">
-            <div id="feedback-icon" class="p-1 rounded-full"></div>
-            <div class="flex-grow">
-              <h4 id="feedback-title" class="font-bold text-sm"></h4>
-              <p id="feedback-msg" class="text-xs text-slate-600 dark:text-slate-300 mt-0.5"></p>
-            </div>
-          </div>
-          <button onclick="nextCard()" class="w-full py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm rounded-xl hover:opacity-90 transition shadow-md">
-            Tiếp tục từ mới ➔
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. VOCABULARY MANAGEMENT VIEW -->
-    <section id="view-manage" class="space-y-6 hidden">
-      <!-- Table Filter & Search Controls -->
-      <div class="glass-card bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex flex-col sm:flex-row gap-3 justify-between items-center">
-        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto flex-grow max-w-xl">
-          <div class="relative flex-grow">
-            <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
-            <input type="text" id="search-vocab" oninput="filterVocabTable()" placeholder="Tìm từ vựng, nghĩa, tag..." 
-              class="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700/70 border-none text-sm focus:ring-2 focus:ring-theme-500 outline-none">
-          </div>
-          <select id="manage-tag-filter" onchange="filterVocabTable()" class="bg-slate-100 dark:bg-slate-700/70 border-none text-sm font-medium rounded-xl px-3 py-2 focus:ring-2 focus:ring-theme-500 outline-none">
-            <option value="all">Tất cả chủ đề</option>
-          </select>
-        </div>
-
-        <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
-          <button onclick="openAddModal()" class="px-4 py-2 bg-theme-600 hover:bg-theme-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-theme-500/20 transition flex items-center space-x-1.5">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            <span>Thêm từ mới</span>
-          </button>
-          
-          <button onclick="exportDataJSON()" class="p-2 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="Xuất dữ liệu JSON">
-            <i data-lucide="download" class="w-4 h-4"></i>
-          </button>
-          
-          <label class="p-2 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition cursor-pointer" title="Nhập dữ liệu JSON">
-            <i data-lucide="upload" class="w-4 h-4"></i>
-            <input type="file" accept=".json" onchange="importDataJSON(event)" class="hidden">
-          </label>
-        </div>
-      </div>
-
-      <!-- Vocab Table Container -->
-      <div class="glass-card bg-white dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700/60 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                <th class="py-3.5 px-4">Từ vựng (Word)</th>
-                <th class="py-3.5 px-4">Nghĩa (Meaning)</th>
-                <th class="py-3.5 px-4">Chủ đề / Tags</th>
-                <th class="py-3.5 px-4">Loại từ</th>
-                <th class="py-3.5 px-4">Cấp độ SRS</th>
-                <th class="py-3.5 px-4">Ôn tiếp theo</th>
-                <th class="py-3.5 px-4 text-right">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="vocab-table-body" class="divide-y divide-slate-100 dark:divide-slate-700/50 text-sm">
-              <!-- Rows populated via JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. SETTINGS & THEMES VIEW -->
-    <section id="view-settings" class="max-w-2xl mx-auto space-y-6 hidden">
-      <div class="glass-card bg-white dark:bg-slate-800/80 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-700/60 shadow-sm space-y-6">
-        <div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white">Cài đặt giao diện</h3>
-          <p class="text-sm text-slate-500">Tùy biến không gian học tập phù hợp với sở thích của bạn.</p>
-        </div>
-
-        <hr class="border-slate-100 dark:border-slate-700/60">
-
-        <!-- Theme Color Selection -->
-        <div class="space-y-3">
-          <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Tông màu chủ đạo</label>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <button onclick="setThemeColor('indigo')" class="p-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 flex items-center space-x-2 transition">
-              <span class="w-4 h-4 rounded-full bg-indigo-600"></span>
-              <span class="text-xs font-bold text-indigo-900 dark:text-indigo-200">Indigo</span>
-            </button>
-            <button onclick="setThemeColor('emerald')" class="p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 flex items-center space-x-2 transition">
-              <span class="w-4 h-4 rounded-full bg-emerald-600"></span>
-              <span class="text-xs font-bold text-emerald-900 dark:text-emerald-200">Emerald</span>
-            </button>
-            <button onclick="setThemeColor('violet')" class="p-3 rounded-2xl border-2 border-violet-500 bg-violet-50 dark:bg-violet-950/30 flex items-center space-x-2 transition">
-              <span class="w-4 h-4 rounded-full bg-violet-600"></span>
-              <span class="text-xs font-bold text-violet-900 dark:text-violet-200">Violet</span>
-            </button>
-            <button onclick="setThemeColor('amber')" class="p-3 rounded-2xl border-2 border-amber-500 bg-amber-50 dark:bg-amber-950/30 flex items-center space-x-2 transition">
-              <span class="w-4 h-4 rounded-full bg-amber-600"></span>
-              <span class="text-xs font-bold text-amber-900 dark:text-amber-200">Amber</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Dark Mode Toggle -->
-        <div class="flex items-center justify-between pt-2">
-          <div>
-            <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Chế độ tối (Dark Mode)</h4>
-            <p class="text-xs text-slate-500">Giúp bảo vệ mắt khi luyện tập ban đêm</p>
-          </div>
-          <button onclick="toggleDarkMode()" class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 transition">
-            <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
-            <i data-lucide="sun" class="w-5 h-5 block dark:hidden text-amber-500"></i>
-          </button>
-        </div>
-
-        <!-- Reset Data Warning -->
-        <div class="pt-4 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
-          <div>
-            <h4 class="text-sm font-semibold text-rose-600 dark:text-rose-400">Khôi phục dữ liệu gốc</h4>
-            <p class="text-xs text-slate-500">Xóa dữ liệu hiện tại và nạp lại 10 từ mẫu mặc định</p>
-          </div>
-          <button onclick="resetDefaultData()" class="px-4 py-2 bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 font-semibold text-xs rounded-xl hover:bg-rose-100 transition">
-            Khôi phục
-          </button>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ADD / EDIT VOCABULARY MODAL -->
-  <div id="vocab-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="glass-card bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-        <h3 id="modal-title" class="font-bold text-lg text-slate-900 dark:text-white">Thêm từ vựng mới</h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form id="vocab-form" onsubmit="saveVocab(event)" class="space-y-3">
-        <input type="hidden" id="form-vocab-id">
-        <div>
-          <label class="text-xs font-semibold text-slate-500 uppercase">Từ tiếng Anh (*)</label>
-          <input type="text" id="form-word" required placeholder="ví dụ: Ubiquitous" class="w-full mt-1 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700/70 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="text-xs font-semibold text-slate-500 uppercase">Phiên âm IPA</label>
-            <input type="text" id="form-phonetic" placeholder="/juːˈbɪk.wə.təs/" class="w-full mt-1 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700/70 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-          </div>
-          <div>
-            <label class="text-xs font-semibold text-slate-500 uppercase">Loại từ</label>
-            <select id="form-type" class="w-full mt-1 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700/70 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-              <option value="noun">Danh từ (noun)</option>
-              <option value="verb">Động từ (verb)</option>
-              <option value="adjective">Tính từ (adj)</option>
-              <option value="adverb">Trạng từ (adv)</option>
-              <option value="phrase">Cụm từ (phrase)</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="text-xs font-semibold text-slate-500 uppercase">Nghĩa tiếng Việt (*)</label>
-          <input type="text" id="form-meaning" required placeholder="ví dụ: Có mặt ở khắp nơi" class="w-full mt-1 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700/70 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-        </div>
-
-        <div>
-          <label class="text-xs font-semibold text-slate-500 uppercase">Chủ đề / Tags (phân cách bởi dấu phẩy)</label>
-          <input type="text" id="form-tags" placeholder="ví dụ: IELTS, Công việc, Giao tiếp" class="w-full mt-1 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700/70 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-        </div>
-
-        <div>
-          <label class="text-xs font-semibold text-slate-500 uppercase">Ví dụ minh họa</label>
-          <textarea id="form-example" rows="2" placeholder="Mobile phones are now ubiquitous..." class="w-full mt-1 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-700/70 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500"></textarea>
-        </div>
-
-        <div class="flex justify-end space-x-2 pt-2">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-700">Hủy</button>
-          <button type="submit" class="px-4 py-2 rounded-xl bg-theme-600 text-white text-sm font-semibold hover:bg-theme-700 shadow-md shadow-theme-500/20">Lưu từ vựng</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- APPLICATION LOGIC SCRIPT -->
-  <script>
-    /* ==========================================================================
-       1. INITIAL DEFAULT VOCABULARY LIST
-       ========================================================================== */
-    const initialWordList = [
-      { id: '1', word: 'Acknowledge', phonetic: '/əkˈnɒl.ɪdʒ/', type: 'verb', meaning: 'Thừa nhận, công nhận', tags: ['Giao tiếp', 'Công việc'], example: 'He acknowledged his mistake promptly.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '2', word: 'Benevolent', phonetic: '/bəˈnev.əl.ənt/', type: 'adjective', meaning: 'Rộng lượng, nhân từ', tags: ['IELTS', 'Tính cách'], example: 'A benevolent smile greeted the visitors.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '3', word: 'Capricious', phonetic: '/kəˈprɪʃ.əs/', type: 'adjective', meaning: 'Thất thường, dễ thay đổi', tags: ['IELTS'], example: 'We have a capricious climate here.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '4', word: 'Diligent', phonetic: '/ˈdɪl.ɪ.dʒənt/', type: 'adjective', meaning: 'Cần cù, siêng năng', tags: ['Học tập', 'Công việc'], example: 'She is a diligent student who works hard.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '5', word: 'Ephemeral', phonetic: '/ɪˈfem.ər.əl/', type: 'adjective', meaning: 'Phù du, chóng khánh', tags: ['IELTS', 'Văn học'], example: 'Fame in this world is often ephemeral.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '6', word: 'Meticulous', phonetic: '/məˈtɪk.jə.ləs/', type: 'adjective', meaning: 'Tỉ mỉ, kỹ lưỡng', tags: ['Công việc', 'Tính cách'], example: 'He is meticulous about his appearance.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '7', word: 'Resilient', phonetic: '/rɪˈzɪl.jənt/', type: 'adjective', meaning: 'Kiên cường, phục hồi nhanh', tags: ['Cuộc sống', 'IELTS'], example: 'Children are remarkably resilient.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '8', word: 'Pragmatic', phonetic: '/præɡˈmæt.ɪk/', type: 'adjective', meaning: 'Thực tế, thực dụng', tags: ['Công việc'], example: 'We need a pragmatic approach to this issue.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '9', word: 'Procrastinate', phonetic: '/prəʊˈkræs.tɪ.neɪt/', type: 'verb', meaning: 'Trì hoãn, chần chừ', tags: ['Học tập', 'Kỹ năng'], example: 'Stop procrastinating and finish your work.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '10', word: 'Ubiquitous', phonetic: '/juːˈbɪk.wə.təs/', type: 'adjective', meaning: 'Phổ biến, có mặt khắp nơi', tags: ['IELTS', 'Công nghệ'], example: 'Smartphones are ubiquitous nowadays.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 }
-    ];
-
-    // SRS Leitner Level Intervals (in Days)
-    const SRS_INTERVALS = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 14 };
-
-    /* ==========================================================================
-       2. GLOBAL STATE MANAGEMENT
-       ========================================================================== */
-    let vocabList = [];
-    let currentCard = null;
-    let streakCount = 0;
-    let practiceMode = 'en-vi';
-    let selectedPracticeTag = 'all';
-    let levelChart = null;
-    let pieChart = null;
-
-    /* ==========================================================================
-       3. HELPER FUNCTIONS & TEXT NORMALIZATION
-       ========================================================================== */
-    function normalizeText(text) {
-      if (!text) return '';
-      return text
-        .toLowerCase()
-        .normalize('NFC')
-        .replace(/hoá/g, 'hóa')
-        .replace(/hoà/g, 'hòa')
-        .replace(/hoả/g, 'hỏa')
-        .replace(/hoã/g, 'họa')
-        .replace(/hoạ/g, 'họa')
-        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
+  useEffect(() => {
+    if (timer > 0 && !isGameOver && cards.length > 0) {
+      const interval = setInterval(() => setTimer(t => t - 1), 1000);
+      return () => clearInterval(interval);
+    } else if (timer === 0) {
+      setIsGameOver(true);
     }
+  }, [timer, isGameOver, cards]);
 
-    function getAllTags() {
-      const tagSet = new Set();
-      vocabList.forEach(v => {
-        if (Array.isArray(v.tags)) {
-          v.tags.forEach(t => { if (t && t.trim()) tagSet.add(t.trim()); });
-        }
-      });
-      return Array.from(tagSet).sort();
-    }
+  const initGame = () => {
+    const picked = [...words].sort(() => 0.5 - Math.random()).slice(0, 4);
+    const cardItems = [];
 
-    function populateTagDropdowns() {
-      const tags = getAllTags();
-
-      const practiceSelect = document.getElementById('practice-tag-filter');
-      const currentPracticeVal = practiceSelect.value;
-      practiceSelect.innerHTML = '<option value="all">Tất cả chủ đề</option>';
-      tags.forEach(t => {
-        const opt = document.createElement('option');
-        opt.value = t;
-        opt.textContent = t;
-        practiceSelect.appendChild(opt);
-      });
-      if (tags.includes(currentPracticeVal)) practiceSelect.value = currentPracticeVal;
-
-      const manageSelect = document.getElementById('manage-tag-filter');
-      const currentManageVal = manageSelect.value;
-      manageSelect.innerHTML = '<option value="all">Tất cả chủ đề</option>';
-      tags.forEach(t => {
-        const opt = document.createElement('option');
-        opt.value = t;
-        opt.textContent = t;
-        manageSelect.appendChild(opt);
-      });
-      if (tags.includes(currentManageVal)) manageSelect.value = currentManageVal;
-    }
-
-    /* ==========================================================================
-       4. INITIALIZATION & LOCALSTORAGE
-       ========================================================================== */
-    window.addEventListener('DOMContentLoaded', () => {
-      loadSettings();
-      loadVocabData();
-      if (typeof lucide !== 'undefined' && lucide.createIcons) {
-        lucide.createIcons();
-      }
-      switchTab('dashboard');
+    picked.forEach(w => {
+      cardItems.push({ id: `w-${w.id}`, wordId: w.id, text: w.word, type: 'WORD' });
+      cardItems.push({ id: `d-${w.id}`, wordId: w.id, text: w.definition, type: 'DEF' });
     });
 
-    function loadVocabData() {
-      const saved = localStorage.getItem('vocab_srs_data');
-      if (saved) {
-        try {
-          vocabList = JSON.parse(saved);
-        } catch (e) {
-          vocabList = [...initialWordList];
+    setCards(cardItems.sort(() => 0.5 - Math.random()));
+    setSelectedCards([]);
+    setMatchedIds([]);
+    setTimer(30);
+    setIsGameOver(false);
+  };
+
+  const handleCardClick = (card) => {
+    if (selectedCards.length === 2 || selectedCards.find(c => c.id === card.id) || matchedIds.includes(card.wordId)) return;
+
+    const newSelected = [...selectedCards, card];
+    setSelectedCards(newSelected);
+
+    if (newSelected.length === 2) {
+      if (newSelected[0].wordId === newSelected[1].wordId && newSelected[0].type !== newSelected[1].type) {
+        // Correct Match
+        setMatchedIds(prev => [...prev, card.wordId]);
+        addXP(15);
+        setSelectedCards([]);
+
+        // Check if all matched
+        if (matchedIds.length + 1 === cards.length / 2) {
+          setIsGameOver(true);
         }
       } else {
-        vocabList = [...initialWordList];
-        saveVocabData();
-      }
-      populateTagDropdowns();
-      updateStreakDisplay();
-    }
-
-    function saveVocabData() {
-      localStorage.setItem('vocab_srs_data', JSON.stringify(vocabList));
-      populateTagDropdowns();
-    }
-
-    /* ==========================================================================
-       5. NAVIGATION & TAB SWITCHING
-       ========================================================================== */
-    function switchTab(tabId) {
-      ['dashboard', 'practice', 'manage', 'settings'].forEach(tab => {
-        const view = document.getElementById(`view-${tab}`);
-        const btn = document.getElementById(`tab-${tab}`);
-        if (tab === tabId) {
-          view.classList.remove('hidden');
-          btn.classList.add('bg-theme-600', 'text-white', 'shadow-md');
-          btn.classList.remove('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
-        } else {
-          view.classList.add('hidden');
-          btn.classList.remove('bg-theme-600', 'text-white', 'shadow-md');
-          btn.classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
-        }
-      });
-
-      if (tabId === 'practice') setupNextCard();
-      if (tabId === 'dashboard') renderDashboard();
-      if (tabId === 'manage') renderVocabTable();
-    }
-
-    /* ==========================================================================
-       6. PRACTICE & SRS ENGINE
-       ========================================================================== */
-    function changePracticeMode(mode) {
-      practiceMode = mode;
-      setupNextCard();
-    }
-
-    function changePracticeTagFilter(tag) {
-      selectedPracticeTag = tag;
-      setupNextCard();
-    }
-
-    function getDueCards() {
-      const now = new Date();
-      return vocabList.filter(item => {
-        const isDue = new Date(item.nextReview) <= now;
-        const matchTag = selectedPracticeTag === 'all' || (Array.isArray(item.tags) && item.tags.includes(selectedPracticeTag));
-        return isDue && matchTag;
-      });
-    }
-
-    function setupNextCard() {
-      const dueCards = getDueCards();
-      document.getElementById('due-count').textContent = dueCards.length;
-
-      document.getElementById('feedback-box').classList.add('hidden');
-      document.getElementById('card-hint-example').classList.add('hidden');
-      document.getElementById('answer-input').value = '';
-
-      let pool = dueCards;
-      if (pool.length === 0) {
-        pool = vocabList.filter(item => selectedPracticeTag === 'all' || (Array.isArray(item.tags) && item.tags.includes(selectedPracticeTag)));
-      }
-
-      if (pool.length === 0) {
-        document.getElementById('card-prompt').textContent = 'Chưa có từ vựng thuộc chủ đề này!';
-        document.getElementById('card-subprompt').textContent = '';
-        document.getElementById('card-tags-badges').innerHTML = '';
-        return;
-      }
-
-      currentCard = pool[Math.floor(Math.random() * pool.length)];
-
-      let activeMode = practiceMode;
-      if (activeMode === 'random') {
-        const modes = ['en-vi', 'vi-en', 'mcq-listen'];
-        activeMode = modes[Math.floor(Math.random() * modes.length)];
-      }
-
-      const inputContainer = document.getElementById('input-mode-container');
-      const mcqContainer = document.getElementById('mcq-mode-container');
-
-      document.getElementById('card-level-badge').textContent = `Level ${currentCard.level} (${SRS_INTERVALS[currentCard.level]} ngày)`;
-
-      const tagsContainer = document.getElementById('card-tags-badges');
-      tagsContainer.innerHTML = '';
-      if (Array.isArray(currentCard.tags)) {
-        currentCard.tags.forEach(t => {
-          if (!t) return;
-          const badge = document.createElement('span');
-          badge.className = 'px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300';
-          badge.textContent = `#${t}`;
-          tagsContainer.appendChild(badge);
-        });
-      }
-
-      if (activeMode === 'en-vi') {
-        inputContainer.classList.remove('hidden');
-        mcqContainer.classList.add('hidden');
-        document.getElementById('card-prompt').textContent = currentCard.word;
-        document.getElementById('card-subprompt').textContent = `${currentCard.phonetic || ''} • ${currentCard.type || ''}`;
-        speakWord();
-      } else if (activeMode === 'vi-en') {
-        inputContainer.classList.remove('hidden');
-        mcqContainer.classList.add('hidden');
-        document.getElementById('card-prompt').textContent = currentCard.meaning;
-        document.getElementById('card-subprompt').textContent = `[Nhập từ tiếng Anh tương ứng] • ${currentCard.type || ''}`;
-      } else if (activeMode === 'mcq-listen') {
-        inputContainer.classList.add('hidden');
-        mcqContainer.classList.remove('hidden');
-        document.getElementById('card-prompt').textContent = '🔊 Nghe phát âm...';
-        document.getElementById('card-subprompt').textContent = `[Chọn đáp án nghĩa đúng]`;
-        speakWord();
-        renderMCQOptions();
-      }
-
-      document.getElementById('card-hint-example').textContent = `Ví dụ: ${currentCard.example || 'Không có ví dụ.'}`;
-    }
-
-    function speakWord() {
-      if (!currentCard || !('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(currentCard.word);
-      utterance.lang = 'en-US';
-      window.speechSynthesis.speak(utterance);
-    }
-
-    function toggleHint() {
-      document.getElementById('card-hint-example').classList.toggle('hidden');
-    }
-
-    function checkAnswer() {
-      if (!currentCard) return;
-      const userAns = document.getElementById('answer-input').value;
-      let isCorrect = false;
-
-      let activeMode = practiceMode;
-      if (activeMode === 'random' || activeMode === 'en-vi') {
-        const targetMeanings = currentCard.meaning.split(/[,;/]/).map(s => normalizeText(s));
-        const normalizedInput = normalizeText(userAns);
-        isCorrect = targetMeanings.some(m => m === normalizedInput || (normalizedInput.length > 2 && m.includes(normalizedInput)));
-      } else if (activeMode === 'vi-en') {
-        isCorrect = normalizeText(userAns) === normalizeText(currentCard.word);
-      }
-
-      processSRSResult(isCorrect, currentCard.meaning);
-    }
-
-    function renderMCQOptions() {
-      const container = document.getElementById('mcq-mode-container');
-      container.innerHTML = '';
-
-      let options = [currentCard];
-      let otherWords = vocabList.filter(w => w.id !== currentCard.id);
-      
-      while (options.length < 4 && otherWords.length > 0) {
-        const randIdx = Math.floor(Math.random() * otherWords.length);
-        options.push(otherWords[randIdx]);
-        otherWords.splice(randIdx, 1);
-      }
-
-      options.sort(() => Math.random() - 0.5);
-
-      options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'p-4 border border-slate-200 dark:border-slate-700 rounded-2xl font-medium text-left hover:bg-theme-50 dark:hover:bg-slate-700/60 hover:border-theme-300 transition flex items-center justify-between text-sm';
-        btn.innerHTML = `<span>${opt.meaning}</span> <i data-lucide="circle" class="w-4 h-4 text-slate-300"></i>`;
-        btn.onclick = () => {
-          const isCorrect = (opt.id === currentCard.id);
-          processSRSResult(isCorrect, currentCard.meaning);
-        };
-        container.appendChild(btn);
-      });
-      if (typeof lucide !== 'undefined' && lucide.createIcons) {
-        lucide.createIcons();
+        // Wrong match
+        setTimeout(() => setSelectedCards([]), 800);
       }
     }
+  };
 
-    function processSRSResult(isCorrect, correctAnswerMsg) {
-      currentCard.totalCount = (currentCard.totalCount || 0) + 1;
+  return (
+    <div className={`p-6 sm:p-8 rounded-3xl border space-y-6 ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+      <div className="flex justify-between items-center">
+        <h3 className="font-bold text-lg flex items-center gap-2">
+          <Zap className="w-5 h-5 text-amber-400" /> Nối Từ Với Nghĩa
+        </h3>
+        <div className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 font-mono font-bold text-sm border border-amber-500/20">
+          Thời gian: {timer}s
+        </div>
+      </div>
 
-      if (isCorrect) {
-        currentCard.correctCount = (currentCard.correctCount || 0) + 1;
-        currentCard.level = Math.min(5, currentCard.level + 1);
-        streakCount++;
+      {isGameOver ? (
+        <div className="text-center py-8 space-y-4">
+          <Trophy className="w-12 h-12 text-indigo-400 mx-auto animate-bounce" />
+          <h4 className="text-2xl font-bold">Trò chơi kết thúc!</h4>
+          <p className="text-slate-400 text-sm">Bạn nối đúng {matchedIds.length} cặp từ vựng.</p>
+          <button
+            onClick={initGame}
+            className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm"
+          >
+            Chơi lại
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {cards.map(card => {
+            const isMatched = matchedIds.includes(card.wordId);
+            const isSelected = selectedCards.find(c => c.id === card.id);
+
+            let style = theme === 'dark' ? 'bg-slate-800 border-slate-700 text-slate-200' : 'bg-slate-100 border-slate-200 text-slate-800';
+            if (isSelected) style = 'bg-indigo-600 text-white border-indigo-400 scale-105';
+            if (isMatched) style = 'opacity-20 pointer-events-none bg-emerald-500/20 text-emerald-400 border-emerald-500';
+
+            return (
+              <button
+                key={card.id}
+                onClick={() => handleCardClick(card)}
+                className={`p-4 rounded-xl border text-center font-medium text-xs sm:text-sm min-h-[90px] flex items-center justify-center transition-all ${style}`}
+              >
+                {card.text}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// --- SUB-GAME 3: AI PRONUNCIATION TESTER ---
+function VoiceGame({ words, speakWord, addXP, theme }) {
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [isListening, setIsListening] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [feedback, setFeedback] = useState(null);
+
+  const currentWord = words[currentIdx];
+
+  const handleListen = () => {
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      alert('Trình duyệt của bạn không hỗ trợ tính năng nhận diện giọng nói Web Speech.');
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+
+    setIsListening(true);
+    setTranscript('');
+    setFeedback(null);
+
+    recognition.start();
+
+    recognition.onresult = (event) => {
+      const spokenText = event.results[0][0].transcript.toLowerCase().trim();
+      setTranscript(spokenText);
+      setIsListening(false);
+
+      if (spokenText.includes(currentWord.word.toLowerCase())) {
+        setFeedback({ success: true, message: 'Phát âm cực chuẩn! +20 XP' });
+        addXP(20);
       } else {
-        currentCard.level = 1;
-        streakCount = 0;
+        setFeedback({ success: false, message: `Thử lại nhé! Trình duyệt nghe thấy: "${spokenText}"` });
       }
+    };
 
-      const daysToAdd = SRS_INTERVALS[currentCard.level];
-      const nextDate = new Date();
-      nextDate.setDate(nextDate.getDate() + daysToAdd);
-      currentCard.nextReview = nextDate.toISOString();
+    recognition.onerror = () => {
+      setIsListening(false);
+      setFeedback({ success: false, message: 'Chưa nghe thấy giọng của bạn. Hãy thử lại.' });
+    };
+  };
 
-      saveVocabData();
-      updateStreakDisplay();
-      showFeedback(isCorrect, correctAnswerMsg);
-    }
+  return (
+    <div className={`p-6 sm:p-8 rounded-3xl border text-center space-y-6 ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">AI Speech Recognition</span>
+        <h3 className="text-3xl font-black text-indigo-300">{currentWord.word}</h3>
+        <p className="text-sm font-mono text-slate-400">{currentWord.phonetic}</p>
+      </div>
 
-    function showFeedback(isCorrect, targetMeaning) {
-      const fbBox = document.getElementById('feedback-box');
-      const fbTitle = document.getElementById('feedback-title');
-      const fbMsg = document.getElementById('feedback-msg');
-      const fbIcon = document.getElementById('feedback-icon');
+      <div className="flex justify-center gap-3">
+        <button
+          onClick={() => speakWord(currentWord.word)}
+          className="p-3 bg-slate-800 text-slate-300 rounded-full hover:bg-slate-700"
+          title="Nghe mẫu"
+        >
+          <Volume2 className="w-5 h-5 text-indigo-400" />
+        </button>
 
-      fbBox.classList.remove('hidden', 'bg-emerald-50', 'bg-rose-50', 'dark:bg-emerald-950/40', 'dark:bg-rose-950/40');
+        <button
+          onClick={handleListen}
+          disabled={isListening}
+          className={`px-6 py-3 rounded-full font-bold text-white flex items-center gap-2 shadow-lg transition-transform ${
+            isListening ? 'bg-red-500 animate-pulse' : 'bg-indigo-600 hover:bg-indigo-500 hover:scale-105'
+          }`}
+        >
+          <Mic className="w-5 h-5" />
+          {isListening ? 'Đang lắng nghe...' : 'Bấm để phát âm'}
+        </button>
+      </div>
 
-      if (isCorrect) {
-        fbBox.classList.add('bg-emerald-50', 'dark:bg-emerald-950/40');
-        fbTitle.textContent = 'Chính xác! Hoàn thành xuất sắc.';
-        fbTitle.className = 'font-bold text-emerald-600 dark:text-emerald-400';
-        fbMsg.textContent = `${currentCard.word}: ${targetMeaning}`;
-        fbIcon.className = 'p-1 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600';
-        fbIcon.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
-      } else {
-        fbBox.classList.add('bg-rose-50', 'dark:bg-rose-950/40');
-        fbTitle.textContent = 'Chưa chính xác!';
-        fbTitle.className = 'font-bold text-rose-600 dark:text-rose-400';
-        fbMsg.textContent = `Đáp án đúng là: ${currentCard.word} = "${targetMeaning}"`;
-        fbIcon.className = 'p-1 rounded-full bg-rose-100 dark:bg-rose-900/60 text-rose-600';
-        fbIcon.innerHTML = `<i data-lucide="x" class="w-5 h-5"></i>`;
-      }
-      if (typeof lucide !== 'undefined' && lucide.createIcons) {
-        lucide.createIcons();
-      }
-    }
+      {feedback && (
+        <div className={`p-4 rounded-xl text-sm font-semibold max-w-md mx-auto ${feedback.success ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
+          {feedback.message}
+        </div>
+      )}
 
-    function nextCard() {
-      setupNextCard();
-    }
+      <div className="pt-4 flex justify-center">
+        <button
+          onClick={() => {
+            setCurrentIdx((currentIdx + 1) % words.length);
+            setFeedback(null);
+            setTranscript('');
+          }}
+          className="text-xs font-semibold text-slate-400 hover:text-slate-200 flex items-center gap-1"
+        >
+          Từ tiếp theo <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
 
-    function updateStreakDisplay() {
-      document.getElementById('streak-count').textContent = streakCount;
-    }
+// ==========================================
+// 5. PERSONAL NOTEBOOK VIEW COMPONENT
+// ==========================================
+function NotebookView({ words, setWords, speakWord, theme }) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('ALL');
+  const [showAddModal, setShowAddModal] = useState(false);
 
-    /* ==========================================================================
-       7. DASHBOARD & CHARTS
-       ========================================================================== */
-    function renderDashboard() {
-      const total = vocabList.length;
-      const mastered = vocabList.filter(v => v.level === 5).length;
-      const learning = total - mastered;
+  // New Word Form State
+  const [newWord, setNewWord] = useState('');
+  const [newPhonetic, setNewPhonetic] = useState('');
+  const [newDef, setNewDef] = useState('');
+  const [newExample, setNewExample] = useState('');
 
-      let totalCorrect = 0;
-      let totalAttempts = 0;
-      vocabList.forEach(v => {
-        totalCorrect += v.correctCount || 0;
-        totalAttempts += v.totalCount || 0;
-      });
-      const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
+  const filteredWords = words.filter(w => {
+    const matchesSearch = w.word.toLowerCase().includes(searchTerm.toLowerCase()) || w.definition.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterStatus === 'ALL' || w.status === filterStatus;
+    return matchesSearch && matchesFilter;
+  });
 
-      document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-mastered').textContent = mastered;
-      document.getElementById('stat-learning').textContent = learning;
-      document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
+  const handleAddWord = (e) => {
+    e.preventDefault();
+    if (!newWord || !newDef) return;
 
-      const levelCounts = [1, 2, 3, 4, 5].map(lvl => vocabList.filter(v => v.level === lvl).length);
-      
-      if (levelChart) levelChart.destroy();
-      const ctxLevel = document.getElementById('chart-srs-levels').getContext('2d');
-      levelChart = new Chart(ctxLevel, {
-        type: 'bar',
-        data: {
-          labels: ['Lvl 1 (Mới/Sai)', 'Lvl 2 (1 ngày)', 'Lvl 3 (3 ngày)', 'Lvl 4 (7 ngày)', 'Lvl 5 (14 ngày)'],
-          datasets: [{
-            label: 'Số lượng từ vựng',
-            data: levelCounts,
-            backgroundColor: '#6366f1',
-            borderRadius: 8
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
-        }
-      });
+    const created = {
+      id: Date.now(),
+      topicId: 'custom',
+      word: newWord,
+      phonetic: newPhonetic || '/custom/',
+      partOfSpeech: 'custom',
+      definition: newDef,
+      example: newExample || 'No example provided.',
+      exampleMeaning: '',
+      status: 'NEW',
+      repetitionLevel: 0,
+      intervalDays: 0,
+      easeFactor: 2.5,
+      nextReviewDate: new Date().toISOString(),
+      isFavorite: true
+    };
 
-      if (pieChart) pieChart.destroy();
-      const ctxPie = document.getElementById('chart-status-pie').getContext('2d');
-      pieChart = new Chart(ctxPie, {
-        type: 'doughnut',
-        data: {
-          labels: ['Thành thạo (Level 5)', 'Đang học (Level 1-4)'],
-          datasets: [{
-            data: [mastered, learning],
-            backgroundColor: ['#10b981', '#f59e0b']
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      });
-    }
+    setWords([created, ...words]);
+    setShowAddModal(false);
+    setNewWord('');
+    setNewPhonetic('');
+    setNewDef('');
+    setNewExample('');
+  };
 
-    /* ==========================================================================
-       8. VOCABULARY MANAGEMENT (CRUD + IMPORT / EXPORT)
-       ========================================================================== */
-    function renderVocabTable() {
-      const tbody = document.getElementById('vocab-table-body');
-      tbody.innerHTML = '';
+  return (
+    <div className="space-y-6 animate-fadeIn">
+      {/* Header Controls */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-2xl font-black">Sổ Tay Từ Vựng</h1>
+          <p className="text-slate-400 text-sm">Quản lý và tra cứu tất cả các từ vựng đã lưu</p>
+        </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl flex items-center gap-2 text-sm shadow-md"
+        >
+          <Plus className="w-4 h-4" /> Thêm từ mới
+        </button>
+      </div>
 
-      const query = normalizeText(document.getElementById('search-vocab').value);
-      const selectedTag = document.getElementById('manage-tag-filter').value;
+      {/* Filter and Search Bar */}
+      <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+        <div className="sm:col-span-8 relative">
+          <Search className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Tìm kiếm từ tiếng Anh hoặc nghĩa tiếng Việt..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`w-full pl-10 pr-4 py-2.5 rounded-xl border text-sm outline-none transition-all ${
+              theme === 'dark' ? 'bg-slate-900 border-slate-800 text-slate-200 focus:border-indigo-500' : 'bg-white border-slate-200 text-slate-800 focus:border-indigo-500'
+            }`}
+          />
+        </div>
+        <div className="sm:col-span-4 flex gap-1 p-1 rounded-xl bg-slate-900 border border-slate-800">
+          {['ALL', 'NEW', 'LEARNING', 'MASTERED'].map(status => (
+            <button
+              key={status}
+              onClick={() => setFilterStatus(status)}
+              className={`flex-1 py-1.5 rounded-lg text-[11px] font-bold transition-all ${
+                filterStatus === status ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              {status === 'ALL' ? 'Tất cả' : status === 'NEW' ? 'Mới' : status === 'LEARNING' ? 'Đang học' : 'Thuộc'}
+            </button>
+          ))}
+        </div>
+      </div>
 
-      const filtered = vocabList.filter(v => {
-        const matchQuery = normalizeText(v.word).includes(query) || 
-                           normalizeText(v.meaning).includes(query) ||
-                           (Array.isArray(v.tags) && v.tags.some(t => normalizeText(t).includes(query)));
-        const matchTag = selectedTag === 'all' || (Array.isArray(v.tags) && v.tags.includes(selectedTag));
-        return matchQuery && matchTag;
-      });
+      {/* Words List Table / Grid */}
+      <div className="grid grid-cols-1 gap-3">
+        {filteredWords.map(word => (
+          <div
+            key={word.id}
+            className={`p-4 rounded-2xl border flex items-center justify-between gap-4 transition-all ${
+              theme === 'dark' ? 'bg-slate-900/60 border-slate-800 hover:border-slate-700' : 'bg-white border-slate-200 shadow-sm'
+            }`}
+          >
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-lg text-indigo-400">{word.word}</span>
+                <span className="text-xs font-mono text-slate-500">{word.phonetic}</span>
+                <button
+                  onClick={() => speakWord(word.word)}
+                  className="p-1 hover:text-indigo-400 text-slate-500"
+                >
+                  <Volume2 className="w-4 h-4" />
+                </button>
+              </div>
+              <p className="text-sm font-medium text-slate-300">{word.definition}</p>
+              <p className="text-xs text-slate-500 italic">"{word.example}"</p>
+            </div>
 
-      filtered.forEach(v => {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition';
+            <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${
+              word.status === 'MASTERED'
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                : word.status === 'LEARNING'
+                ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
+            }`}>
+              {word.status}
+            </span>
+          </div>
+        ))}
+      </div>
 
-        const nextDateStr = new Date(v.nextReview).toLocaleDateString('vi-VN');
-        const tagsHTML = Array.isArray(v.tags) && v.tags.length > 0 
-          ? v.tags.map(t => `<span class="inline-block px-2 py-0.5 mr-1 mb-1 rounded text-xs font-medium bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-300">#${t}</span>`).join('') 
-          : '<span class="text-xs text-slate-300">-</span>';
+      {/* ADD CUSTOM WORD MODAL */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className={`w-full max-w-md p-6 rounded-3xl border space-y-4 shadow-2xl ${theme === 'dark' ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <h3 className="text-xl font-bold">Thêm Từ Vựng Mới</h3>
+            <form onSubmit={handleAddWord} className="space-y-3">
+              <div>
+                <label className="text-xs font-semibold text-slate-400">Từ tiếng Anh (*)</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="VD: Serendipity"
+                  value={newWord}
+                  onChange={(e) => setNewWord(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border bg-slate-800 border-slate-700 text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-slate-400">Phiên âm IPA</label>
+                <input
+                  type="text"
+                  placeholder="VD: /ˌser.ənˈdɪp.ə.ti/"
+                  value={newPhonetic}
+                  onChange={(e) => setNewPhonetic(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border bg-slate-800 border-slate-700 text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-slate-400">Nghĩa tiếng Việt (*)</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="VD: Sự tình cờ may mắn"
+                  value={newDef}
+                  onChange={(e) => setNewDef(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border bg-slate-800 border-slate-700 text-sm mt-1"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-slate-400">Câu ví dụ</label>
+                <textarea
+                  placeholder="VD: Finding this book was pure serendipity."
+                  value={newExample}
+                  onChange={(e) => setNewExample(e.target.value)}
+                  className="w-full p-2.5 rounded-xl border bg-slate-800 border-slate-700 text-sm mt-1 h-20"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs shadow-md"
+                >
+                  Lưu từ mới
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
-        tr.innerHTML = `
-          <td class="py-3.5 px-4 font-semibold text-theme-600 dark:text-theme-400">${v.word} <span class="text-xs text-slate-400 font-normal">${v.phonetic || ''}</span></td>
-          <td class="py-3.5 px-4">${v.meaning}</td>
-          <td class="py-3.5 px-4">${tagsHTML}</td>
-          <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded text-xs bg-slate-100 dark:bg-slate-700 font-mono">${v.type || 'noun'}</span></td>
-          <td class="py-3.5 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-medium bg-theme-50 text-theme-600 dark:bg-theme-900/40 dark:text-theme-300">Level ${v.level}</span></td>
-          <td class="py-3.5 px-4 text-xs text-slate-400">${nextDateStr}</td>
-          <td class="py-3.5 px-4 text-right space-x-1">
-            <button onclick="openEditModal('${v.id}')" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-500 hover:text-theme-600 transition"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-            <button onclick="deleteVocab('${v.id}')" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-500 hover:text-rose-600 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+// ==========================================
+// 6. LEADERBOARD & BADGES VIEW COMPONENT
+// ==========================================
+function LeaderboardView({ badges, leaderboard, userStats, theme }) {
+  return (
+    <div className="space-y-6 animate-fadeIn">
+      {/* BADGES SECTION */}
+      <div className={`p-6 rounded-3xl border space-y-4 ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <h2 className="text-lg font-bold flex items-center gap-2">
+          <Award className="w-5 h-5 text-amber-400" /> Huy Hiệu Danh Hiệu
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {badges.map(badge => (
+            <div
+              key={badge.id}
+              className={`p-4 rounded-2xl border text-center space-y-2 transition-all ${
+                badge.unlocked
+                  ? 'bg-amber-500/10 border-amber-500/30 text-amber-300'
+                  : 'bg-slate-800/30 border-slate-800 text-slate-600 opacity-60'
+              }`}
+            >
+              <div className="w-10 h-10 mx-auto rounded-full bg-slate-800 flex items-center justify-center">
+                <Trophy className="w-5 h-5 text-amber-400" />
+              </div>
+              <div className="font-bold text-xs">{badge.name}</div>
+              <div className="text-[10px] text-slate-400">{badge.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
 
-      if (typeof lucide !== 'undefined' && lucide.createIcons) {
-        lucide.createIcons();
-      }
-    }
-
-    function filterVocabTable() {
-      renderVocabTable();
-    }
-
-    function openAddModal() {
-      document.getElementById('modal-title').textContent = 'Thêm từ vựng mới';
-      document.getElementById('form-vocab-id').value = '';
-      document.getElementById('form-word').value = '';
-      document.getElementById('form-phonetic').value = '';
-      document.getElementById('form-type').value = 'noun';
-      document.getElementById('form-meaning').value = '';
-      document.getElementById('form-tags').value = '';
-      document.getElementById('form-example').value = '';
-      document.getElementById('vocab-modal').classList.remove('hidden');
-    }
-
-    function openEditModal(id) {
-      const item = vocabList.find(v => v.id === id);
-      if (!item) return;
-
-      document.getElementById('modal-title').textContent = 'Chỉnh sửa từ vựng';
-      document.getElementById('form-vocab-id').value = item.id;
-      document.getElementById('form-word').value = item.word;
-      document.getElementById('form-phonetic').value = item.phonetic || '';
-      document.getElementById('form-type').value = item.type || 'noun';
-      document.getElementById('form-meaning').value = item.meaning;
-      document.getElementById('form-tags').value = Array.isArray(item.tags) ? item.tags.join(', ') : '';
-      document.getElementById('form-example').value = item.example || '';
-      document.getElementById('vocab-modal').classList.remove('hidden');
-    }
-
-    function closeModal() {
-      document.getElementById('vocab-modal').classList.add('hidden');
-    }
-
-    function saveVocab(event) {
-      event.preventDefault();
-      const id = document.getElementById('form-vocab-id').value;
-      const word = document.getElementById('form-word').value.trim();
-      const phonetic = document.getElementById('form-phonetic').value.trim();
-      const type = document.getElementById('form-type').value;
-      const meaning = document.getElementById('form-meaning').value.trim();
-      const tagsRaw = document.getElementById('form-tags').value;
-      const example = document.getElementById('form-example').value.trim();
-
-      const tags = tagsRaw.split(',').map(t => t.trim()).filter(t => t.length > 0);
-
-      if (id) {
-        const item = vocabList.find(v => v.id === id);
-        if (item) {
-          item.word = word;
-          item.phonetic = phonetic;
-          item.type = type;
-          item.meaning = meaning;
-          item.tags = tags;
-          item.example = example;
-        }
-      } else {
-        const newItem = {
-          id: Date.now().toString(),
-          word,
-          phonetic,
-          type,
-          meaning,
-          tags,
-          example,
-          level: 1,
-          nextReview: new Date().toISOString(),
-          correctCount: 0,
-          totalCount: 0
-        };
-        vocabList.push(newItem);
-      }
-
-      saveVocabData();
-      closeModal();
-      renderVocabTable();
-    }
-
-    function deleteVocab(id) {
-      vocabList = vocabList.filter(v => v.id !== id);
-      saveVocabData();
-      renderVocabTable();
-    }
-
-    function exportDataJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(vocabList, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "vocab_srs_backup.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    function importDataJSON(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const imported = JSON.parse(e.target.result);
-          if (Array.isArray(imported)) {
-            vocabList = imported;
-            saveVocabData();
-            renderVocabTable();
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function resetDefaultData() {
-      vocabList = [...initialWordList];
-      saveVocabData();
-      renderVocabTable();
-      renderDashboard();
-    }
-
-    /* ==========================================================================
-       9. SETTINGS & THEME CUSTOMIZATION
-       ========================================================================== */
-    function setThemeColor(colorName) {
-      localStorage.setItem('vocab_theme_color', colorName);
-      applyThemeColor(colorName);
-    }
-
-    function applyThemeColor(colorName) {
-      document.body.className = document.body.className.replace(/theme-\S+/g, '');
-      document.body.classList.add(`theme-${colorName}`);
-    }
-
-    function toggleDarkMode() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('vocab_dark_mode', isDark ? 'true' : 'false');
-    }
-
-    function loadSettings() {
-      const savedTheme = localStorage.getItem('vocab_theme_color') || 'indigo';
-      applyThemeColor(savedTheme);
-
-      const savedDark = localStorage.getItem('vocab_dark_mode');
-      if (savedDark === 'true') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
-  </script>
-</body>
-</html>
+      {/* LEADERBOARD SECTION */}
+      <div className={`p-6 rounded-3xl border space-y-4 ${theme === 'dark' ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <h2 className="text-lg font-bold flex items-center gap-2">
+          <Trophy className="w-5 h-5 text-indigo-400" /> Bảng Xếp Hạng Tuần
+        </h2>
+        <div className="space-y-2">
+          {leaderboard.map(item => (
+            <div
+              key={item.rank}
+              className={`p-3.5 rounded-2xl border flex items-center justify-between transition-all ${
+                item.isUser
+                  ? 'bg-indigo-600/20 border-indigo-500/40 text-indigo-300 font-bold'
+                  : theme === 'dark'
+                  ? 'bg-slate-900 border-slate-800'
+                  : 'bg-slate-50 border-slate-200'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className={`w-6 text-center font-black text-sm ${item.rank === 1 ? 'text-amber-400' : item.rank === 2 ? 'text-slate-300' : item.rank === 3 ? 'text-amber-600' : 'text-slate-500'}`}>
+                  #{item.rank}
+                </span>
+                <img src={item.avatar} alt="" className="w-9 h-9 rounded-full object-cover" />
+                <div>
+                  <div className="text-sm font-semibold">{item.name}</div>
+                  <div className="text-[10px] text-slate-400 flex items-center gap-1">
+                    <Flame className="w-3 h-3 text-amber-500" /> {item.streak} ngày streak
+                  </div>
+                </div>
+              </div>
+              <div className="text-sm font-black text-violet-400">{item.xp} XP</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
