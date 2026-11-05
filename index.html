@@ -1,973 +1,348 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>English Vocabulary SRS Mastery</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            theme: {
-              50: 'var(--color-50)',
-              100: 'var(--color-100)',
-              500: 'var(--color-500)',
-              600: 'var(--color-600)',
-              700: 'var(--color-700)',
-              800: 'var(--color-800)',
-              900: 'var(--color-900)',
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    :root {
-      --color-50: #eef2ff;
-      --color-100: #e0e7ff;
-      --color-500: #6366f1;
-      --color-600: #4f46e5;
-      --color-700: #4338ca;
-      --color-800: #3730a3;
-      --color-900: #312e81;
-    }
-    
-    /* Themes */
-    .theme-indigo {
-      --color-50: #eef2ff; --color-100: #e0e7ff; --color-500: #6366f1; --color-600: #4f46e5; --color-700: #4338ca; --color-800: #3730a3; --color-900: #312e81;
-    }
-    .theme-emerald {
-      --color-50: #ecfdf5; --color-100: #d1fae5; --color-500: #10b981; --color-600: #059669; --color-700: #047857; --color-800: #065f46; --color-900: #064e3b;
-    }
-    .theme-rose {
-      --color-50: #fff1f2; --color-100: #ffe4e6; --color-500: #f43f5e; --color-600: #e11d48; --color-700: #be123c; --color-800: #9f1239; --color-900: #881337;
-    }
-    .theme-amber {
-      --color-50: #fffbeb; --color-100: #fef3c7; --color-500: #f59e0b; --color-600: #d97706; --color-700: #b45309; --color-800: #92400e; --color-900: #78350f;
-    }
-    .theme-dark {
-      --color-50: #f3f4f6; --color-100: #e5e7eb; --color-500: #4b5563; --color-600: #374151; --color-700: #1f2937; --color-800: #111827; --color-900: #030712;
-    }
-
-    /* Background Overlay Effects */
-    #bg-overlay {
-      transition: background-image 0.3s ease-in-out;
-    }
-    .bg-custom-active .glass-card {
-      background-color: rgba(255, 255, 255, 0.88) !important;
-      backdrop-filter: blur(12px);
-    }
-    .dark .bg-custom-active .glass-card {
-      background-color: rgba(17, 24, 39, 0.88) !important;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VocabMaster - Học từ vựng thông minh</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{font-family:Inter,sans-serif}body{background:#f8fafc;transition:background .25s,color .25s}.perspective{perspective:1000px}.card-inner{transform-style:preserve-3d;transition:transform .55s}.card-inner.flipped{transform:rotateY(180deg)}.card-face{backface-visibility:hidden;-webkit-backface-visibility:hidden}.card-back{transform:rotateY(180deg)}button:disabled{opacity:.5;cursor:not-allowed}.nav-btn.active{background:#fff;color:#4f46e5;box-shadow:0 1px 3px #00000018}.nav-btn{color:#c7d2fe}.progress-track{height:9px;background:#e2e8f0;border-radius:99px;overflow:hidden}.progress-fill{height:100%;background:#4f46e5;border-radius:99px;transition:width .25s}.modal{background:#0008}.hide-scrollbar::-webkit-scrollbar{display:none}
+body[data-bg="lavender"]{background:#f3efff}body[data-bg="mint"]{background:#eaf8f1}body[data-bg="sky"]{background:#eaf4ff}body[data-bg="warm"]{background:#fbf3e7}body[data-bg="gradient"]{background:linear-gradient(135deg,#eef2ff,#fdf2f8,#ecfeff);background-attachment:fixed}
+body[data-theme="dark"]{background:#0f172a!important;color:#e2e8f0}
+body[data-theme="dark"][data-bg="lavender"]{background:#171329!important}body[data-theme="dark"][data-bg="mint"]{background:#10231f!important}body[data-theme="dark"][data-bg="sky"]{background:#101e32!important}body[data-theme="dark"][data-bg="warm"]{background:#292016!important}body[data-theme="dark"][data-bg="gradient"]{background:linear-gradient(135deg,#111827,#21172e,#10252b)!important;background-attachment:fixed}
+body[data-theme="dark"] .bg-white{background-color:#1e293b!important;color:#e2e8f0}
+body[data-theme="dark"] .bg-slate-50{background-color:#263449!important}
+body[data-theme="dark"] .bg-slate-100{background-color:#334155!important}
+body[data-theme="dark"] .bg-indigo-50{background-color:#312e55!important;color:#e0e7ff!important}
+body[data-theme="dark"] .bg-indigo-100{background-color:#373568!important}
+body[data-theme="dark"] .text-slate-800,body[data-theme="dark"] .text-slate-700,body[data-theme="dark"] .text-slate-600{color:#e2e8f0!important}
+body[data-theme="dark"] .text-slate-500,body[data-theme="dark"] .text-slate-400{color:#a8b5c8!important}
+body[data-theme="dark"] .border,body[data-theme="dark"] [class*="border-slate"]{border-color:#475569!important}
+body[data-theme="dark"] input,body[data-theme="dark"] select{background-color:#263449!important;color:#e2e8f0!important;border-color:#475569!important}
+body[data-theme="dark"] .bg-gradient-to-br{background-image:linear-gradient(to bottom right,#263449,#25264a)!important}
+body[data-theme="dark"] .card-back{background:#373568!important}
+body[data-theme="dark"] .progress-track{background:#334155}
+body[data-theme="dark"] .bg-emerald-50{background:#12372e!important;color:#a7f3d0!important}
+body[data-theme="dark"] .bg-rose-50{background:#451f2a!important;color:#fecdd3!important}
+body[data-theme="dark"] .bg-amber-50{background:#43331b!important;color:#fde68a!important}
+body[data-theme="dark"] .bg-sky-50{background:#18354b!important;color:#bae6fd!important}
+body[data-theme="dark"] footer{background:#1e293b!important;border-color:#475569!important;color:#94a3b8!important}
+.theme-choice.selected{border-color:#6366f1;background:#eef2ff;color:#4338ca}
+body[data-theme="dark"] .theme-choice.selected{background:#373568;color:#e0e7ff}
+</style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
-
-  <!-- Background Dynamic Image Layer -->
-  <div id="bg-overlay" class="fixed inset-0 bg-cover bg-center pointer-events-none z-0 opacity-0 transition-opacity duration-500"></div>
-
-  <!-- Header Navigation -->
-  <header class="relative z-10 sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="p-2 bg-theme-600 text-white rounded-xl shadow-lg">
-          <i data-lucide="brain-circuit" class="w-6 h-6"></i>
-        </div>
-        <span class="font-bold text-xl bg-gradient-to-r from-theme-600 to-indigo-400 bg-clip-text text-transparent">VocabSRS</span>
-      </div>
-
-      <!-- Navigation Tabs (Thứ tự: Thống kê, Luyện tập, Quản lý từ, Giao diện) -->
-      <nav class="flex space-x-1 sm:space-x-2">
-        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-btn px-3 sm:px-4 py-2 rounded-lg font-medium text-sm flex items-center space-x-1.5 transition-all">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          <span>Thống kê</span>
-        </button>
-        <button onclick="switchTab('practice')" id="tab-practice" class="nav-btn px-3 sm:px-4 py-2 rounded-lg font-medium text-sm flex items-center space-x-1.5 transition-all">
-          <i data-lucide="book-open" class="w-4 h-4"></i>
-          <span>Luyện tập</span>
-        </button>
-        <button onclick="switchTab('manage')" id="tab-manage" class="nav-btn px-3 sm:px-4 py-2 rounded-lg font-medium text-sm flex items-center space-x-1.5 transition-all">
-          <i data-lucide="list-plus" class="w-4 h-4"></i>
-          <span>Quản lý từ</span>
-        </button>
-        <button onclick="switchTab('settings')" id="tab-settings" class="nav-btn px-3 sm:px-4 py-2 rounded-lg font-medium text-sm flex items-center space-x-1.5 transition-all">
-          <i data-lucide="palette" class="w-4 h-4"></i>
-          <span>Giao diện</span>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Main Content Area -->
-  <main class="relative z-10 flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-    <!-- 1. DASHBOARD VIEW -->
-    <section id="view-dashboard" class="space-y-6">
-      <!-- Stats Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="glass-card bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex items-center space-x-4">
-          <div class="p-3 bg-blue-100 dark:bg-blue-900/40 text-blue-600 rounded-xl">
-            <i data-lucide="book" class="w-6 h-6"></i>
-          </div>
-          <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase">Tổng số từ vựng</p>
-            <h3 id="stat-total" class="text-2xl font-extrabold mt-0.5">0</h3>
-          </div>
-        </div>
-
-        <div class="glass-card bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex items-center space-x-4">
-          <div class="p-3 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 rounded-xl">
-            <i data-lucide="check-circle-2" class="w-6 h-6"></i>
-          </div>
-          <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase">Đã thành thạo (Lvl 5)</p>
-            <h3 id="stat-mastered" class="text-2xl font-extrabold mt-0.5">0</h3>
-          </div>
-        </div>
-
-        <div class="glass-card bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex items-center space-x-4">
-          <div class="p-3 bg-amber-100 dark:bg-amber-900/40 text-amber-600 rounded-xl">
-            <i data-lucide="clock" class="w-6 h-6"></i>
-          </div>
-          <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase">Đang học (Lvl 1-4)</p>
-            <h3 id="stat-learning" class="text-2xl font-extrabold mt-0.5">0</h3>
-          </div>
-        </div>
-
-        <div class="glass-card bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex items-center space-x-4">
-          <div class="p-3 bg-purple-100 dark:bg-purple-900/40 text-purple-600 rounded-xl">
-            <i data-lucide="target" class="w-6 h-6"></i>
-          </div>
-          <div>
-            <p class="text-xs font-semibold text-slate-400 uppercase">Tỷ lệ chính xác</p>
-            <h3 id="stat-accuracy" class="text-2xl font-extrabold mt-0.5">0%</h3>
-          </div>
-        </div>
-      </div>
-
-      <!-- Charts Section -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="glass-card bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
-          <h3 class="text-lg font-bold mb-4 flex items-center space-x-2">
-            <i data-lucide="bar-chart-2" class="w-5 h-5 text-theme-500"></i>
-            <span>Phân bố cấp độ Spaced Repetition</span>
-          </h3>
-          <div class="h-64">
-            <canvas id="chart-srs-levels"></canvas>
-          </div>
-        </div>
-
-        <div class="glass-card bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm">
-          <h3 class="text-lg font-bold mb-4 flex items-center space-x-2">
-            <i data-lucide="pie-chart" class="w-5 h-5 text-theme-500"></i>
-            <span>Trạng thái ghi nhớ từ vựng</span>
-          </h3>
-          <div class="h-64 flex justify-center">
-            <canvas id="chart-status-pie"></canvas>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. PRACTICE VIEW -->
-    <section id="view-practice" class="space-y-6 hidden">
-      <!-- Mode Selection Header -->
-      <div class="glass-card bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700/60 flex flex-wrap gap-3 items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <span class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Chế độ kiểm tra:</span>
-          <select id="practice-mode" onchange="changePracticeMode(this.value)" class="bg-slate-100 dark:bg-slate-700 border-none text-sm font-medium rounded-lg px-3 py-2 focus:ring-2 focus:ring-theme-500 outline-none">
-            <option value="en-vi">Viết Nghĩa (Tiếng Anh ➔ Tiếng Việt)</option>
-            <option value="vi-en">Viết Từ (Tiếng Việt ➔ Tiếng Anh)</option>
-            <option value="mcq-listen">Nghe & Chọn Đáp Án (Trắc nghiệm)</option>
-            <option value="random">Luyện tập Ngẫu nhiên</option>
-          </select>
-        </div>
-        <div class="flex items-center space-x-4 text-sm text-slate-600 dark:text-slate-300">
-          <div class="flex items-center space-x-1">
-            <i data-lucide="flame" class="w-4 h-4 text-amber-500"></i>
-            <span>Chuỗi: <strong id="streak-count" class="text-amber-500">0</strong></span>
-          </div>
-          <div class="flex items-center space-x-1">
-            <i data-lucide="layers" class="w-4 h-4 text-theme-500"></i>
-            <span>Cần ôn hôm nay: <strong id="due-count">0</strong></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Flashcard Review Box -->
-      <div id="card-container" class="max-w-xl mx-auto glass-card bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700/80 p-6 sm:p-8 relative overflow-hidden transition-all">
-        <!-- Level Tag -->
-        <div class="flex justify-between items-center mb-6">
-          <span id="card-level-badge" class="px-3 py-1 rounded-full text-xs font-semibold bg-theme-100 text-theme-700 dark:bg-theme-900/50 dark:text-theme-300">
-            Level 1 (Hàng ngày)
-          </span>
-          <button onclick="speakWord()" class="p-2 text-slate-400 hover:text-theme-600 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition" title="Phát âm">
-            <i data-lucide="volume-2" class="w-5 h-5"></i>
-          </button>
-        </div>
-
-        <!-- Prompt Content -->
-        <div class="text-center my-6">
-          <h2 id="card-prompt" class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-2">Word</h2>
-          <p id="card-subprompt" class="text-slate-400 text-sm italic font-mono">[ /phonetics/ ] • noun</p>
-          <p id="card-hint-example" class="mt-4 text-slate-500 dark:text-slate-400 text-sm hidden bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
-            "Example sentence goes here..."
-          </p>
-        </div>
-
-        <!-- Input / Options Form Container -->
-        <div id="input-mode-container" class="space-y-4">
-          <div>
-            <input type="text" id="answer-input" autocomplete="off" placeholder="Nhập câu trả lời của bạn..." 
-              class="w-full px-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-theme-500 focus:border-transparent outline-none transition text-center text-lg font-medium">
-          </div>
-
-          <!-- Buttons -->
-          <div class="grid grid-cols-2 gap-3">
-            <button onclick="toggleHint()" class="py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-700 font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition flex items-center justify-center space-x-2">
-              <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i>
-              <span>Gợi ý</span>
-            </button>
-            <button onclick="checkAnswer()" class="py-3 px-4 rounded-xl bg-theme-600 hover:bg-theme-700 text-white font-semibold shadow-lg shadow-theme-500/30 transition flex items-center justify-center space-x-2">
-              <span>Kiểm tra</span>
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Multiple Choice MCQ Container (For Listening Mode) -->
-        <div id="mcq-mode-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 hidden">
-          <!-- Options populated dynamically -->
-        </div>
-
-        <!-- Feedback Result Box -->
-        <div id="feedback-box" class="mt-6 p-4 rounded-xl hidden transition-all">
-          <div class="flex items-start space-x-3">
-            <div id="feedback-icon" class="p-1 rounded-full"></div>
-            <div class="flex-grow">
-              <h4 id="feedback-title" class="font-bold text-base">Chính xác!</h4>
-              <p id="feedback-msg" class="text-sm mt-1">Nghĩa đúng: ...</p>
-            </div>
-          </div>
-          <button onclick="nextCard()" class="w-full mt-4 py-2.5 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 font-semibold rounded-lg hover:opacity-90 transition">
-            Từ tiếp theo ➔
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. VOCABULARY MANAGEMENT VIEW -->
-    <section id="view-manage" class="space-y-6 hidden">
-      <!-- Action Bar & Search -->
-      <div class="glass-card bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm flex flex-col sm:flex-row gap-3 justify-between items-center">
-        <div class="relative w-full sm:w-80">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input type="text" id="search-vocab" oninput="filterVocabTable()" placeholder="Tìm từ vựng, nghĩa..." 
-            class="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border-none text-sm focus:ring-2 focus:ring-theme-500 outline-none">
-        </div>
-
-        <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
-          <button onclick="openAddModal()" class="px-4 py-2 bg-theme-600 hover:bg-theme-700 text-white font-medium text-sm rounded-xl shadow-sm transition flex items-center space-x-1.5">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            <span>Thêm từ mới</span>
-          </button>
-          
-          <button onclick="exportDataJSON()" class="p-2 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="Xuất dữ liệu JSON">
-            <i data-lucide="download" class="w-4 h-4"></i>
-          </button>
-          
-          <label class="p-2 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition cursor-pointer" title="Nhập dữ liệu JSON">
-            <i data-lucide="upload" class="w-4 h-4"></i>
-            <input type="file" accept=".json" onchange="importDataJSON(event)" class="hidden">
-          </label>
-        </div>
-      </div>
-
-      <!-- Vocabulary Table -->
-      <div class="glass-card bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700/60 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700/60 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                <th class="py-3.5 px-4">Từ vựng (Word)</th>
-                <th class="py-3.5 px-4">Nghĩa (Meaning)</th>
-                <th class="py-3.5 px-4">Loại từ</th>
-                <th class="py-3.5 px-4">Cấp độ SRS</th>
-                <th class="py-3.5 px-4">Ôn tiếp theo</th>
-                <th class="py-3.5 px-4 text-right">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody id="vocab-table-body" class="divide-y divide-slate-100 dark:divide-slate-700/50 text-sm">
-              <!-- Rows inserted dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. SETTINGS & CUSTOMIZATION VIEW -->
-    <section id="view-settings" class="space-y-6 hidden max-w-2xl mx-auto">
-      <div class="glass-card bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-700/60 shadow-md space-y-6">
-        <h2 class="text-xl font-bold flex items-center space-x-2 border-b border-slate-100 dark:border-slate-700 pb-4">
-          <i data-lucide="palette" class="w-5 h-5 text-theme-500"></i>
-          <span>Tùy chỉnh Giao diện Web</span>
-        </h2>
-
-        <!-- Color Theme Picker -->
-        <div class="space-y-3">
-          <label class="text-sm font-semibold text-slate-600 dark:text-slate-300 block">Chọn Bảng màu Chủ đề (Theme):</label>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <button onclick="setTheme('indigo')" class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center space-x-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-              <span class="w-5 h-5 rounded-full bg-indigo-600 flex-shrink-0"></span>
-              <span class="text-sm font-medium">Indigo Violet</span>
-            </button>
-            <button onclick="setTheme('emerald')" class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center space-x-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-              <span class="w-5 h-5 rounded-full bg-emerald-600 flex-shrink-0"></span>
-              <span class="text-sm font-medium">Emerald Teal</span>
-            </button>
-            <button onclick="setTheme('rose')" class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center space-x-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-              <span class="w-5 h-5 rounded-full bg-rose-600 flex-shrink-0"></span>
-              <span class="text-sm font-medium">Rose Pink</span>
-            </button>
-            <button onclick="setTheme('amber')" class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center space-x-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-              <span class="w-5 h-5 rounded-full bg-amber-500 flex-shrink-0"></span>
-              <span class="text-sm font-medium">Amber Gold</span>
-            </button>
-            <button onclick="setTheme('dark')" class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center space-x-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
-              <span class="w-5 h-5 rounded-full bg-slate-800 flex-shrink-0"></span>
-              <span class="text-sm font-medium">Dark Mode</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Background Image Settings -->
-        <div class="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-700">
-          <label class="text-sm font-semibold text-slate-600 dark:text-slate-300 block">Cài đặt Ảnh nền trang web:</label>
-          
-          <div class="space-y-3">
-            <div>
-              <span class="text-xs text-slate-400">Cách 1: Nhập đường dẫn URL ảnh online</span>
-              <div class="flex space-x-2 mt-1">
-                <input type="text" id="bg-url-input" placeholder="https://images.unsplash.com/..." class="flex-grow px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-                <button onclick="applyBgUrl()" class="px-4 py-2 bg-theme-600 text-white rounded-xl text-sm font-medium hover:bg-theme-700 transition">Áp dụng</button>
-              </div>
-            </div>
-
-            <div>
-              <span class="text-xs text-slate-400">Cách 2: Tải ảnh từ máy tính của bạn</span>
-              <div class="mt-1">
-                <input type="file" accept="image/*" onchange="applyBgFile(event)" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-theme-50 file:text-theme-700 hover:file:bg-theme-100 cursor-pointer">
-              </div>
-            </div>
-
-            <div class="pt-2 flex justify-end">
-              <button onclick="removeBgImage()" class="px-4 py-2 border border-rose-200 dark:border-rose-900 text-rose-600 dark:text-rose-400 rounded-xl text-sm font-medium hover:bg-rose-50 dark:hover:bg-rose-950/30 transition flex items-center space-x-1.5">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                <span>Xóa ảnh nền</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ADD / EDIT VOCABULARY MODAL -->
-  <div id="vocab-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="glass-card bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
-        <h3 id="modal-title" class="font-bold text-lg">Thêm từ vựng mới</h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form id="vocab-form" onsubmit="saveVocab(event)" class="space-y-3">
-        <input type="hidden" id="form-vocab-id">
-        <div>
-          <label class="text-xs font-semibold text-slate-500 uppercase">Từ tiếng Anh (*)</label>
-          <input type="text" id="form-word" required placeholder="ví dụ: Ubiquitous" class="w-full mt-1 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="text-xs font-semibold text-slate-500 uppercase">Phiên âm IPA</label>
-            <input type="text" id="form-phonetic" placeholder="/juːˈbɪk.wə.təs/" class="w-full mt-1 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-          </div>
-          <div>
-            <label class="text-xs font-semibold text-slate-500 uppercase">Loại từ</label>
-            <select id="form-type" class="w-full mt-1 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-              <option value="noun">Danh từ (noun)</option>
-              <option value="verb">Động từ (verb)</option>
-              <option value="adjective">Tính từ (adj)</option>
-              <option value="adverb">Trạng từ (adv)</option>
-              <option value="phrase">Cụm từ (phrase)</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="text-xs font-semibold text-slate-500 uppercase">Nghĩa tiếng Việt (*)</label>
-          <input type="text" id="form-meaning" required placeholder="ví dụ: Có mặt ở khắp nơi" class="w-full mt-1 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500">
-        </div>
-
-        <div>
-          <label class="text-xs font-semibold text-slate-500 uppercase">Ví dụ minh họa</label>
-          <textarea id="form-example" rows="2" placeholder="Mobile phones are now ubiquitous..." class="w-full mt-1 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 border-none text-sm outline-none focus:ring-2 focus:ring-theme-500"></textarea>
-        </div>
-
-        <div class="flex justify-end space-x-2 pt-2">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-700">Hủy</button>
-          <button type="submit" class="px-4 py-2 rounded-xl bg-theme-600 text-white text-sm font-semibold hover:bg-theme-700 shadow-sm">Lưu từ vựng</button>
-        </div>
-      </form>
-    </div>
+<body class="min-h-screen text-slate-800">
+<header class="sticky top-0 z-40 bg-indigo-600 text-white shadow-lg">
+ <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col lg:flex-row gap-3 items-center justify-between">
+  <div class="flex items-center gap-3 self-start lg:self-auto">
+   <div class="w-11 h-11 rounded-xl bg-white text-indigo-600 grid place-items-center text-xl"><i class="fa-solid fa-graduation-cap"></i></div>
+   <div><h1 class="font-extrabold text-xl">VocabMaster</h1><p class="text-xs text-indigo-200">Learn smarter, remember longer</p></div>
   </div>
-
-  <!-- APPLICATION JAVASCRIPT LOGIC -->
-  <script>
-    /* ==========================================================================
-       1. INITIAL DEFAULT VOCABULARY LIST (EASY TO EDIT IN HTML)
-       ========================================================================== */
-    const initialWordList = [
-      { id: '1', word: 'Acknowledge', phonetic: '/əkˈnɒl.ɪdʒ/', type: 'verb', meaning: 'Thừa nhận, công nhận', example: 'He acknowledged his mistake.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '2', word: 'Benevolent', phonetic: '/bəˈnev.əl.ənt/', type: 'adjective', meaning: 'Rộng lượng, nhân từ', example: 'A benevolent smile.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '3', word: 'Capricious', phonetic: '/kəˈprɪʃ.əs/', type: 'adjective', meaning: 'Thất thường, dễ thay đổi', example: 'a capricious climate.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '4', word: 'Diligent', phonetic: '/ˈdɪl.ɪ.dʒənt/', type: 'adjective', meaning: 'Cần cù, siêng năng', example: 'She is a diligent student.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 },
-      { id: '5', word: 'Ephemeral', phonetic: '/ɪˈfem.ər.əl/', type: 'adjective', meaning: 'Phù du, chóng khánh', example: 'Fame in the world is ephemeral.', level: 1, nextReview: new Date().toISOString(), correctCount: 0, totalCount: 0 }
-    ];
-
-    // SRS Leitner Level Intervals (in Days)
-    const SRS_INTERVALS = { 1: 0, 2: 1, 3: 3, 4: 7, 5: 14 };
-
-    /* ==========================================================================
-       2. GLOBAL STATE MANAGEMENT
-       ========================================================================== */
-    let vocabList = [];
-    let currentCard = null;
-    let streakCount = 0;
-    let practiceMode = 'en-vi'; // 'en-vi', 'vi-en', 'mcq-listen', 'random'
-    let levelChart = null;
-    let pieChart = null;
-
-    /* ==========================================================================
-       3. HELPER FUNCTIONS & VIETNAMESE TEXT NORMALIZATION
-       ========================================================================== */
-    function normalizeText(text) {
-      if (!text) return '';
-      return text
-        .toLowerCase()
-        .normalize('NFC')
-        .replace(/hoá/g, 'hóa')
-        .replace(/hoà/g, 'hòa')
-        .replace(/hoả/g, 'hỏa')
-        .replace(/hoã/g, 'họa')
-        .replace(/hoạ/g, 'họa')
-        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-    }
-
-    /* ==========================================================================
-       4. INITIALIZATION & LOCALSTORAGE
-       ========================================================================== */
-    window.addEventListener('DOMContentLoaded', () => {
-      loadSettings();
-      loadVocabData();
-      lucide.createIcons();
-      switchTab('dashboard'); // Mặc định mở tab Thống kê đầu tiên
-    });
-
-    function loadVocabData() {
-      const saved = localStorage.getItem('vocab_srs_data');
-      if (saved) {
-        try {
-          vocabList = JSON.parse(saved);
-        } catch (e) {
-          vocabList = [...initialWordList];
-        }
-      } else {
-        vocabList = [...initialWordList];
-        saveVocabData();
-      }
-      updateStreakDisplay();
-    }
-
-    function saveVocabData() {
-      localStorage.setItem('vocab_srs_data', JSON.stringify(vocabList));
-    }
-
-    /* ==========================================================================
-       5. NAVIGATION & TAB SWITCHING (Thứ tự: dashboard, practice, manage, settings)
-       ========================================================================== */
-    function switchTab(tabId) {
-      ['dashboard', 'practice', 'manage', 'settings'].forEach(tab => {
-        const view = document.getElementById(`view-${tab}`);
-        const btn = document.getElementById(`tab-${tab}`);
-        if (tab === tabId) {
-          view.classList.remove('hidden');
-          btn.classList.add('bg-theme-600', 'text-white', 'shadow-md');
-          btn.classList.remove('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
-        } else {
-          view.classList.add('hidden');
-          btn.classList.remove('bg-theme-600', 'text-white', 'shadow-md');
-          btn.classList.add('text-slate-600', 'dark:text-slate-300', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
-        }
-      });
-
-      if (tabId === 'practice') setupNextCard();
-      if (tabId === 'dashboard') renderDashboard();
-      if (tabId === 'manage') renderVocabTable();
-    }
-
-    /* ==========================================================================
-       6. PRACTICE & SRS ENGINE
-       ========================================================================== */
-    function changePracticeMode(mode) {
-      practiceMode = mode;
-      setupNextCard();
-    }
-
-    function getDueCards() {
-      const now = new Date();
-      return vocabList.filter(item => new Date(item.nextReview) <= now);
-    }
-
-    function setupNextCard() {
-      const dueCards = getDueCards();
-      document.getElementById('due-count').textContent = dueCards.length;
-
-      // Reset feedback box & hint
-      document.getElementById('feedback-box').classList.add('hidden');
-      document.getElementById('card-hint-example').classList.add('hidden');
-      document.getElementById('answer-input').value = '';
-
-      const pool = dueCards.length > 0 ? dueCards : vocabList;
-      if (pool.length === 0) {
-        document.getElementById('card-prompt').textContent = 'Chưa có từ vựng!';
-        return;
-      }
-
-      currentCard = pool[Math.floor(Math.random() * pool.length)];
-
-      let activeMode = practiceMode;
-      if (activeMode === 'random') {
-        const modes = ['en-vi', 'vi-en', 'mcq-listen'];
-        activeMode = modes[Math.floor(Math.random() * modes.length)];
-      }
-
-      const inputContainer = document.getElementById('input-mode-container');
-      const mcqContainer = document.getElementById('mcq-mode-container');
-
-      document.getElementById('card-level-badge').textContent = `Level ${currentCard.level} (${SRS_INTERVALS[currentCard.level]} ngày)`;
-
-      if (activeMode === 'en-vi') {
-        inputContainer.classList.remove('hidden');
-        mcqContainer.classList.add('hidden');
-        document.getElementById('card-prompt').textContent = currentCard.word;
-        document.getElementById('card-subprompt').textContent = `${currentCard.phonetic || ''} • ${currentCard.type || ''}`;
-        speakWord(); // Tự động đọc từ vựng khi hiện thẻ
-      } else if (activeMode === 'vi-en') {
-        inputContainer.classList.remove('hidden');
-        mcqContainer.classList.add('hidden');
-        document.getElementById('card-prompt').textContent = currentCard.meaning;
-        document.getElementById('card-subprompt').textContent = `[Nhập từ tiếng Anh tương ứng] • ${currentCard.type || ''}`;
-      } else if (activeMode === 'mcq-listen') {
-        inputContainer.classList.add('hidden');
-        mcqContainer.classList.remove('hidden');
-        document.getElementById('card-prompt').textContent = '🔊 Nghe phát âm...';
-        document.getElementById('card-subprompt').textContent = `[Chọn đáp án nghĩa đúng]`;
-        speakWord(); // Tự động đọc từ vựng khi hiện thẻ
-        renderMCQOptions();
-      }
-
-      document.getElementById('card-hint-example').textContent = `Ví dụ: ${currentCard.example || 'Không có ví dụ.'}`;
-    }
-
-    function speakWord() {
-      if (!currentCard || !('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(currentCard.word);
-      utterance.lang = 'en-US';
-      window.speechSynthesis.speak(utterance);
-    }
-
-    function toggleHint() {
-      document.getElementById('card-hint-example').classList.toggle('hidden');
-    }
-
-    function checkAnswer() {
-      if (!currentCard) return;
-      const userAns = document.getElementById('answer-input').value;
-      let isCorrect = false;
-
-      let activeMode = practiceMode;
-      if (activeMode === 'random' || activeMode === 'en-vi') {
-        const targetMeanings = currentCard.meaning.split(/[,;/]/).map(s => normalizeText(s));
-        const normalizedInput = normalizeText(userAns);
-        isCorrect = targetMeanings.some(m => m === normalizedInput || (normalizedInput.length > 2 && m.includes(normalizedInput)));
-      } else if (activeMode === 'vi-en') {
-        isCorrect = normalizeText(userAns) === normalizeText(currentCard.word);
-      }
-
-      processSRSResult(isCorrect, currentCard.meaning);
-    }
-
-    function renderMCQOptions() {
-      const container = document.getElementById('mcq-mode-container');
-      container.innerHTML = '';
-
-      let options = [currentCard];
-      let otherWords = vocabList.filter(w => w.id !== currentCard.id);
-      
-      while (options.length < 4 && otherWords.length > 0) {
-        const randIdx = Math.floor(Math.random() * otherWords.length);
-        options.push(otherWords[randIdx]);
-        otherWords.splice(randIdx, 1);
-      }
-
-      options.sort(() => Math.random() - 0.5);
-
-      options.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = 'p-4 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-left hover:bg-theme-50 dark:hover:bg-slate-700/60 hover:border-theme-300 transition flex items-center justify-between';
-        btn.innerHTML = `<span>${opt.meaning}</span> <i data-lucide="circle" class="w-4 h-4 text-slate-300"></i>`;
-        btn.onclick = () => {
-          const isCorrect = (opt.id === currentCard.id);
-          processSRSResult(isCorrect, currentCard.meaning);
-        };
-        container.appendChild(btn);
-      });
-      lucide.createIcons();
-    }
-
-    function processSRSResult(isCorrect, correctAnswerMsg) {
-      currentCard.totalCount = (currentCard.totalCount || 0) + 1;
-
-      if (isCorrect) {
-        currentCard.correctCount = (currentCard.correctCount || 0) + 1;
-        currentCard.level = Math.min(5, currentCard.level + 1);
-        streakCount++;
-      } else {
-        currentCard.level = 1;
-        streakCount = 0;
-      }
-
-      const daysToAdd = SRS_INTERVALS[currentCard.level];
-      const nextDate = new Date();
-      nextDate.setDate(nextDate.getDate() + daysToAdd);
-      currentCard.nextReview = nextDate.toISOString();
-
-      saveVocabData();
-      updateStreakDisplay();
-      showFeedback(isCorrect, correctAnswerMsg);
-    }
-
-    function showFeedback(isCorrect, targetMeaning) {
-      const fbBox = document.getElementById('feedback-box');
-      const fbTitle = document.getElementById('feedback-title');
-      const fbMsg = document.getElementById('feedback-msg');
-      const fbIcon = document.getElementById('feedback-icon');
-
-      fbBox.classList.remove('hidden', 'bg-emerald-50', 'bg-rose-50', 'dark:bg-emerald-950/40', 'dark:bg-rose-950/40');
-
-      if (isCorrect) {
-        fbBox.classList.add('bg-emerald-50', 'dark:bg-emerald-950/40');
-        fbTitle.textContent = 'Chính xác! Hoàn thành xuất sắc.';
-        fbTitle.className = 'font-bold text-emerald-600 dark:text-emerald-400';
-        fbMsg.textContent = `${currentCard.word}: ${targetMeaning}`;
-        fbIcon.className = 'p-1 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600';
-        fbIcon.innerHTML = `<i data-lucide="check" class="w-5 h-5"></i>`;
-      } else {
-        fbBox.classList.add('bg-rose-50', 'dark:bg-rose-950/40');
-        fbTitle.textContent = 'Chưa chính xác!';
-        fbTitle.className = 'font-bold text-rose-600 dark:text-rose-400';
-        fbMsg.textContent = `Đáp án đúng là: ${currentCard.word} = "${targetMeaning}"`;
-        fbIcon.className = 'p-1 rounded-full bg-rose-100 dark:bg-rose-900/60 text-rose-600';
-        fbIcon.innerHTML = `<i data-lucide="x" class="w-5 h-5"></i>`;
-      }
-      lucide.createIcons();
-    }
-
-    function nextCard() {
-      setupNextCard();
-    }
-
-    function updateStreakDisplay() {
-      document.getElementById('streak-count').textContent = streakCount;
-    }
-
-    /* ==========================================================================
-       7. DASHBOARD & CHARTS
-       ========================================================================== */
-    function renderDashboard() {
-      const total = vocabList.length;
-      const mastered = vocabList.filter(v => v.level === 5).length;
-      const learning = total - mastered;
-
-      let totalCorrect = 0;
-      let totalAttempts = 0;
-      vocabList.forEach(v => {
-        totalCorrect += v.correctCount || 0;
-        totalAttempts += v.totalCount || 0;
-      });
-      const accuracy = totalAttempts > 0 ? Math.round((totalCorrect / totalAttempts) * 100) : 0;
-
-      document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-mastered').textContent = mastered;
-      document.getElementById('stat-learning').textContent = learning;
-      document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
-
-      const levelCounts = [1, 2, 3, 4, 5].map(lvl => vocabList.filter(v => v.level === lvl).length);
-      
-      if (levelChart) levelChart.destroy();
-      const ctxLevel = document.getElementById('chart-srs-levels').getContext('2d');
-      levelChart = new Chart(ctxLevel, {
-        type: 'bar',
-        data: {
-          labels: ['Lvl 1 (Mới/Sai)', 'Lvl 2 (1 ngày)', 'Lvl 3 (3 ngày)', 'Lvl 4 (7 ngày)', 'Lvl 5 (14 ngày)'],
-          datasets: [{
-            label: 'Số lượng từ vựng',
-            data: levelCounts,
-            backgroundColor: '#6366f1',
-            borderRadius: 8
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
-        }
-      });
-
-      if (pieChart) pieChart.destroy();
-      const ctxPie = document.getElementById('chart-status-pie').getContext('2d');
-      pieChart = new Chart(ctxPie, {
-        type: 'doughnut',
-        data: {
-          labels: ['Thành thạo (Level 5)', 'Đang học (Level 1-4)'],
-          datasets: [{
-            data: [mastered, learning],
-            backgroundColor: ['#10b981', '#f59e0b']
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false
-        }
-      });
-    }
-
-    /* ==========================================================================
-       8. VOCABULARY MANAGEMENT (CRUD + IMPORT / EXPORT)
-       ========================================================================== */
-    function renderVocabTable() {
-      const tbody = document.getElementById('vocab-table-body');
-      tbody.innerHTML = '';
-
-      const query = normalizeText(document.getElementById('search-vocab').value);
-      const filtered = vocabList.filter(v => 
-        normalizeText(v.word).includes(query) || normalizeText(v.meaning).includes(query)
-      );
-
-      filtered.forEach(v => {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition';
-
-        const nextDateStr = new Date(v.nextReview).toLocaleDateString('vi-VN');
-
-        tr.innerHTML = `
-          <td class="py-3 px-4 font-semibold text-theme-600 dark:text-theme-400">${v.word} <span class="text-xs text-slate-400 font-normal">${v.phonetic || ''}</span></td>
-          <td class="py-3 px-4">${v.meaning}</td>
-          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-xs bg-slate-100 dark:bg-slate-700 font-mono">${v.type || 'noun'}</span></td>
-          <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-medium bg-theme-50 text-theme-600 dark:bg-theme-900/40 dark:text-theme-300">Level ${v.level}</span></td>
-          <td class="py-3 px-4 text-xs text-slate-400">${nextDateStr}</td>
-          <td class="py-3 px-4 text-right space-x-1">
-            <button onclick="openEditModal('${v.id}')" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-slate-500 hover:text-theme-600 transition"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-            <button onclick="deleteVocab('${v.id}')" class="p-1.5 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg text-slate-500 hover:text-rose-600 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-      lucide.createIcons();
-    }
-
-    function filterVocabTable() {
-      renderVocabTable();
-    }
-
-    function openAddModal() {
-      document.getElementById('modal-title').textContent = 'Thêm từ vựng mới';
-      document.getElementById('vocab-form').reset();
-      document.getElementById('form-vocab-id').value = '';
-      document.getElementById('vocab-modal').classList.remove('hidden');
-    }
-
-    function openEditModal(id) {
-      const vocab = vocabList.find(v => v.id === id);
-      if (!vocab) return;
-
-      document.getElementById('modal-title').textContent = 'Chỉnh sửa từ vựng';
-      document.getElementById('form-vocab-id').value = vocab.id;
-      document.getElementById('form-word').value = vocab.word;
-      document.getElementById('form-phonetic').value = vocab.phonetic || '';
-      document.getElementById('form-type').value = vocab.type || 'noun';
-      document.getElementById('form-meaning').value = vocab.meaning;
-      document.getElementById('form-example').value = vocab.example || '';
-
-      document.getElementById('vocab-modal').classList.remove('hidden');
-    }
-
-    function closeModal() {
-      document.getElementById('vocab-modal').classList.add('hidden');
-    }
-
-    function saveVocab(e) {
-      e.preventDefault();
-      const id = document.getElementById('form-vocab-id').value;
-      const word = document.getElementById('form-word').value.trim();
-      const phonetic = document.getElementById('form-phonetic').value.trim();
-      const type = document.getElementById('form-type').value;
-      const meaning = document.getElementById('form-meaning').value.trim();
-      const example = document.getElementById('form-example').value.trim();
-
-      if (id) {
-        const vocab = vocabList.find(v => v.id === id);
-        if (vocab) {
-          vocab.word = word;
-          vocab.phonetic = phonetic;
-          vocab.type = type;
-          vocab.meaning = meaning;
-          vocab.example = example;
-        }
-      } else {
-        const newVocab = {
-          id: Date.now().toString(),
-          word, phonetic, type, meaning, example,
-          level: 1,
-          nextReview: new Date().toISOString(),
-          correctCount: 0,
-          totalCount: 0
-        };
-        vocabList.unshift(newVocab);
-      }
-
-      saveVocabData();
-      closeModal();
-      renderVocabTable();
-    }
-
-    function deleteVocab(id) {
-      if (confirm('Bạn có chắc chắn muốn xóa từ vựng này?')) {
-        vocabList = vocabList.filter(v => v.id !== id);
-        saveVocabData();
-        renderVocabTable();
-      }
-    }
-
-    function exportDataJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(vocabList, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `vocab_srs_backup_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    function importDataJSON(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const imported = JSON.parse(e.target.result);
-          if (Array.isArray(imported)) {
-            vocabList = imported;
-            saveVocabData();
-            renderVocabTable();
-            alert('Nhập danh sách từ vựng thành công!');
-          }
-        } catch (err) {
-          alert('File JSON không hợp lệ!');
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    /* ==========================================================================
-       9. THEME & BACKGROUND CUSTOMIZATION
-       ========================================================================== */
-    function setTheme(themeName) {
-      const root = document.documentElement;
-      root.classList.remove('theme-indigo', 'theme-emerald', 'theme-rose', 'theme-amber', 'theme-dark', 'dark');
-
-      if (themeName === 'dark') {
-        root.classList.add('dark', 'theme-dark');
-      } else {
-        root.classList.add(`theme-${themeName}`);
-      }
-      localStorage.setItem('vocab_srs_theme', themeName);
-    }
-
-    function applyBgUrl() {
-      const url = document.getElementById('bg-url-input').value.trim();
-      if (!url) return;
-      setBgImage(url);
-    }
-
-    function applyBgFile(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        setBgImage(evt.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function setBgImage(imgSrc) {
-      const bgLayer = document.getElementById('bg-overlay');
-      bgLayer.style.backgroundImage = `url('${imgSrc}')`;
-      bgLayer.classList.remove('opacity-0');
-      bgLayer.classList.add('opacity-30');
-      document.body.classList.add('bg-custom-active');
-      localStorage.setItem('vocab_srs_bg', imgSrc);
-    }
-
-    function removeBgImage() {
-      const bgLayer = document.getElementById('bg-overlay');
-      bgLayer.style.backgroundImage = 'none';
-      bgLayer.classList.add('opacity-0');
-      document.body.classList.remove('bg-custom-active');
-      localStorage.removeItem('vocab_srs_bg');
-      document.getElementById('bg-url-input').value = '';
-    }
-
-    function loadSettings() {
-      const savedTheme = localStorage.getItem('vocab_srs_theme') || 'indigo';
-      setTheme(savedTheme);
-
-      const savedBg = localStorage.getItem('vocab_srs_bg');
-      if (savedBg) {
-        setBgImage(savedBg);
-      }
-    }
-  </script>
+  <nav class="flex flex-wrap justify-center gap-1 bg-indigo-700 p-1 rounded-xl text-sm" id="main-nav">
+   <button class="nav-btn active px-3 py-2 rounded-lg" data-tab="dashboard"><i class="fa-solid fa-chart-pie mr-1"></i> Tổng quan</button>
+   <button class="nav-btn px-3 py-2 rounded-lg" data-tab="flashcards"><i class="fa-solid fa-clone mr-1"></i> Flashcards</button>
+   <button class="nav-btn px-3 py-2 rounded-lg" data-tab="review"><i class="fa-solid fa-brain mr-1"></i> Ôn tập</button>
+   <button class="nav-btn px-3 py-2 rounded-lg" data-tab="quiz"><i class="fa-solid fa-pen-to-square mr-1"></i> Kiểm tra</button>
+   <button class="nav-btn px-3 py-2 rounded-lg" data-tab="library"><i class="fa-solid fa-book-open mr-1"></i> Kho từ vựng</button>
+   <button id="open-settings" class="px-3 py-2 rounded-lg text-indigo-100 hover:bg-indigo-500" title="Tùy chỉnh giao diện"><i class="fa-solid fa-palette mr-1"></i> Giao diện</button>
+  </nav>
+ </div>
+</header>
+
+<div id="settings-modal" class="modal hidden fixed inset-0 z-50 items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+ <div class="absolute inset-0" id="settings-backdrop"></div>
+ <div class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-5 sm:p-6 space-y-5">
+  <div class="flex justify-between items-center"><div><h2 id="settings-title" class="text-xl font-extrabold">Tùy chỉnh giao diện</h2><p class="text-sm text-slate-500">Chọn cách hiển thị phù hợp với bạn.</p></div><button id="close-settings" class="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="space-y-2"><label class="font-semibold text-sm">Chế độ hiển thị</label><div class="grid grid-cols-2 gap-2"><button data-theme-choice="light" class="theme-choice border rounded-xl p-3 text-sm font-semibold"><i class="fa-solid fa-sun mr-2 text-amber-500"></i>Sáng</button><button data-theme-choice="dark" class="theme-choice border rounded-xl p-3 text-sm font-semibold"><i class="fa-solid fa-moon mr-2 text-indigo-500"></i>Tối</button></div></div>
+  <div class="space-y-2"><label for="background-choice" class="font-semibold text-sm">Nền website</label><select id="background-choice" class="w-full border rounded-xl px-3 py-3 text-sm bg-slate-50"><option value="default">Mặc định – Xám sáng</option><option value="lavender">Lavender – Tím nhạt</option><option value="mint">Mint – Xanh bạc hà</option><option value="sky">Sky – Xanh da trời</option><option value="warm">Warm – Kem ấm</option><option value="gradient">Gradient – Chuyển sắc</option></select></div>
+  <div class="rounded-xl bg-indigo-50 p-3 text-sm text-indigo-900"><i class="fa-solid fa-circle-info mr-1"></i> Tùy chỉnh được lưu tự động trên trình duyệt này.</div>
+  <div class="flex justify-end"><button id="close-settings-bottom" class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold">Xong</button></div>
+ </div>
+</div>
+
+<main class="max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
+ <!-- DASHBOARD -->
+ <section id="tab-dashboard" class="tab-panel space-y-6">
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+   <div><p class="text-sm text-indigo-600 font-semibold">VOCABULARY DASHBOARD</p><h2 class="text-2xl sm:text-3xl font-extrabold mt-1">Chào mừng quay lại!</h2><p class="text-slate-500 mt-1">Học một chút mỗi ngày, tiến bộ từng chút một.</p></div>
+   <button class="go-review px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700"><i class="fa-solid fa-brain mr-2"></i>Bắt đầu ôn tập</button>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3" id="stats-cards"></div>
+  <div class="grid lg:grid-cols-3 gap-4">
+   <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+    <div class="flex justify-between items-center"><div><h3 class="font-bold text-lg">Mục tiêu hôm nay</h3><p class="text-sm text-slate-500">Số từ đã ôn trong hôm nay</p></div><span class="text-indigo-600 font-bold" id="goal-label">0/10</span></div>
+    <div class="progress-track"><div id="goal-progress" class="progress-fill" style="width:0%"></div></div>
+    <div class="flex items-center justify-between gap-3"><label class="text-sm text-slate-600" for="daily-goal">Mục tiêu mỗi ngày</label><select id="daily-goal" class="border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select></div>
+    <div class="rounded-xl bg-indigo-50 p-4 flex items-center gap-3"><i class="fa-solid fa-lightbulb text-amber-500 text-xl"></i><p class="text-sm text-indigo-900">Ưu tiên ôn những từ đến hạn. Đừng chỉ học từ mới — hãy kiểm tra lại những từ đã học.</p></div>
+   </div>
+   <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+    <h3 class="font-bold text-lg mb-1">Trạng thái ghi nhớ</h3><p class="text-sm text-slate-500 mb-4">Phân loại theo tiến độ của bạn</p><div id="status-breakdown" class="space-y-4"></div>
+   </div>
+  </div>
+  <div class="grid md:grid-cols-2 gap-4">
+   <div class="bg-white rounded-2xl border border-slate-200 p-5"><h3 class="font-bold mb-3">Việc cần làm</h3><div id="dashboard-actions" class="space-y-3"></div></div>
+   <div class="bg-white rounded-2xl border border-slate-200 p-5"><h3 class="font-bold mb-3">Học gần đây</h3><div id="recent-activity" class="text-sm text-slate-500">Chưa có hoạt động nào.</div></div>
+  </div>
+ </section>
+
+ <!-- FLASHCARDS -->
+ <section id="tab-flashcards" class="tab-panel hidden space-y-5">
+  <div class="flex justify-between items-center gap-3"><div><h2 class="text-2xl font-extrabold">Flashcards</h2><p class="text-slate-500 text-sm">Lật thẻ để xem nghĩa và ví dụ.</p></div><span id="fc-counter" class="text-sm font-semibold text-slate-500">0 / 0</span></div>
+  <div class="max-w-2xl mx-auto space-y-4">
+   <div class="flex justify-between items-center"><select id="fc-category" class="border rounded-xl px-3 py-2 bg-white text-sm"><option value="">Tất cả chủ đề</option></select><span class="text-xs text-slate-400">Bấm vào thẻ để lật</span></div>
+   <div class="perspective h-80 sm:h-96 cursor-pointer select-none" id="flashcard" role="button" tabindex="0" aria-label="Lật flashcard">
+    <div id="fc-inner" class="card-inner relative w-full h-full rounded-3xl shadow-xl">
+     <div class="card-face absolute inset-0 rounded-3xl bg-gradient-to-br from-white to-indigo-50 border border-slate-200 flex flex-col justify-between p-7 sm:p-10 text-center">
+      <div class="flex justify-between items-center"><span id="fc-tag" class="text-xs font-bold text-indigo-500 bg-indigo-100 rounded-full px-3 py-1">TỪ VỰNG</span><button id="fc-speak" class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 hover:bg-indigo-200"><i class="fa-solid fa-volume-high"></i></button></div>
+      <div><h3 id="fc-word" class="text-4xl sm:text-5xl font-extrabold text-indigo-600 break-words">Vocabulary</h3><p id="fc-phonetic" class="text-slate-400 mt-3 font-mono">/vəˈkæbjələri/</p><p id="fc-type" class="text-xs text-slate-400 mt-2"></p></div>
+      <p class="text-sm text-slate-400">Chạm để xem nghĩa <i class="fa-solid fa-arrow-right ml-1"></i></p>
+     </div>
+     <div class="card-face card-back absolute inset-0 rounded-3xl bg-indigo-600 text-white flex flex-col justify-between p-7 sm:p-10 text-center">
+      <span class="text-xs self-end bg-indigo-500 rounded-full px-3 py-1">NGHĨA & VÍ DỤ</span>
+      <div class="space-y-4"><h3 id="fc-meaning" class="text-3xl font-bold">Từ vựng</h3><p id="fc-example" class="text-indigo-100 italic">Example sentence.</p><p id="fc-extra" class="text-sm text-indigo-200"></p></div>
+      <p class="text-sm text-indigo-200">Chạm để quay lại</p>
+     </div>
+    </div>
+   </div>
+   <div class="flex justify-center items-center gap-3"><button id="fc-prev" class="px-4 py-3 bg-white border rounded-xl hover:bg-slate-50"><i class="fa-solid fa-arrow-left mr-1"></i> Trước</button><button id="fc-speak-bottom" class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700"><i class="fa-solid fa-volume-high"></i></button><button id="fc-next" class="px-4 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700">Tiếp <i class="fa-solid fa-arrow-right ml-1"></i></button></div>
+   <p id="fc-empty" class="hidden text-center text-slate-500 bg-white p-6 rounded-xl">Chưa có từ vựng trong chủ đề này.</p>
+  </div>
+ </section>
+
+ <!-- REVIEW -->
+ <section id="tab-review" class="tab-panel hidden space-y-5">
+  <div><h2 class="text-2xl font-extrabold">Ôn tập thông minh</h2><p class="text-slate-500 text-sm">Lịch ôn tự điều chỉnh theo mức độ bạn nhớ từ.</p></div>
+  <div class="grid sm:grid-cols-3 gap-3" id="review-summary"></div>
+  <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-7 max-w-2xl mx-auto">
+   <div class="flex justify-between items-center mb-5"><span id="review-counter" class="text-sm text-slate-500 font-semibold">0 / 0</span><span id="review-category" class="text-xs bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full">Ôn tập</span></div>
+   <div id="review-question" class="text-center py-8 space-y-3"><p class="text-sm text-slate-400">Từ tiếng Anh</p><h3 id="review-word" class="text-4xl font-extrabold text-indigo-600">--</h3><p id="review-phonetic" class="text-sm text-slate-400"></p><button id="review-reveal" class="mt-5 px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700">Hiện nghĩa</button></div>
+   <div id="review-answer" class="hidden text-center bg-indigo-50 rounded-xl p-5 space-y-2"><p class="text-xs text-indigo-500 font-bold uppercase">Nghĩa tiếng Việt</p><h4 id="review-meaning" class="text-2xl font-bold text-indigo-900"></h4><p id="review-example" class="text-sm text-slate-600 italic"></p></div>
+   <div id="review-rating" class="hidden mt-5 space-y-2"><p class="text-sm text-center text-slate-500">Bạn nhớ từ này ở mức nào?</p><div class="grid grid-cols-2 sm:grid-cols-4 gap-2"><button data-rating="again" class="rating-btn bg-rose-50 text-rose-700 border border-rose-200 rounded-xl py-3 font-semibold">Quên</button><button data-rating="hard" class="rating-btn bg-amber-50 text-amber-700 border border-amber-200 rounded-xl py-3 font-semibold">Khó</button><button data-rating="good" class="rating-btn bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl py-3 font-semibold">Tốt</button><button data-rating="easy" class="rating-btn bg-sky-50 text-sky-700 border border-sky-200 rounded-xl py-3 font-semibold">Dễ</button></div></div>
+   <div id="review-complete" class="hidden text-center py-8"><i class="fa-solid fa-circle-check text-4xl text-emerald-500"></i><h3 class="text-2xl font-bold mt-3">Hoàn thành phiên ôn tập!</h3><p id="review-complete-text" class="text-slate-500 mt-2"></p><button id="review-restart" class="mt-5 px-5 py-3 bg-indigo-600 text-white rounded-xl font-semibold">Ôn lại danh sách</button></div>
+  </div>
+  <p class="max-w-2xl mx-auto text-xs text-slate-400">Lịch ôn dùng thuật toán lặp lại ngắt quãng đơn giản. Khoảng cách ôn là gợi ý để hỗ trợ ghi nhớ, không phải đánh giá tuyệt đối về trí nhớ.</p>
+ </section>
+
+ <!-- QUIZ -->
+ <section id="tab-quiz" class="tab-panel hidden space-y-5">
+  <div><h2 class="text-2xl font-extrabold">Kiểm tra từ vựng</h2><p class="text-slate-500 text-sm">Kiểm tra khả năng nhớ nghĩa và nhận diện từ.</p></div>
+  <div class="bg-white border rounded-2xl p-4 flex flex-col sm:flex-row gap-3 justify-between sm:items-center">
+   <div class="flex flex-wrap gap-2 items-center"><label for="quiz-mode" class="text-sm font-semibold">Dạng bài:</label><select id="quiz-mode" class="border rounded-xl px-3 py-2 text-sm"><option value="en-vi">Anh → Việt (nhập nghĩa)</option><option value="vi-en">Việt → Anh (nhập từ)</option><option value="choice">Trắc nghiệm 4 lựa chọn</option><option value="listen">Nghe tiếng Anh → chọn từ</option><option value="mixed">Trộn tất cả</option></select><button id="quiz-start" class="px-4 py-2 rounded-xl bg-indigo-100 text-indigo-700 font-semibold text-sm">Bắt đầu lại</button></div>
+   <div class="flex gap-3 text-sm font-bold"><span class="text-emerald-600">Đúng: <b id="quiz-correct">0</b></span><span class="text-rose-600">Sai: <b id="quiz-wrong">0</b></span></div>
+  </div>
+  <div class="space-y-1"><div class="flex justify-between text-xs text-slate-500"><span>Tiến độ</span><span id="quiz-progress-text">0/0</span></div><div class="progress-track"><div id="quiz-progress" class="progress-fill" style="width:0%"></div></div></div>
+  <div class="bg-white border rounded-2xl shadow-sm p-6 sm:p-8 max-w-2xl mx-auto text-center space-y-5">
+   <span id="quiz-type" class="inline-block text-xs font-bold uppercase tracking-wide text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Câu hỏi</span>
+   <h3 id="quiz-prompt" class="text-3xl font-extrabold break-words">--</h3><p id="quiz-sub" class="text-sm text-slate-400"></p>
+   <button type="button" id="quiz-listen" class="hidden mx-auto px-5 py-3 rounded-xl bg-indigo-100 text-indigo-700 font-semibold hover:bg-indigo-200"><i class="fa-solid fa-volume-high mr-2"></i>Nghe lại</button>
+   <form id="quiz-form" class="space-y-3"><input id="quiz-input" class="w-full border-2 border-slate-200 focus:border-indigo-500 outline-none rounded-xl px-4 py-3 text-center text-lg" placeholder="Nhập câu trả lời..." autocomplete="off"><div id="quiz-options" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-2 text-left"></div><button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-3 font-bold" id="quiz-submit">Kiểm tra</button></form>
+   <div id="quiz-feedback" class="hidden rounded-xl p-4 text-sm"></div><button id="quiz-next" class="hidden px-6 py-2.5 bg-slate-800 text-white rounded-xl font-semibold">Câu tiếp theo <i class="fa-solid fa-arrow-right ml-1"></i></button>
+   <div id="quiz-finish" class="hidden"><i class="fa-solid fa-trophy text-amber-500 text-3xl"></i><h3 class="text-2xl font-bold mt-2">Hoàn thành!</h3><p id="quiz-result" class="text-slate-500 mt-2"></p><button id="quiz-again" class="mt-4 bg-indigo-600 text-white px-5 py-3 rounded-xl font-semibold">Làm lại</button></div>
+  </div>
+ </section>
+
+ <!-- LIBRARY -->
+ <section id="tab-library" class="tab-panel hidden space-y-5">
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3"><div><h2 class="text-2xl font-extrabold">Kho từ vựng</h2><p class="text-slate-500 text-sm">Thêm, tìm kiếm, chỉnh sửa và sao lưu dữ liệu.</p></div><div class="flex flex-wrap gap-2"><button id="export-btn" class="px-3 py-2 rounded-xl bg-emerald-50 text-emerald-700 text-sm font-semibold"><i class="fa-solid fa-download mr-1"></i>Xuất JSON</button><label class="px-3 py-2 rounded-xl bg-sky-50 text-sky-700 text-sm font-semibold cursor-pointer"><i class="fa-solid fa-upload mr-1"></i>Nhập JSON<input type="file" id="import-file" accept=".json,application/json" class="hidden"></label></div></div>
+  <div class="bg-white border rounded-2xl p-5 shadow-sm">
+   <h3 id="form-title" class="font-bold text-lg mb-4"><i class="fa-solid fa-plus-circle text-indigo-600 mr-2"></i>Thêm từ vựng</h3>
+   <form id="word-form" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <input id="word-id" type="hidden"><input id="word-input" required maxlength="100" placeholder="Từ tiếng Anh *" class="border rounded-xl px-3 py-2.5 text-sm">
+    <input id="meaning-input" required maxlength="250" placeholder="Nghĩa tiếng Việt *" class="border rounded-xl px-3 py-2.5 text-sm">
+    <input id="phonetic-input" maxlength="100" placeholder="Phiên âm IPA (vd: /ˈæpl/)" class="border rounded-xl px-3 py-2.5 text-sm">
+    <input id="type-input" maxlength="50" placeholder="Từ loại (noun, verb...)" class="border rounded-xl px-3 py-2.5 text-sm">
+    <input id="category-input" maxlength="60" placeholder="Chủ đề (Education...)" class="border rounded-xl px-3 py-2.5 text-sm">
+    <input id="example-input" maxlength="300" placeholder="Câu ví dụ" class="border rounded-xl px-3 py-2.5 text-sm">
+    <input id="synonyms-input" maxlength="200" placeholder="Từ đồng nghĩa (phân cách bằng dấu phẩy)" class="border rounded-xl px-3 py-2.5 text-sm sm:col-span-2 lg:col-span-2">
+    <div class="flex gap-2"><button class="flex-1 bg-indigo-600 text-white rounded-xl py-2.5 font-semibold text-sm" id="save-word-btn">Lưu từ vựng</button><button type="button" id="cancel-edit" class="hidden px-4 border rounded-xl text-sm">Hủy</button></div>
+   </form>
+  </div>
+  <div class="bg-white border rounded-2xl shadow-sm overflow-hidden">
+   <div class="p-4 border-b flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between"><h3 class="font-bold">Danh sách (<span id="word-count">0</span> từ)</h3><div class="flex flex-col sm:flex-row gap-2"><input id="search-words" placeholder="Tìm từ hoặc nghĩa..." class="border rounded-lg px-3 py-2 text-sm"><select id="filter-category" class="border rounded-lg px-3 py-2 text-sm"><option value="">Tất cả chủ đề</option></select><select id="filter-status" class="border rounded-lg px-3 py-2 text-sm"><option value="">Mọi trạng thái</option><option value="new">Chưa thuộc</option><option value="learning">Đang học</option><option value="known">Đã thuộc</option></select></div></div>
+   <div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="bg-slate-50 text-slate-500"><tr><th class="p-3">Từ vựng</th><th class="p-3">Nghĩa</th><th class="p-3">Chủ đề</th><th class="p-3">Trạng thái</th><th class="p-3 text-center">Thao tác</th></tr></thead><tbody id="word-table"></tbody></table></div>
+  </div>
+  <div class="flex flex-wrap gap-2"><button id="reset-default" class="text-sm text-rose-600 underline">Khôi phục 8 từ mẫu</button><button id="clear-all" class="text-sm text-rose-600 underline">Xóa toàn bộ từ vựng</button></div>
+ </section>
+</main>
+<footer class="text-center text-xs text-slate-400 border-t bg-white py-5 mt-8">VocabMaster · Dữ liệu được lưu trên trình duyệt của bạn.</footer>
+<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm px-4 py-3 rounded-xl shadow-lg opacity-0 pointer-events-none transition-opacity z-50"></div>
+
+<script>
+'use strict';
+const DEFAULT_VOCAB=[
+ {word:"Vocabulary",meaning:"Từ vựng",phonetic:"/vəˈkæbjələri/",type:"noun",category:"Education",example:"Reading books helps expand your vocabulary.",synonyms:[]},
+ {word:"Improve",meaning:"Cải thiện, nâng cao",phonetic:"/ɪmˈpruːv/",type:"verb",category:"Education",example:"I want to improve my English speaking skills.",synonyms:["Enhance"]},
+ {word:"Challenge",meaning:"Thử thách",phonetic:"/ˈtʃælɪndʒ/",type:"noun / verb",category:"Daily Life",example:"Learning a new language is a great challenge.",synonyms:["Difficulty"]},
+ {word:"Consistent",meaning:"Kiên trì, nhất quán",phonetic:"/kənˈsɪstənt/",type:"adjective",category:"Personality",example:"Consistent practice leads to success.",synonyms:["Steady"]},
+ {word:"Achieve",meaning:"Đạt được",phonetic:"/əˈtʃiːv/",type:"verb",category:"Education",example:"You can achieve your goals with hard work.",synonyms:["Accomplish"]},
+ {word:"Opportunity",meaning:"Cơ hội",phonetic:"/ˌɒpəˈtjuːnəti/",type:"noun",category:"Daily Life",example:"Don't miss the opportunity to travel abroad.",synonyms:["Chance"]},
+ {word:"Confidence",meaning:"Sự tự tin",phonetic:"/ˈkɒnfɪdəns/",type:"noun",category:"Personality",example:"Confidence is key when speaking in public.",synonyms:["Self-assurance"]},
+ {word:"Knowledge",meaning:"Kiến thức",phonetic:"/ˈnɒlɪdʒ/",type:"noun",category:"Education",example:"Books are a great source of knowledge.",synonyms:[]}
+];
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toISOString().slice(0,10);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let words=[],stats={goal:10,activity:{}},fcIndex=0,fcItems=[],reviewQueue=[],reviewIndex=0,quizQueue=[],quizIndex=0,quizCorrect=0,quizWrong=0,currentQuiz=null,selectedOption=null;
+function normalizeWord(w){return {id:w.id||uid(),word:String(w.word||''),meaning:String(w.meaning||''),phonetic:String(w.phonetic||''),type:String(w.type||''),category:String(w.category||'Chưa phân loại'),example:String(w.example||''),synonyms:Array.isArray(w.synonyms)?w.synonyms:[],status:['new','learning','known'].includes(w.status)?w.status:'new',reviewCount:Number(w.reviewCount)||0,interval:Number(w.interval)||0,ease:Number(w.ease)||2.5,nextReview:w.nextReview||today(),lastReviewed:w.lastReviewed||null,favorite:!!w.favorite,createdAt:w.createdAt||today()};}
+function loadData(){
+ try{const raw=JSON.parse(localStorage.getItem('my_vocab_list')||'null');words=Array.isArray(raw)?raw.map(normalizeWord):DEFAULT_VOCAB.map(normalizeWord);}catch(e){words=DEFAULT_VOCAB.map(normalizeWord);}
+ try{stats={...{goal:10,activity:{}},...JSON.parse(localStorage.getItem('vocabmaster_stats')||'{}')};}catch(e){stats={goal:10,activity:{}};}
+ saveData();
+}
+function saveData(){localStorage.setItem('my_vocab_list',JSON.stringify(words));localStorage.setItem('vocabmaster_stats',JSON.stringify(stats));}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.remove('opacity-0');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.add('opacity-0'),2300);}
+function logStudy(){stats.activity[today()]=(stats.activity[today()]||0)+1;saveData();renderDashboard();}
+function statusLabel(s){return s==='known'?'Đã thuộc':s==='learning'?'Đang học':'Chưa thuộc';}
+function dueWords(){return words.filter(w=>!w.nextReview||w.nextReview<=today());}
+function switchTab(name){document.querySelectorAll('.tab-panel').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+name));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));if(name==='dashboard')renderDashboard();if(name==='flashcards')renderFlashcard();if(name==='review')startReview();if(name==='library')renderLibrary();}
+document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+document.querySelectorAll('.go-review').forEach(b=>b.addEventListener('click',()=>switchTab('review')));
+
+/* Dashboard */
+function renderDashboard(){
+ const total=words.length,known=words.filter(w=>w.status==='known').length,learning=words.filter(w=>w.status==='learning').length,newCount=words.filter(w=>w.status==='new').length,due=dueWords().length,done=stats.activity[today()]||0,goal=Number(stats.goal)||10;
+ const cards=[['Tổng số từ',total,'fa-book-open','indigo'],['Đã thuộc',known,'fa-circle-check','emerald'],['Đang học',learning,'fa-bookmark','amber'],['Đến hạn ôn',due,'fa-clock','rose']];
+ $('stats-cards').innerHTML=cards.map(c=>`<div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm"><div class="flex justify-between items-center"><span class="text-sm text-slate-500">${c[0]}</span><i class="fa-solid ${c[2]} text-${c[3]}-500"></i></div><p class="text-3xl font-extrabold mt-2">${c[1]}</p></div>`).join('');
+ $('goal-label').textContent=`${done}/${goal}`;$('goal-progress').style.width=Math.min(100,done/goal*100)+'%';$('daily-goal').value=String(goal);
+ const groups=[['Chưa thuộc',newCount,'bg-slate-400'],['Đang học',learning,'bg-amber-500'],['Đã thuộc',known,'bg-emerald-500']];
+ $('status-breakdown').innerHTML=groups.map(g=>`<div><div class="flex justify-between text-sm mb-1"><span>${g[0]}</span><b>${g[1]}</b></div><div class="progress-track"><div class="${g[2]} h-full rounded-full" style="width:${total?g[1]/total*100:0}%"></div></div></div>`).join('');
+ $('dashboard-actions').innerHTML=`<div class="flex justify-between items-center"><span class="text-sm">Từ cần ôn hôm nay</span><b>${due}</b></div><button class="go-review w-full bg-indigo-600 text-white rounded-xl py-2.5 font-semibold text-sm">Ôn ${Math.min(due,20)} từ đến hạn</button><div class="flex justify-between items-center text-sm"><span>Từ mới trong kho</span><b>${newCount}</b></div><button id="dash-add" class="w-full border rounded-xl py-2.5 text-sm font-semibold">+ Thêm từ mới</button>`;
+ document.querySelectorAll('.go-review').forEach(b=>b.onclick=()=>switchTab('review'));$('dash-add').onclick=()=>switchTab('library');
+ const recent=Object.entries(stats.activity).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,5);
+ $('recent-activity').innerHTML=recent.length?recent.map(([d,n])=>`<div class="flex justify-between py-2 border-b last:border-0"><span>${d}</span><b>${n} lượt ôn</b></div>`).join(''):'Chưa có hoạt động nào.';
+}
+$('daily-goal').addEventListener('change',e=>{stats.goal=Number(e.target.value);saveData();renderDashboard();});
+
+/* Flashcards */
+function updateCategoryOptions(){
+ const cats=[...new Set(words.map(w=>w.category).filter(Boolean))].sort();
+ const current=$('fc-category').value,filter=$('filter-category').value;
+ $('fc-category').innerHTML='<option value="">Tất cả chủ đề</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');
+ $('filter-category').innerHTML='<option value="">Tất cả chủ đề</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');
+ $('fc-category').value=cats.includes(current)?current:'';$('filter-category').value=cats.includes(filter)?filter:'';
+}
+function renderFlashcard(){
+ updateCategoryOptions();const cat=$('fc-category').value;fcItems=words.filter(w=>!cat||w.category===cat);if(fcIndex>=fcItems.length)fcIndex=0;
+ const empty=!fcItems.length;$('fc-empty').classList.toggle('hidden',!empty);$('flashcard').classList.toggle('hidden',empty);
+ ['fc-prev','fc-next','fc-speak-bottom','fc-speak'].forEach(id=>$(id).disabled=empty);
+ if(empty){$('fc-counter').textContent='0 / 0';return;}
+ const w=fcItems[fcIndex];$('fc-counter').textContent=`${fcIndex+1} / ${fcItems.length}`;$('fc-word').textContent=w.word;$('fc-meaning').textContent=w.meaning;$('fc-phonetic').textContent=w.phonetic||'Chưa có phiên âm';$('fc-type').textContent=w.type;$('fc-example').textContent=w.example?`“${w.example}”`:'Chưa có ví dụ';$('fc-extra').textContent=w.synonyms.length?'Đồng nghĩa: '+w.synonyms.join(', '):'';$('fc-tag').textContent=w.category;$('fc-inner').classList.remove('flipped');
+}
+function flipCard(){$('fc-inner').classList.toggle('flipped');}
+$('flashcard').addEventListener('click',e=>{if(!e.target.closest('button'))flipCard();});
+$('flashcard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flipCard();}});
+function speakWord(word){if(!('speechSynthesis'in window)){toast('Trình duyệt không hỗ trợ phát âm.');return;}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(word);u.lang='en-US';u.rate=.88;speechSynthesis.speak(u);}
+$('fc-speak').onclick=e=>{e.stopPropagation();if(fcItems[fcIndex])speakWord(fcItems[fcIndex].word);};
+$('fc-speak-bottom').onclick=()=>{if(fcItems[fcIndex])speakWord(fcItems[fcIndex].word);};
+$('fc-prev').onclick=()=>{if(fcItems.length){fcIndex=(fcIndex-1+fcItems.length)%fcItems.length;renderFlashcard();}};
+$('fc-next').onclick=()=>{if(fcItems.length){fcIndex=(fcIndex+1)%fcItems.length;renderFlashcard();}};
+$('fc-category').onchange=()=>{fcIndex=0;renderFlashcard();};
+
+/* Spaced repetition: interval-based lightweight schedule */
+function startReview(){
+ reviewQueue=dueWords().sort((a,b)=>(a.nextReview||'').localeCompare(b.nextReview||'')).slice(0,30);reviewIndex=0;
+ $('review-summary').innerHTML=[['Đến hạn hôm nay',dueWords().length,'text-rose-600'],['Tổng số từ',words.length,'text-indigo-600'],['Đã thuộc',words.filter(w=>w.status==='known').length,'text-emerald-600']].map(x=>`<div class="bg-white border rounded-xl p-4"><p class="text-sm text-slate-500">${x[0]}</p><p class="text-2xl font-extrabold ${x[2]}">${x[1]}</p></div>`).join('');
+ $('review-complete').classList.add('hidden');$('review-question').classList.remove('hidden');$('review-answer').classList.add('hidden');$('review-rating').classList.add('hidden');
+ showReviewCard();
+}
+function showReviewCard(){
+ $('review-complete').classList.add('hidden');
+ if(!reviewQueue.length||reviewIndex>=reviewQueue.length){$('review-question').classList.add('hidden');$('review-answer').classList.add('hidden');$('review-rating').classList.add('hidden');$('review-complete').classList.remove('hidden');$('review-counter').textContent=`${reviewIndex}/${reviewQueue.length}`;$('review-complete-text').textContent=`Bạn đã hoàn thành ${reviewIndex} từ trong phiên ôn tập.`;return;}
+ const w=reviewQueue[reviewIndex];$('review-question').classList.remove('hidden');$('review-answer').classList.add('hidden');$('review-rating').classList.add('hidden');$('review-word').textContent=w.word;$('review-phonetic').textContent=w.phonetic||'';$('review-category').textContent=w.category;$('review-counter').textContent=`${reviewIndex+1}/${reviewQueue.length}`;
+}
+$('review-reveal').onclick=()=>{const w=reviewQueue[reviewIndex];if(!w)return;$('review-meaning').textContent=w.meaning;$('review-example').textContent=w.example||'';$('review-answer').classList.remove('hidden');$('review-rating').classList.remove('hidden');};
+function addDays(days){const d=new Date();d.setDate(d.getDate()+days);return d.toISOString().slice(0,10);}
+function rateReview(rating){
+ const w=reviewQueue[reviewIndex];if(!w)return;
+ if(rating==='again'){w.status='learning';w.interval=0;w.nextReview=addDays(0);w.ease=Math.max(1.3,w.ease-.2);}
+ if(rating==='hard'){w.status='learning';w.interval=Math.max(1,Math.round((w.interval||1)*1.2));w.nextReview=addDays(w.interval);w.ease=Math.max(1.3,w.ease-.15);}
+ if(rating==='good'){w.interval=w.interval===0?1:w.interval===1?3:Math.max(1,Math.round(w.interval*w.ease));w.status=w.interval>=14?'known':'learning';w.nextReview=addDays(w.interval);}
+ if(rating==='easy'){w.interval=Math.max(3,Math.round((w.interval||1)*w.ease*1.3));w.ease=Math.min(3.2,w.ease+.15);w.status=w.interval>=14?'known':'learning';w.nextReview=addDays(w.interval);}
+ w.reviewCount++;w.lastReviewed=today();saveData();logStudy();reviewIndex++;showReviewCard();
+}
+document.querySelectorAll('.rating-btn').forEach(b=>b.onclick=()=>rateReview(b.dataset.rating));
+$('review-restart').onclick=startReview;
+
+/* Quiz */
+function startQuiz(){
+ quizQueue=[...words].sort(()=>Math.random()-.5);quizIndex=0;quizCorrect=0;quizWrong=0;$('quiz-correct').textContent='0';$('quiz-wrong').textContent='0';$('quiz-finish').classList.add('hidden');$('quiz-form').classList.remove('hidden');$('quiz-feedback').classList.add('hidden');$('quiz-next').classList.add('hidden');loadQuiz();
+}
+function loadQuiz(){
+ $('quiz-feedback').classList.add('hidden');$('quiz-next').classList.add('hidden');$('quiz-form').classList.remove('hidden');$('quiz-submit').disabled=false;$('quiz-input').disabled=false;$('quiz-input').value='';$('quiz-options').innerHTML='';$('quiz-options').classList.add('hidden');$('quiz-input').classList.remove('hidden');selectedOption=null;
+ const total=quizQueue.length;$('quiz-progress-text').textContent=`${Math.min(quizIndex,total)}/${total}`;$('quiz-progress').style.width=(total?quizIndex/total*100:0)+'%';
+ if(quizIndex>=total){finishQuiz();return;}
+ const w=quizQueue[quizIndex],mode=$('quiz-mode').value;let actual=mode;if(mode==='mixed')actual=['en-vi','vi-en','choice','listen'][Math.floor(Math.random()*4)];
+ currentQuiz={word:w,mode:actual};const listening=actual==='listen';$('quiz-listen').classList.toggle('hidden',!listening);$('quiz-prompt').textContent=listening?'Nghe và chọn từ đúng':actual==='en-vi'?w.word:w.meaning;$('quiz-type').textContent=listening?'Nghe tiếng Anh – chọn từ':actual==='en-vi'?'Viết nghĩa tiếng Việt':actual==='vi-en'?'Viết từ tiếng Anh':'Chọn đáp án đúng';$('quiz-sub').textContent=listening?'Bấm “Nghe lại”, sau đó chọn từ bạn nghe được.':actual==='en-vi'?'Nhập nghĩa phù hợp của từ.':actual==='vi-en'?'Nhập chính xác từ tiếng Anh.':'Chọn một đáp án bên dưới.';
+ if(actual==='choice'||listening){
+  $('quiz-input').classList.add('hidden');$('quiz-options').classList.remove('hidden');
+  const correct=listening?w.word:w.meaning;
+  const distractors=words.filter(x=>x.id!==w.id).sort(()=>Math.random()-.5).slice(0,3).map(x=>listening?x.word:x.meaning);
+  const opts=[...new Set([correct,...distractors])].sort(()=>Math.random()-.5);
+  $('quiz-options').innerHTML=opts.map((o,i)=>`<button type="button" data-answer="${esc(o)}" class="option-btn border rounded-xl p-3 hover:border-indigo-500 hover:bg-indigo-50">${String.fromCharCode(65+i)}. ${esc(o)}</button>`).join('');
+  document.querySelectorAll('.option-btn').forEach(b=>b.onclick=()=>{selectedOption=b.dataset.answer;document.querySelectorAll('.option-btn').forEach(x=>x.classList.remove('border-indigo-600','bg-indigo-50'));b.classList.add('border-indigo-600','bg-indigo-50');});
+  if(listening){$('quiz-listen').onclick=()=>speakWord(w.word);setTimeout(()=>speakWord(w.word),250);}
+ }
+}
+function normalizeAnswer(s){return s.toLocaleLowerCase('vi').normalize('NFC').replace(/[.,!?;:]/g,'').replace(/\s+/g,' ').trim();}
+$('quiz-form').onsubmit=e=>{
+ e.preventDefault();if(!currentQuiz)return;const w=currentQuiz.word;let answer=currentQuiz.mode==='choice'?selectedOption:$('quiz-input').value; if(!String(answer||'').trim()){toast('Hãy nhập hoặc chọn đáp án trước.');return;}
+ const expected=(currentQuiz.mode==='vi-en'||currentQuiz.mode==='listen')?w.word:w.meaning;
+ let correct=false;
+ if(currentQuiz.mode==='vi-en'||currentQuiz.mode==='listen')correct=normalizeAnswer(answer)===normalizeAnswer(expected);
+ else {const accepted=expected.split(/[,;]/).map(normalizeAnswer).filter(Boolean);correct=accepted.some(x=>normalizeAnswer(answer)===x);}
+ if(correct){quizCorrect++;$('quiz-correct').textContent=quizCorrect;$('quiz-feedback').className='rounded-xl p-4 text-sm bg-emerald-50 text-emerald-800';$('quiz-feedback').textContent='Chính xác! Đáp án: '+expected;}
+ else{quizWrong++;$('quiz-wrong').textContent=quizWrong;$('quiz-feedback').className='rounded-xl p-4 text-sm bg-rose-50 text-rose-800';$('quiz-feedback').textContent='Chưa chính xác. Đáp án đúng: '+expected;}
+ $('quiz-feedback').classList.remove('hidden');$('quiz-form').classList.add('hidden');$('quiz-next').classList.remove('hidden');logStudy();
+};
+$('quiz-next').onclick=()=>{quizIndex++;loadQuiz();};
+function finishQuiz(){$('quiz-form').classList.add('hidden');$('quiz-feedback').classList.add('hidden');$('quiz-next').classList.add('hidden');$('quiz-finish').classList.remove('hidden');$('quiz-progress').style.width='100%';$('quiz-progress-text').textContent=`${quizQueue.length}/${quizQueue.length}`;$('quiz-result').textContent=`Bạn trả lời đúng ${quizCorrect}/${quizQueue.length} câu và sai ${quizWrong} câu.`;}
+$('quiz-start').onclick=startQuiz;$('quiz-again').onclick=startQuiz;
+
+/* Library CRUD */
+function renderLibrary(){
+ updateCategoryOptions();const query=$('search-words').value.toLocaleLowerCase('vi'),cat=$('filter-category').value,status=$('filter-status').value;
+ const filtered=words.filter(w=>(!cat||w.category===cat)&&(!status||w.status===status)&&(!query||(w.word+' '+w.meaning+' '+w.example).toLocaleLowerCase('vi').includes(query)));
+ $('word-count').textContent=words.length;
+ $('word-table').innerHTML=filtered.length?filtered.map(w=>`<tr class="border-t hover:bg-slate-50"><td class="p-3 font-semibold text-indigo-600">${esc(w.word)}${w.favorite?' <i class="fa-solid fa-star text-amber-400"></i>':''}<div class="text-xs text-slate-400 font-normal">${esc(w.phonetic)} ${esc(w.type)}</div></td><td class="p-3">${esc(w.meaning)}<div class="text-xs text-slate-400 italic">${esc(w.example)}</div></td><td class="p-3">${esc(w.category)}</td><td class="p-3"><span class="text-xs px-2 py-1 rounded-full ${w.status==='known'?'bg-emerald-50 text-emerald-700':w.status==='learning'?'bg-amber-50 text-amber-700':'bg-slate-100 text-slate-600'}">${statusLabel(w.status)}</span></td><td class="p-3"><div class="flex justify-center gap-3"><button data-action="favorite" data-id="${w.id}" title="Yêu thích" class="${w.favorite?'text-amber-500':'text-slate-400'}"><i class="fa-solid fa-star"></i></button><button data-action="edit" data-id="${w.id}" class="text-indigo-500" title="Sửa"><i class="fa-solid fa-pen"></i></button><button data-action="delete" data-id="${w.id}" class="text-rose-500" title="Xóa"><i class="fa-solid fa-trash"></i></button></div></td></tr>`).join(''):'<tr><td colspan="5" class="p-6 text-center text-slate-400">Không tìm thấy từ vựng phù hợp.</td></tr>';
+}
+['search-words','filter-category','filter-status'].forEach(id=>$(id).addEventListener(id==='search-words'?'input':'change',renderLibrary));
+$('word-form').onsubmit=e=>{
+ e.preventDefault();const id=$('word-id').value,word=$('word-input').value.trim(),meaning=$('meaning-input').value.trim();if(!word||!meaning)return;
+ const data={word,meaning,phonetic:$('phonetic-input').value.trim(),type:$('type-input').value.trim(),category:$('category-input').value.trim()||'Chưa phân loại',example:$('example-input').value.trim(),synonyms:$('synonyms-input').value.split(',').map(x=>x.trim()).filter(Boolean)};
+ if(id){const w=words.find(x=>x.id===id);if(w)Object.assign(w,data);toast('Đã cập nhật từ vựng.');}
+ else{words.unshift(normalizeWord({...data,status:'new',nextReview:today()}));toast('Đã thêm từ mới.');}
+ saveData();e.target.reset();$('word-id').value='';$('form-title').innerHTML='<i class="fa-solid fa-plus-circle text-indigo-600 mr-2"></i>Thêm từ vựng';$('save-word-btn').textContent='Lưu từ vựng';$('cancel-edit').classList.add('hidden');renderLibrary();renderDashboard();renderFlashcard();
+};
+$('word-table').onclick=e=>{
+ const b=e.target.closest('button[data-action]');if(!b)return;const w=words.find(x=>x.id===b.dataset.id);if(!w)return;
+ if(b.dataset.action==='delete'){if(confirm(`Xóa từ "${w.word}"?`)){words=words.filter(x=>x.id!==w.id);saveData();renderLibrary();renderDashboard();renderFlashcard();}}
+ if(b.dataset.action==='favorite'){w.favorite=!w.favorite;saveData();renderLibrary();}
+ if(b.dataset.action==='edit'){
+  $('word-id').value=w.id;$('word-input').value=w.word;$('meaning-input').value=w.meaning;$('phonetic-input').value=w.phonetic;$('type-input').value=w.type;$('category-input').value=w.category;$('example-input').value=w.example;$('synonyms-input').value=w.synonyms.join(', ');$('form-title').textContent='Chỉnh sửa từ vựng';$('save-word-btn').textContent='Cập nhật';$('cancel-edit').classList.remove('hidden');$('word-input').focus();window.scrollTo({top:0,behavior:'smooth'});
+ }
+};
+$('cancel-edit').onclick=()=>{$('word-form').reset();$('word-id').value='';$('form-title').innerHTML='<i class="fa-solid fa-plus-circle text-indigo-600 mr-2"></i>Thêm từ vựng';$('save-word-btn').textContent='Lưu từ vựng';$('cancel-edit').classList.add('hidden');};
+$('export-btn').onclick=()=>{const blob=new Blob([JSON.stringify({words,stats},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='vocabmaster-backup.json';a.click();URL.revokeObjectURL(url);toast('Đã xuất dữ liệu.');};
+$('import-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());const incoming=Array.isArray(data)?data:data.words;if(!Array.isArray(incoming))throw new Error();if(!confirm(`Nhập ${incoming.length} từ? Danh sách hiện tại sẽ được thay thế.`))return;words=incoming.map(normalizeWord).filter(w=>w.word&&w.meaning);if(data.stats)stats={...stats,...data.stats};saveData();renderAll();toast('Nhập dữ liệu thành công.');}catch(err){alert('File JSON không hợp lệ.');}finally{e.target.value='';}};
+$('reset-default').onclick=()=>{if(confirm('Khôi phục 8 từ mẫu? Danh sách hiện tại sẽ bị thay thế.')){words=DEFAULT_VOCAB.map(normalizeWord);saveData();renderAll();toast('Đã khôi phục danh sách mẫu.');}};
+$('clear-all').onclick=()=>{if(confirm('Xóa toàn bộ từ vựng? Hãy xuất dữ liệu trước nếu muốn sao lưu.')){words=[];saveData();renderAll();toast('Đã xóa danh sách.');}};
+function renderAll(){renderDashboard();renderFlashcard();renderLibrary();startQuiz();startReview();}
+function applyAppearance(){
+ const theme=localStorage.getItem('vocabmaster_theme')||'light',bg=localStorage.getItem('vocabmaster_bg')||'default';
+ document.body.dataset.theme=theme;document.body.dataset.bg=bg;
+ document.querySelectorAll('.theme-choice').forEach(b=>b.classList.toggle('selected',b.dataset.themeChoice===theme));
+ $('background-choice').value=bg;
+}
+function openSettings(){$('settings-modal').classList.remove('hidden');$('settings-modal').classList.add('flex');applyAppearance();}
+function closeSettings(){$('settings-modal').classList.add('hidden');$('settings-modal').classList.remove('flex');}
+$('open-settings').onclick=openSettings;$('close-settings').onclick=closeSettings;$('close-settings-bottom').onclick=closeSettings;$('settings-backdrop').onclick=closeSettings;
+document.querySelectorAll('.theme-choice').forEach(b=>b.onclick=()=>{localStorage.setItem('vocabmaster_theme',b.dataset.themeChoice);applyAppearance();});
+$('background-choice').onchange=e=>{localStorage.setItem('vocabmaster_bg',e.target.value);applyAppearance();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSettings();});
+loadData();applyAppearance();renderAll();
+</script>
 </body>
 </html>
