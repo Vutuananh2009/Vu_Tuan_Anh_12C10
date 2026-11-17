@@ -1,4 +1,38 @@
-<video controls width="100%">
-    <source src="video.mp4" type="video/mp4">
-    Trình duyệt của bạn không hỗ trợ thẻ video.
-</video>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xem Video</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Hoặc 'cover' nếu muốn video phủ kín màn hình */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 
+      - Nếu dùng file video riêng (vd: video.mp4 cùng thư mục): thay phần src bằng src="video.mp4"
+      - Nếu nhúng dạng Base64: thay phần src bằng chuỗi "data:video/mp4;base64,..." của bạn[cite: 3]
+    -->
+    <video src="video.mp4"></video>
+
+</body>
+</html>
