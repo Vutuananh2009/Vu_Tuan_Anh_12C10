@@ -5,34 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xem Video</title>
     <style>
-        * {
+        body, html {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-        body, html {
             width: 100%;
             height: 100%;
             background-color: #000;
-            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
         }
         video {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Hoặc 'cover' nếu muốn video phủ kín màn hình */
+            object-fit: contain;
+        }
+        /* Lớp phủ yêu cầu bấm màn hình */
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            z-index: 10;
+            cursor: pointer;
+            text-align: center;
+            padding: 20px;
+        }
+        #overlay h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .play-btn {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .play-btn:hover {
+            background-color: #b20710;
         }
     </style>
 </head>
 <body>
 
-    <!-- 
-      - Nếu dùng file video riêng (vd: video.mp4 cùng thư mục): thay phần src bằng src="video.mp4"
-      - Nếu nhúng dạng Base64: thay phần src bằng chuỗi "data:video/mp4;base64,..." của bạn[cite: 3]
-    -->
-    <video src="video.mp4" autoplay muted controls playsinline></video>
+    <!-- Màn hình chờ để người xem bấm vào -->
+    <div id="overlay" onclick="playVideoWithAudio()">
+        <h1>Bạn có một video mới</h1>
+        <button class="play-btn">▶ Bấm vào đây để xem</button>
+    </div>
+
+    <!-- Video ban đầu để muted để không bị lỗi -->
+    <video id="myVideo" src="video.mp4" loop playsinline></video>
+
+    <script>
+        function playVideoWithAudio() {
+            var video = document.getElementById("myVideo");
+            var overlay = document.getElementById("overlay");
+            
+            // Bật tiếng và cho video chạy
+            video.muted = false;
+            video.play();
+            
+            // Ẩn màn hình chờ đi
+            overlay.style.display = "none";
+            
+            // Hiện thanh điều khiển nếu muốn
+            video.controls = true;
+        }
+    </script>
 
 </body>
 </html>
